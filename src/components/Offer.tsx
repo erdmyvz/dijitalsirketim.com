@@ -16,7 +16,7 @@ export default function Offer() {
           <span className="inline-flex items-center gap-2 rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700 ring-1 ring-teal-200">
             TEKLİF
           </span>
-          <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+          <h2 className="mt-5 text-3xl font-semibold tracking-[-0.02em] text-slate-900 sm:text-5xl">
             Dijital Check-Up
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-slate-600">
@@ -27,8 +27,8 @@ export default function Offer() {
 
         <div className="mt-14 grid gap-10 lg:grid-cols-2 lg:items-start">
           {/* Değer istifi + fiyat */}
-          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-8">
-            <h3 className="text-lg font-bold text-slate-900">
+          <div className="rounded-[28px] border border-slate-200 bg-slate-50 p-8">
+            <h3 className="text-lg font-semibold text-slate-900">
               Pakete dahil olanlar
             </h3>
             <ul className="mt-5 space-y-3">
@@ -48,7 +48,7 @@ export default function Offer() {
               <p className="text-sm text-slate-400 line-through decoration-slate-400">
                 Danışmanlık değeri: [REFERANS DEĞER]
               </p>
-              <p className="mt-1 text-3xl font-extrabold text-slate-900">
+              <p className="mt-1 text-4xl font-semibold tracking-[-0.02em] text-slate-900">
                 [FİYAT]
               </p>
               <p className="mt-2 text-xs text-slate-500">

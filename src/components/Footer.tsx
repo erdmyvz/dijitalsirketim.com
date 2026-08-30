@@ -8,7 +8,7 @@ export default function Footer() {
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-teal-600 text-lg text-white">
                 🩺
               </span>
-              <span className="text-lg font-bold text-white">
+              <span className="text-lg font-semibold text-white">
                 dijital<span className="text-teal-400">şirketim</span>
                 <span className="text-slate-500">.com.tr</span>
               </span>
@@ -27,27 +27,27 @@ export default function Footer() {
               <p className="font-semibold text-white">Sayfa</p>
               <ul className="mt-3 space-y-2">
                 <li>
-                  <a href="#sorun" className="hover:text-white">
+                  <a href="#sorun" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
                     Belirtiler
                   </a>
                 </li>
                 <li>
-                  <a href="#cozum" className="hover:text-white">
+                  <a href="#cozum" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
                     Tedavi Modeli
                   </a>
                 </li>
                 <li>
-                  <a href="#ispat" className="hover:text-white">
+                  <a href="#ispat" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
                     Neden Biz
                   </a>
                 </li>
                 <li>
-                  <a href="#teklif" className="hover:text-white">
+                  <a href="#teklif" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
                     Check-Up Teklifi
                   </a>
                 </li>
                 <li>
-                  <a href="#sss" className="hover:text-white">
+                  <a href="#sss" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
                     SSS
                   </a>
                 </li>
@@ -68,12 +68,12 @@ export default function Footer() {
               <ul className="mt-3 space-y-2">
                 {/* NOT: Aşağıdaki bağlantıları gerçek KVKK/Gizlilik sayfalarınızla değiştirin. */}
                 <li>
-                  <a href="#" className="hover:text-white">
+                  <a href="#" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
                     KVKK Aydınlatma Metni
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white">
+                  <a href="#" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
                     Gizlilik Politikası
                   </a>
                 </li>

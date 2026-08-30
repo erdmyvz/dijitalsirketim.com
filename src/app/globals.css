@@ -3,24 +3,66 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Apple'ın sistem yazı tipi yığını: Apple cihazlarında doğrudan San
+     Francisco'yu kullanır, diğer platformlarda en yakın sistem fontuna
+     düşer. */
+  --font-sans-stack:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "Helvetica Neue", "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+
+  /* Apple'ın arayüzlerinde kullandığı "ease-out" yaylanma eğrisi:
+     hızlı başlar, yumuşak ve kontrollü şekilde yavaşlayarak biter. */
+  --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-sans-stack);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Apple'ın arayüzlerindeki yumuşak "belirme" hareketi: hafifçe
+   büyüyerek ve saydamlıktan çıkarak beliriyor. */
+@keyframes apple-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-apple-in {
+  animation: apple-in 0.5s var(--ease-apple) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-apple-in {
+    animation: none;
+  }
+}
+
+/* Hareketten rahatsız olan kullanıcılar için tüm geçiş/animasyonları
+   ve yumuşak kaydırmayı kısaltıyoruz. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

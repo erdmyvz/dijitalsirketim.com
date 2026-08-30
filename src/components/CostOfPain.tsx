@@ -17,9 +17,9 @@ const istatistikler = [
 export default function CostOfPain() {
   return (
     <section className="bg-white">
-      <div className="mx-auto max-w-6xl px-6 py-20">
+      <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+          <h2 className="text-3xl font-semibold tracking-[-0.02em] text-slate-900 sm:text-5xl">
             Bu tablo böyle devam ederse{" "}
             <span className="text-red-600">ne olur?</span>
           </h2>
@@ -29,9 +29,9 @@ export default function CostOfPain() {
           {istatistikler.map((s) => (
             <div
               key={s.baslik}
-              className="rounded-2xl border border-red-100 bg-red-50/60 p-8 text-center"
+              className="rounded-[28px] border border-red-100 bg-red-50/60 p-8 text-center transition-all duration-300 ease-[var(--ease-apple)] hover:-translate-y-1 hover:shadow-xl hover:shadow-red-900/5 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
             >
-              <p className="text-4xl font-extrabold text-red-700 sm:text-5xl">
+              <p className="text-4xl font-semibold tracking-[-0.02em] text-red-700 sm:text-6xl">
                 {s.baslik}
               </p>
               <p className="mt-3 text-base leading-relaxed text-slate-700">
@@ -44,7 +44,7 @@ export default function CostOfPain() {
           ))}
         </div>
 
-        <p className="mx-auto mt-12 max-w-2xl rounded-xl border border-slate-200 bg-slate-50 p-5 text-center text-lg font-semibold leading-relaxed text-slate-800">
+        <p className="mx-auto mt-12 max-w-2xl rounded-2xl border border-slate-200 bg-slate-50 p-5 text-center text-lg font-medium leading-relaxed text-slate-800">
           Kapanan işletmelerin ürünleri kötü değildi. Sistemleri yoktu.
         </p>
       </div>

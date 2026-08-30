@@ -37,7 +37,7 @@ export default function Solution() {
           <span className="inline-flex items-center gap-2 rounded-full bg-teal-500/10 px-3 py-1 text-xs font-semibold text-teal-300 ring-1 ring-teal-500/30">
             4 ADIMLI TEDAVİ MODELİ
           </span>
-          <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+          <h2 className="mt-5 text-3xl font-semibold tracking-[-0.02em] text-white sm:text-5xl">
             Doktora gider gibi:{" "}
             <span className="text-teal-400">
               teşhis, reçete, tedavi, takip
@@ -55,15 +55,15 @@ export default function Solution() {
           <div className="absolute left-0 right-0 top-14 hidden h-px bg-slate-700 md:block" />
 
           {adimlar.map((a) => (
-            <div key={a.no} className="relative">
-              <div className="relative z-10 mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-teal-500/40 bg-slate-900 text-2xl md:mx-0">
+            <div key={a.no} className="group relative">
+              <div className="relative z-10 mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-2xl backdrop-blur-xl transition-all duration-300 ease-[var(--ease-apple)] group-hover:scale-110 group-hover:border-teal-400/40 group-hover:bg-white/10 motion-reduce:transition-none motion-reduce:group-hover:scale-100 md:mx-0">
                 {a.icon}
               </div>
               <div className="mt-5">
                 <span className="text-xs font-semibold tracking-widest text-teal-400">
                   ADIM {a.no}
                 </span>
-                <h3 className="mt-1 text-xl font-bold text-white">
+                <h3 className="mt-1 text-xl font-semibold text-white">
                   {a.title}
                   <span className="ml-2 text-sm font-normal text-slate-400">
                     · {a.subtitle}
@@ -78,7 +78,7 @@ export default function Solution() {
         </div>
 
         {/* Zıtlık şeridi */}
-        <div className="mx-auto mt-16 max-w-3xl rounded-2xl border border-teal-500/20 bg-teal-500/5 p-6 text-center sm:p-8">
+        <div className="mx-auto mt-16 max-w-3xl rounded-[28px] border border-teal-500/20 bg-teal-500/5 p-6 text-center backdrop-blur-xl sm:p-8">
           <p className="text-base leading-relaxed text-slate-200 sm:text-lg">
             <span className="text-slate-400 line-through decoration-slate-500">
               Amatör danışman semptomu tedavi eder.

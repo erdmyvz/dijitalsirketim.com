@@ -24,7 +24,7 @@ export default function Proof() {
           <span className="inline-flex items-center gap-2 rounded-full bg-teal-50 px-3 py-1 text-xs font-semibold text-teal-700 ring-1 ring-teal-200">
             NEDEN BİZ
           </span>
-          <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+          <h2 className="mt-5 text-3xl font-semibold tracking-[-0.02em] text-slate-900 sm:text-5xl">
             Kurumsal danışmanlık mantığı, günler değil{" "}
             <span className="text-teal-600">saatler</span> içinde
           </h2>
@@ -39,7 +39,7 @@ export default function Proof() {
           {guvenceler.map((g) => (
             <div
               key={g.title}
-              className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+              className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 ease-[var(--ease-apple)] hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-900/5 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
             >
               <span className="text-3xl">{g.icon}</span>
               <h3 className="mt-4 font-semibold text-slate-900">

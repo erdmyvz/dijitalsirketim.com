@@ -10,6 +10,9 @@ const whatsappMesaji = encodeURIComponent(
   "Merhaba, Dijital Check-Up başvurusu yapmak istiyorum.",
 );
 
+const inputClass =
+  "w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition-all duration-200 ease-[var(--ease-apple)] focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10";
+
 type Durum = "hazir" | "gonderiliyor" | "basarili" | "hata";
 
 export default function ApplicationForm() {
@@ -54,9 +57,9 @@ export default function ApplicationForm() {
 
   if (durum === "basarili") {
     return (
-      <div className="rounded-2xl border border-teal-200 bg-teal-50 p-8 text-center">
+      <div className="animate-apple-in rounded-[28px] border border-teal-200 bg-teal-50 p-8 text-center">
         <span className="text-4xl">✅</span>
-        <h3 className="mt-4 text-xl font-bold text-teal-900">
+        <h3 className="mt-4 text-xl font-semibold text-teal-900">
           Başvurunuz alındı!
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-teal-800">
@@ -68,7 +71,7 @@ export default function ApplicationForm() {
   }
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+    <div className="rounded-[28px] border border-slate-200 bg-white p-8 shadow-sm">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label
@@ -82,7 +85,7 @@ export default function ApplicationForm() {
             name="adSoyad"
             type="text"
             required
-            className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
+            className={inputClass}
             placeholder="Adınız Soyadınız"
           />
         </div>
@@ -98,7 +101,7 @@ export default function ApplicationForm() {
             id="isletmeAdi"
             name="isletmeAdi"
             type="text"
-            className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
+            className={inputClass}
             placeholder="İşletmenizin adı"
           />
         </div>
@@ -114,7 +117,7 @@ export default function ApplicationForm() {
             id="sektor"
             name="sektor"
             type="text"
-            className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
+            className={inputClass}
             placeholder="Örn: perakende, hizmet, üretim..."
           />
         </div>
@@ -131,7 +134,7 @@ export default function ApplicationForm() {
             name="telefon"
             type="tel"
             required
-            className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
+            className={inputClass}
             placeholder="05xx xxx xx xx"
           />
         </div>
@@ -152,7 +155,7 @@ export default function ApplicationForm() {
         </label>
 
         {durum === "hata" && (
-          <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+          <p className="animate-apple-in rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
             {hataMesaji}
           </p>
         )}
@@ -160,7 +163,7 @@ export default function ApplicationForm() {
         <button
           type="submit"
           disabled={durum === "gonderiliyor"}
-          className="w-full rounded-full bg-teal-600 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full rounded-full bg-teal-600 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-teal-600/25 transition-all duration-300 ease-[var(--ease-apple)] hover:scale-[1.01] hover:bg-teal-700 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100 motion-reduce:transition-none motion-reduce:hover:scale-100"
         >
           {durum === "gonderiliyor" ? "Gönderiliyor..." : "Başvuruyu Gönder"}
         </button>
@@ -176,7 +179,7 @@ export default function ApplicationForm() {
         href={`https://wa.me/${WHATSAPP_NUMARASI}?text=${whatsappMesaji}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-4 flex items-center justify-center gap-2 rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-teal-600 hover:text-teal-700"
+        className="mt-4 flex items-center justify-center gap-2 rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition-all duration-300 ease-[var(--ease-apple)] hover:scale-[1.01] hover:border-teal-600 hover:text-teal-700 active:scale-[0.99] motion-reduce:transition-none motion-reduce:hover:scale-100"
       >
         💬 Doğrudan WhatsApp&apos;tan Yazın
       </a>
