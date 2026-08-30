@@ -2,9 +2,17 @@
 
 import { useState, type FormEvent } from "react";
 
+// NOT: Aşağıdaki WhatsApp numarasını kendi işletme numaranızla
+// değiştirin. Bu, form/CRM entegrasyonu tamamlanana kadar kullanılabilecek
+// geçici bir başvuru kanalıdır.
+const WHATSAPP_NUMARASI = "90XXXXXXXXXX";
+const whatsappMesaji = encodeURIComponent(
+  "Merhaba, Dijital Check-Up başvurusu yapmak istiyorum.",
+);
+
 type Durum = "hazir" | "gonderiliyor" | "basarili" | "hata";
 
-export default function SignupForm() {
+export default function ApplicationForm() {
   const [durum, setDurum] = useState<Durum>("hazir");
   const [hataMesaji, setHataMesaji] = useState("");
 
@@ -17,14 +25,13 @@ export default function SignupForm() {
     const formData = new FormData(form);
     const payload = {
       adSoyad: String(formData.get("adSoyad") ?? ""),
-      isletme: String(formData.get("isletme") ?? ""),
-      iletisim: String(formData.get("iletisim") ?? ""),
-      site: String(formData.get("site") ?? ""),
-      mesaj: String(formData.get("mesaj") ?? ""),
+      isletmeAdi: String(formData.get("isletmeAdi") ?? ""),
+      sektor: String(formData.get("sektor") ?? ""),
+      telefon: String(formData.get("telefon") ?? ""),
     };
 
     try {
-      const res = await fetch("/api/kayit", {
+      const res = await fetch("/api/basvuru", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -50,22 +57,19 @@ export default function SignupForm() {
       <div className="rounded-2xl border border-teal-200 bg-teal-50 p-8 text-center">
         <span className="text-4xl">✅</span>
         <h3 className="mt-4 text-xl font-bold text-teal-900">
-          Talebiniz alındı!
+          Başvurunuz alındı!
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-teal-800">
-          Ücretsiz dijital teşhis talebiniz elimize ulaştı. Ekibimiz en kısa
-          sürede (genellikle 1 iş günü içinde) sizinle iletişime geçecek.
+          Dijital Check-Up başvurunuz elimize ulaştı. Ekibimiz en kısa
+          sürede sizinle iletişime geçecek.
         </p>
       </div>
     );
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-4 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm"
-    >
-      <div className="grid gap-4 sm:grid-cols-2">
+    <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label
             htmlFor="adSoyad"
@@ -82,103 +86,100 @@ export default function SignupForm() {
             placeholder="Adınız Soyadınız"
           />
         </div>
+
         <div>
           <label
-            htmlFor="isletme"
+            htmlFor="isletmeAdi"
             className="mb-1 block text-sm font-medium text-slate-700"
           >
             İşletme Adı
           </label>
           <input
-            id="isletme"
-            name="isletme"
+            id="isletmeAdi"
+            name="isletmeAdi"
             type="text"
             className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
             placeholder="İşletmenizin adı"
           />
         </div>
-      </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label
-            htmlFor="iletisim"
+            htmlFor="sektor"
             className="mb-1 block text-sm font-medium text-slate-700"
           >
-            Telefon veya E-posta *
+            Sektör
           </label>
           <input
-            id="iletisim"
-            name="iletisim"
+            id="sektor"
+            name="sektor"
             type="text"
+            className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
+            placeholder="Örn: perakende, hizmet, üretim..."
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="telefon"
+            className="mb-1 block text-sm font-medium text-slate-700"
+          >
+            Telefon *
+          </label>
+          <input
+            id="telefon"
+            name="telefon"
+            type="tel"
             required
             className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
-            placeholder="05xx xxx xx xx / e-posta"
+            placeholder="05xx xxx xx xx"
           />
         </div>
-        <div>
-          <label
-            htmlFor="site"
-            className="mb-1 block text-sm font-medium text-slate-700"
-          >
-            Web Siteniz (varsa)
-          </label>
+
+        <label className="flex items-start gap-2 text-xs text-slate-500">
           <input
-            id="site"
-            name="site"
-            type="text"
-            className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
-            placeholder="www.ornek.com.tr"
+            type="checkbox"
+            required
+            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500"
           />
-        </div>
-      </div>
-
-      <div>
-        <label
-          htmlFor="mesaj"
-          className="mb-1 block text-sm font-medium text-slate-700"
-        >
-          Belirtileriniz / Notunuz
+          <span>
+            {/* NOT: Aşağıdaki bağlantıyı gerçek KVKK Aydınlatma Metni sayfanızla değiştirin. */}
+            <a href="#" className="underline hover:text-teal-700">
+              KVKK Aydınlatma Metni
+            </a>
+            &apos;ni okudum, bilgilerimin işlenmesini kabul ediyorum.
+          </span>
         </label>
-        <textarea
-          id="mesaj"
-          name="mesaj"
-          rows={3}
-          className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100"
-          placeholder="Örn: Google'da bulunmuyoruz, sitemiz mobilde bozuk görünüyor..."
-        />
+
+        {durum === "hata" && (
+          <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+            {hataMesaji}
+          </p>
+        )}
+
+        <button
+          type="submit"
+          disabled={durum === "gonderiliyor"}
+          className="w-full rounded-full bg-teal-600 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {durum === "gonderiliyor" ? "Gönderiliyor..." : "Başvuruyu Gönder"}
+        </button>
+      </form>
+
+      <div className="mt-4 flex items-center gap-3 text-xs text-slate-400">
+        <span className="h-px flex-1 bg-slate-200" />
+        veya
+        <span className="h-px flex-1 bg-slate-200" />
       </div>
 
-      <label className="flex items-start gap-2 text-xs text-slate-500">
-        <input
-          type="checkbox"
-          required
-          className="mt-0.5 h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500"
-        />
-        <span>
-          {/* NOT: Aşağıdaki bağlantıyı gerçek KVKK Aydınlatma Metni sayfanızla değiştirin. */}
-          <a href="#" className="underline hover:text-teal-700">
-            KVKK Aydınlatma Metni
-          </a>
-          &apos;ni okudum, bilgilerimin işlenmesini kabul ediyorum.
-        </span>
-      </label>
-
-      {durum === "hata" && (
-        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
-          {hataMesaji}
-        </p>
-      )}
-
-      <button
-        type="submit"
-        disabled={durum === "gonderiliyor"}
-        className="w-full rounded-full bg-teal-600 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700 disabled:cursor-not-allowed disabled:opacity-60"
+      <a
+        href={`https://wa.me/${WHATSAPP_NUMARASI}?text=${whatsappMesaji}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-4 flex items-center justify-center gap-2 rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-teal-600 hover:text-teal-700"
       >
-        {durum === "gonderiliyor"
-          ? "Gönderiliyor..."
-          : "Ücretsiz Teşhisimi İste"}
-      </button>
-    </form>
+        💬 Doğrudan WhatsApp&apos;tan Yazın
+      </a>
+    </div>
   );
 }
