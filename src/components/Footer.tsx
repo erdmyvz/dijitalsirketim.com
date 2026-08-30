@@ -51,15 +51,25 @@ export default function Footer() {
                     SSS
                   </a>
                 </li>
+                <li>
+                  <a href="#misyon" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
+                    Biz Kimiz
+                  </a>
+                </li>
               </ul>
             </div>
 
             <div>
               <p className="font-semibold text-white">İletişim</p>
               <ul className="mt-3 space-y-2">
-                {/* NOT: Aşağıdaki iletişim bilgilerini kendi bilgilerinizle değiştirin. */}
+                <li>Kurucu: Erdem Yavuz</li>
+                <li>
+                  <a href="tel:+905319956930" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
+                    +90 531 995 69 30
+                  </a>
+                </li>
+                {/* NOT: E-posta adresini kendi adresinizle teyit edin. */}
                 <li>info@dijitalsirketim.com.tr</li>
-                <li>+90 (5xx) xxx xx xx</li>
               </ul>
             </div>
 

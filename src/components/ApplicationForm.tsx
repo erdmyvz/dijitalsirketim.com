@@ -3,10 +3,9 @@
 import { useState, type FormEvent } from "react";
 import { IconCheck, IconMessageCircle } from "./icons";
 
-// NOT: Aşağıdaki WhatsApp numarasını kendi işletme numaranızla
-// değiştirin. Bu, form/CRM entegrasyonu tamamlanana kadar kullanılabilecek
-// geçici bir başvuru kanalıdır.
-const WHATSAPP_NUMARASI = "90XXXXXXXXXX";
+// Form/CRM entegrasyonu tamamlanana kadar WhatsApp geçici başvuru
+// kanalı olarak da sunuluyor.
+const WHATSAPP_NUMARASI = "905319956930";
 const whatsappMesaji = encodeURIComponent(
   "Merhaba, Dijital Check-Up başvurusu yapmak istiyorum.",
 );

@@ -48,13 +48,15 @@ export default function Offer() {
                 ))}
               </ul>
 
-              {/* NOT: Fiyat ve referans değer alanlarını gerçek fiyatlandırmanızla değiştirin. */}
+              {/* NOT: Üstü çizili referans değeri kendi belirlediğiniz
+                  rakamla değiştirin — brief'teki "değer istifleme" kurgusunun
+                  son parçası budur. */}
               <div className="mt-8 border-t border-dashed border-slate-300 pt-6">
                 <p className="text-sm text-slate-400 line-through decoration-slate-400">
                   Danışmanlık değeri: [REFERANS DEĞER]
                 </p>
                 <p className="mt-1 text-4xl font-semibold tracking-[-0.02em] text-slate-900">
-                  [FİYAT]
+                  20.000 TL
                 </p>
                 <p className="mt-2 text-xs text-slate-500">
                   Bu, değer merdivenimizin ilk basamağıdır. Ödeme adımı bir
