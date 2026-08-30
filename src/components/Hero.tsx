@@ -1,9 +1,9 @@
-const belirtiler = [
-  "Web siteniz yok ya da yıllardır güncellenmedi",
-  "Google'da işletme adınızı arasanız bile bulunmuyorsunuz",
-  "Sosyal medya hesaplarınız aylardır sessiz",
-  "Gelen mesaj ve aramalarda geri dönüş yavaş, düzensiz",
-  "Rakipleriniz sizden daha az emekle daha çok müşteri kapıyor",
+const semptomlar = [
+  "Her ay ciroya sıfırdan başlıyorsunuz",
+  "Siz olmadan iş duruyor",
+  "Reklam veriyorsunuz ama dönüşüm yok",
+  "Tek müşteri kaynağınız tavsiye",
+  "Sosyal medyada görünmüyorsunuz",
 ];
 
 export default function Hero() {
@@ -12,47 +12,43 @@ export default function Hero() {
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 md:grid-cols-2 md:items-center md:py-28">
         <div>
           <span className="inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-700 ring-1 ring-red-200">
-            ÖN TEŞHİS
+            TÜRKİYE&apos;NİN ŞİRKET DOKTORU
           </span>
           <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-5xl">
-            İşletmenizin dijital tarafında bir{" "}
-            <span className="text-teal-600">rahatsızlık</span> mı var?
+            Ürününüz iyi, emeğiniz büyük. Peki{" "}
+            <span className="text-teal-600">müşteri neden gelmiyor?</span>
           </h1>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate-600">
-            Tıpkı sağlığımızdaki belirtiler gibi, işletmenizin dijital
-            varlığında da göz ardı edilen belirtiler vardır. Erken teşhis
-            edilmezse küçük bir aksaklık, ciddi bir müşteri ve gelir kaybına
-            dönüşür.
+            Türkiye&apos;de 2,8 milyon işletmenin ortak hastalığı aynı: gelir
+            sistemi yok, müşteri akışı yok, ölçeklenme yok. Dijital Şirketim
+            bu hastalığı teşhis eder ve tedavi eder.
           </p>
 
           <ul className="mt-8 space-y-3">
-            {belirtiler.map((b) => (
-              <li key={b} className="flex items-start gap-3 text-slate-700">
+            {semptomlar.map((s) => (
+              <li key={s} className="flex items-start gap-3 text-slate-700">
                 <span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-red-100 text-xs text-red-600">
                   ✕
                 </span>
-                <span>{b}</span>
+                <span>{s}</span>
               </li>
             ))}
           </ul>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <a
-              href="#kayit"
+              href="#teklif"
               className="inline-flex items-center justify-center rounded-full bg-teal-600 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-teal-600/25 transition hover:bg-teal-700"
             >
-              Ücretsiz Dijital Teşhisimi İste
+              Dijital Check-Up Başvurusu
             </a>
             <a
               href="#cozum"
               className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3.5 text-base font-semibold text-slate-700 transition hover:border-teal-600 hover:text-teal-700"
             >
-              Tedavi Yöntemini Gör
+              Tedavi Modelini Gör
             </a>
           </div>
-          <p className="mt-3 text-sm text-slate-400">
-            Muayene ücretsiz — kredi kartı gerekmez.
-          </p>
         </div>
 
         {/* "Reçete kağıdı" görsel bloğu */}
@@ -73,14 +69,14 @@ export default function Hero() {
 
           <dl className="mt-4 space-y-3 text-sm">
             {[
-              ["Web Sitesi Performansı", "Riskli", "bg-red-100 text-red-700"],
-              ["Google Görünürlüğü", "Zayıf", "bg-amber-100 text-amber-700"],
+              ["Gelir Sistemi", "Riskli", "bg-red-100 text-red-700"],
+              ["Müşteri Akışı", "Zayıf", "bg-amber-100 text-amber-700"],
               [
-                "Sosyal Medya Nabzı",
+                "Ölçeklenme Kapasitesi",
                 "Düzensiz",
                 "bg-amber-100 text-amber-700",
               ],
-              ["Müşteri Geri Dönüşü", "Riskli", "bg-red-100 text-red-700"],
+              ["Dijital Görünürlük", "Riskli", "bg-red-100 text-red-700"],
             ].map(([label, value, cls]) => (
               <div key={label} className="flex items-center justify-between">
                 <dt className="text-slate-500">{label}</dt>
@@ -94,8 +90,8 @@ export default function Hero() {
           </dl>
 
           <p className="mt-5 rounded-lg bg-teal-50 p-3 text-xs leading-relaxed text-teal-800">
-            Sonuç: Erken müdahale ile tamamen tedavi edilebilir. Reçetenizi
-            görmek için ücretsiz teşhis talep edin.
+            Sonuç: Erken müdahale ile tamamen tedavi edilebilir. Kök problemi
+            görmek için Dijital Check-Up başvurusu yapın.
           </p>
         </div>
       </div>

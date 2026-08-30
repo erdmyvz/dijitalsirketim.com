@@ -1,8 +1,9 @@
 const links = [
   { href: "#sorun", label: "Belirtiler" },
-  { href: "#cozum", label: "Tedavi Yöntemimiz" },
-  { href: "#ispat", label: "Referanslar" },
-  { href: "#teklif", label: "Paketler" },
+  { href: "#cozum", label: "Tedavi Modeli" },
+  { href: "#ispat", label: "Neden Biz" },
+  { href: "#teklif", label: "Check-Up Teklifi" },
+  { href: "#sss", label: "SSS" },
 ];
 
 export default function Navbar() {
@@ -30,10 +31,10 @@ export default function Navbar() {
         </ul>
 
         <a
-          href="#kayit"
+          href="#teklif"
           className="rounded-full bg-teal-600 px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-teal-600/20 transition hover:bg-teal-700"
         >
-          Ücretsiz Teşhis Al
+          Check-Up Başvurusu
         </a>
       </nav>
     </header>
