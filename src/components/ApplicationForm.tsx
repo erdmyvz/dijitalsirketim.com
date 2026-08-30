@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { IconCheck, IconMessageCircle } from "./icons";
 
 // NOT: Aşağıdaki WhatsApp numarasını kendi işletme numaranızla
 // değiştirin. Bu, form/CRM entegrasyonu tamamlanana kadar kullanılabilecek
@@ -58,7 +59,9 @@ export default function ApplicationForm() {
   if (durum === "basarili") {
     return (
       <div className="animate-apple-in rounded-[28px] border border-teal-200 bg-teal-50 p-8 text-center">
-        <span className="text-4xl">✅</span>
+        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-teal-600 text-white">
+          <IconCheck className="h-7 w-7" strokeWidth={2.25} />
+        </span>
         <h3 className="mt-4 text-xl font-semibold text-teal-900">
           Başvurunuz alındı!
         </h3>
@@ -181,7 +184,8 @@ export default function ApplicationForm() {
         rel="noopener noreferrer"
         className="mt-4 flex items-center justify-center gap-2 rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition-all duration-300 ease-[var(--ease-apple)] hover:scale-[1.01] hover:border-teal-600 hover:text-teal-700 active:scale-[0.99] motion-reduce:transition-none motion-reduce:hover:scale-100"
       >
-        💬 Doğrudan WhatsApp&apos;tan Yazın
+        <IconMessageCircle className="h-4 w-4" strokeWidth={2} />
+        Doğrudan WhatsApp&apos;tan Yazın
       </a>
     </div>
   );
