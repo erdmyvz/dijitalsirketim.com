@@ -13,13 +13,16 @@ export default function Footer() {
                 <span className="text-slate-500">.com.tr</span>
               </span>
             </div>
-            <p className="mt-3 max-w-sm text-sm leading-relaxed">
-              İşletmenizin dijital sağlığını teşhis eden, reçete yazan ve
-              tedavi eden dijital pazarlama kliniği.
+            <p className="mt-3 text-sm font-medium text-slate-300">
+              Türkiye&apos;nin Şirket Doktoru
+            </p>
+            <p className="mt-1 max-w-sm text-sm leading-relaxed">
+              İşletmenizin dijital sağlığını teşhis eder, reçete yazar,
+              tedavi eder ve sonucu takip ederiz.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-8 text-sm sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-8 text-sm sm:grid-cols-4">
             <div>
               <p className="font-semibold text-white">Sayfa</p>
               <ul className="mt-3 space-y-2">
@@ -30,17 +33,22 @@ export default function Footer() {
                 </li>
                 <li>
                   <a href="#cozum" className="hover:text-white">
-                    Tedavi Yöntemimiz
+                    Tedavi Modeli
                   </a>
                 </li>
                 <li>
                   <a href="#ispat" className="hover:text-white">
-                    Referanslar
+                    Neden Biz
                   </a>
                 </li>
                 <li>
                   <a href="#teklif" className="hover:text-white">
-                    Paketler
+                    Check-Up Teklifi
+                  </a>
+                </li>
+                <li>
+                  <a href="#sss" className="hover:text-white">
+                    SSS
                   </a>
                 </li>
               </ul>
@@ -58,6 +66,7 @@ export default function Footer() {
             <div>
               <p className="font-semibold text-white">Yasal</p>
               <ul className="mt-3 space-y-2">
+                {/* NOT: Aşağıdaki bağlantıları gerçek KVKK/Gizlilik sayfalarınızla değiştirin. */}
                 <li>
                   <a href="#" className="hover:text-white">
                     KVKK Aydınlatma Metni
