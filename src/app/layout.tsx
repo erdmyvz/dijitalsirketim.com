@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import DraftVersionBanner from "@/components/DraftVersionBanner";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -25,6 +26,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="tr" className="h-full antialiased scroll-smooth">
       <body className="min-h-full flex flex-col bg-white text-slate-900 font-sans">
+        {/* GEÇİCİ: site yayına hazır olduğunda bu satırı kaldırın. */}
+        <DraftVersionBanner />
         {children}
       </body>
     </html>
