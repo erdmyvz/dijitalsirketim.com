@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# yerel makineye özel önizleme betiği (nvm yolu sabit kodlanmış)
+.claude/dev.sh
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
