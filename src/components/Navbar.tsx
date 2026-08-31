@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const links = [
   { href: "#sorun", label: "Belirtiler" },
   { href: "#cozum", label: "Tedavi Modeli" },
@@ -33,13 +35,13 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <a
-          href="#teklif"
+        <Link
+          href="/check-up"
           className="flex-none whitespace-nowrap rounded-full bg-teal-600 px-3.5 py-2 text-[13px] font-semibold text-white shadow-sm shadow-teal-600/20 transition-transform duration-300 ease-[var(--ease-apple)] hover:scale-[1.03] active:scale-[0.97] motion-reduce:transition-none motion-reduce:hover:scale-100 sm:px-4 sm:text-sm"
         >
-          <span className="sm:hidden">Başvuru</span>
-          <span className="hidden sm:inline">Check-Up Başvurusu</span>
-        </a>
+          <span className="sm:hidden">Check-Up</span>
+          <span className="hidden sm:inline">Ücretsiz Check-Up&apos;a Başla</span>
+        </Link>
       </nav>
     </header>
   );

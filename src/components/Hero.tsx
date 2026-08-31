@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Reveal from "./Reveal";
 import { IconStethoscope, IconX } from "./icons";
 
@@ -59,12 +60,12 @@ export default function Hero() {
 
           <Reveal delayMs={300}>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a
-                href="#teklif"
+              <Link
+                href="/check-up"
                 className="inline-flex items-center justify-center rounded-full bg-teal-600 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-teal-600/25 transition-transform duration-300 ease-[var(--ease-apple)] hover:scale-[1.02] active:scale-[0.98] motion-reduce:transition-none motion-reduce:hover:scale-100"
               >
-                Dijital Check-Up Başvurusu
-              </a>
+                Ücretsiz Dijital Check-Up&apos;a Başla
+              </Link>
               <a
                 href="#cozum"
                 className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3.5 text-base font-semibold text-slate-700 transition-all duration-300 ease-[var(--ease-apple)] hover:scale-[1.02] hover:border-teal-600 hover:text-teal-700 active:scale-[0.98] motion-reduce:transition-none motion-reduce:hover:scale-100"
