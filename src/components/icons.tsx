@@ -144,3 +144,21 @@ export function IconPlus(props: IconProps) {
     </svg>
   );
 }
+
+export function IconHeartPulse(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M3 12h3l2-5 3 10 2-7 1.5 2H21" />
+      <path d="M19.5 13.5c1-1 1.5-2 1.5-3.2A3.3 3.3 0 0 0 17.5 7c-1 0-1.9.4-2.5 1.2A3.3 3.3 0 0 0 12.5 7 3.3 3.3 0 0 0 9.2 10.3c0 3.5 5.3 7 5.3 7s.9-.6 2-1.6" />
+    </svg>
+  );
+}
+
+export function IconAlertTriangle(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 4 3 20h18L12 4Z" />
+      <path d="M12 10.5v4.25M12 17.5h.01" />
+    </svg>
+  );
+}
