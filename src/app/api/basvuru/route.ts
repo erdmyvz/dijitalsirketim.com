@@ -1,14 +1,11 @@
 import { NextResponse } from "next/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
-// Bu API route'u şu anda gelen başvuruyu sadece doğrulayıp başarı
-// döndürüyor. Bu, "TEKNİK" başlığında belirtilen geçici çözümlerden
-// biridir. Gerçek bir yayında burada şunlardan birini yapmalısınız:
-//  - E-posta gönderimi (ör. Resend, Nodemailer + SMTP)
-//  - Bir CRM / Google Sheets / Airtable'a kayıt
-//  - Bir form servisine (Formspree, Web3Forms) yönlendirme
-// Ödeme entegrasyonu (checkout, ön ödeme vb.) kasıtlı olarak sonraki
-// faza bırakılmıştır — bu route sadece başvuru/lead topluyor.
-// Aşağıdaki TODO satırına kendi entegrasyonunuzu ekleyin.
+// Check-Up başvurularını doğrulayıp Supabase'deki "basvurular"
+// tablosuna kaydeder. Supabase ortam değişkenleri henüz tanımlı
+// değilse (yerel geliştirme / ilk kurulum) başvuruyu sunucu
+// günlüğüne yazar ve yine başarı döndürür — form ziyaretçi için
+// hiçbir zaman kırılmaz.
 export async function POST(request: Request) {
   const data = await request.json().catch(() => null);
 
@@ -25,13 +22,32 @@ export async function POST(request: Request) {
     );
   }
 
-  // TODO: Gerçek e-posta / CRM entegrasyonunu buraya ekleyin.
-  console.log("Yeni Dijital Check-Up başvurusu:", {
-    adSoyad: data.adSoyad,
-    isletmeAdi: data.isletmeAdi ?? "",
-    sektor: data.sektor ?? "",
-    telefon: data.telefon,
-  });
+  const kayit = {
+    ad_soyad: String(data.adSoyad).trim().slice(0, 200),
+    isletme_adi: String(data.isletmeAdi ?? "").trim().slice(0, 200),
+    sektor: String(data.sektor ?? "").trim().slice(0, 200),
+    telefon: String(data.telefon).trim().slice(0, 50),
+  };
+
+  const supabase = createAdminClient();
+
+  if (!supabase) {
+    console.warn(
+      "Supabase yapılandırılmamış (.env.local eksik) — başvuru yalnızca günlüğe yazıldı:",
+      kayit,
+    );
+    return NextResponse.json({ ok: true });
+  }
+
+  const { error } = await supabase.from("basvurular").insert(kayit);
+
+  if (error) {
+    console.error("Başvuru Supabase'e kaydedilemedi:", error.message);
+    return NextResponse.json(
+      { ok: false, error: "Başvuru kaydedilemedi, lütfen tekrar deneyin." },
+      { status: 500 },
+    );
+  }
 
   return NextResponse.json({ ok: true });
 }

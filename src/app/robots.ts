@@ -6,8 +6,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      // Başvuru API'sinin arama sonuçlarında işi yok.
-      disallow: "/api/",
+      // Başvuru API'si ve yönetim panelinin arama sonuçlarında işi yok.
+      disallow: ["/api/", "/admin"],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };

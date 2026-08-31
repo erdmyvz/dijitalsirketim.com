@@ -48,12 +48,9 @@ export default function Offer() {
                 ))}
               </ul>
 
-              {/* NOT: Üstü çizili referans değeri kendi belirlediğiniz
-                  rakamla değiştirin — brief'teki "değer istifleme" kurgusunun
-                  son parçası budur. */}
               <div className="mt-8 border-t border-dashed border-slate-300 pt-6">
                 <p className="text-sm text-slate-400 line-through decoration-slate-400">
-                  Danışmanlık değeri: [REFERANS DEĞER]
+                  Kurumsal danışmanlık değeri: 100.000 $
                 </p>
                 <p className="mt-1 text-4xl font-semibold tracking-[-0.02em] text-slate-900">
                   20.000 TL

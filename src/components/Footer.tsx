@@ -68,8 +68,11 @@ export default function Footer() {
                     +90 531 995 69 30
                   </a>
                 </li>
-                {/* NOT: E-posta adresini kendi adresinizle teyit edin. */}
-                <li>info@dijitalsirketim.com.tr</li>
+                <li>
+                  <a href="mailto:erdem.yvz@hotmail.com" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
+                    erdem.yvz@hotmail.com
+                  </a>
+                </li>
               </ul>
             </div>
 
