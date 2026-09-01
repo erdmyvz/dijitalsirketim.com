@@ -10,6 +10,18 @@ import { SITE_URL } from "./src/lib/site";
 // sessizce "dev" değerine düşer.
 function getBuildVersion(): string {
   try {
+    // Vercel'in bazı build/redeploy senaryolarında git deposunu sığ
+    // (shallow) klonlaması, "git rev-list --count HEAD"in tüm geçmiş
+    // yerine yalnızca çekilen kısmı saymasına — dolayısıyla rozette
+    // yanlış/eksik bir versiyon numarası görünmesine yol açabiliyor.
+    // Önce depoyu tama tamamlamayı deniyoruz; zaten tamsa veya ağ
+    // erişimi yoksa sessizce yok sayılır, aşağıdaki sayım yine çalışır.
+    try {
+      execSync("git fetch --unshallow", { stdio: "ignore" });
+    } catch {
+      // zaten tam klon ya da unshallow mümkün değil — sorun değil
+    }
+
     const commitCount = execSync("git rev-list --count HEAD", {
       encoding: "utf-8",
       stdio: ["ignore", "pipe", "ignore"],
