@@ -7,14 +7,12 @@
 
 ## Sıradaki Görev
 
-### 1. Ana sayfadan fiyatın kaldırılması
+### 1. Ödeme entegrasyonu (iyzico / PayTR)
 
-Teklif bölümündeki rakam (20.000 TL) ve üstü çizili referans değer (100.000 $)
-kaldırılacak; yerine paket içeriği değer istifi olarak listelenecek ve
-"önce teşhis, sonra fiyat" çerçeve metni konacak. SSS'ye "Neden fiyat sitede
-yazmıyor?" sorusu eklenecek, artık tutarsız kalan "Bu fiyata nasıl mümkün?"
-sorusu kaldırılacak. JSON-LD'deki `price` alanı da temizlenecek — aksi halde
-Google, sayfada yazmasa bile fiyatı arama sonuçlarında gösterir.
+Önce karşılaştırmalı araştırma (komisyon oranları, Türkiye'de tüzel kişilik
+gereksinimleri, entegrasyon zorluğu, test ortamı), sonra kurulum. Fiyat,
+ödeme ekranında ödemeden önce net ve açık gösterilecek — sitede fiyat
+göstermeme kararının karşılığı budur.
 
 ---
 
@@ -22,20 +20,15 @@ Google, sayfada yazmasa bile fiyatı arama sonuçlarında gösterir.
 
 Öncelik sırasına dizilidir. Üstteki biter, "Sıradaki Görev"e taşınır.
 
-### 2. Ödeme entegrasyonu (iyzico / PayTR)
-Önce karşılaştırmalı araştırma (komisyon oranları, Türkiye'de tüzel kişilik
-gereksinimleri, entegrasyon zorluğu, test ortamı), sonra kurulum. Fiyat,
-ödeme ekranında ödemeden önce net ve açık gösterilecek.
-
-### 3. Üyelik ve müşteri paneli
+### 2. Üyelik ve müşteri paneli
 Check-up sonuçlarının kaydedilmesi, kullanıcının geçmiş karnelerini görmesi,
 tedavi sürecinin takibi. Supabase Auth üzerine kurulacak.
 
-### 4. KVKK / gizlilik metni ve çerez bildirimi
+### 3. KVKK / gizlilik metni ve çerez bildirimi
 Şu an footer'daki ve form altındaki yasal bağlantılar boş (`#`). Gerçek
 metinler hazırlanıp sayfa olarak eklenecek, çerez bildirimi kurulacak.
 
-### 5. SEO, performans ve mobil son cila
+### 4. SEO, performans ve mobil son cila
 Core Web Vitals ölçümü, görsel optimizasyonu, Search Console doğrulaması,
 mobilde son gözden geçirme.
 
@@ -61,6 +54,13 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 ---
 
 ## Tamamlananlar
+
+### 2026-09-03 — Ana sayfadan fiyat kaldırıldı
+"20.000 TL" ve üstü çizili "100.000 $" kaldırıldı; yerine değer istifi ve
+"önce teşhis, sonra fiyat" çerçeve metni kondu. SSS'ye "Neden fiyat sitede
+yazmıyor?" eklendi, "Bu fiyata nasıl mümkün?" kaldırıldı. JSON-LD'deki
+`price` alanı da temizlendi (Google sayfada görünmeyen fiyatı da gösterir).
+CTA: "Dijital Check-Up Başvurusu".
 
 ### 2026-09-03 — Proje yönetim yapısı
 TASKS.md, KARARLAR.md oluşturuldu; CLAUDE.md'ye çalışma protokolü eklendi.

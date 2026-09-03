@@ -167,7 +167,9 @@ export default function ApplicationForm() {
           disabled={durum === "gonderiliyor"}
           className="w-full rounded-full bg-teal-600 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-teal-600/25 transition-all duration-300 ease-[var(--ease-apple)] hover:scale-[1.01] hover:bg-teal-700 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100 motion-reduce:transition-none motion-reduce:hover:scale-100"
         >
-          {durum === "gonderiliyor" ? "Gönderiliyor..." : "Başvuruyu Gönder"}
+          {durum === "gonderiliyor"
+            ? "Gönderiliyor..."
+            : "Dijital Check-Up Başvurusu"}
         </button>
       </form>
 

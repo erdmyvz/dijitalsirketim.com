@@ -4,10 +4,10 @@ import { IconCheck } from "./icons";
 
 const degerIstifi = [
   "21 kontrol noktası analizi",
-  "Yapay zekâ destekli 5 Neden görüşmesi",
-  "Kök problem raporu",
+  "Yapay zekâ destekli kök problem analizi",
+  "Dijital Sağlık Karnesi",
   "Kişiselleştirilmiş tedavi reçetesi",
-  "30 dakikalık sonuç görüşmesi",
+  "Sonuç görüşmesi",
 ];
 
 export default function Offer() {
@@ -48,16 +48,16 @@ export default function Offer() {
                 ))}
               </ul>
 
+              {/* Fiyat bilinçli olarak burada gösterilmez — bkz. KARARLAR.md
+                  (2026-09-03). Teşhis konmadan tedavi fiyatı verilmez. */}
               <div className="mt-8 border-t border-dashed border-slate-300 pt-6">
-                <p className="text-sm text-slate-400 line-through decoration-slate-400">
-                  Kurumsal danışmanlık değeri: 100.000 $
+                <p className="text-base font-medium leading-relaxed text-slate-800">
+                  Hiçbir doktor tedavi fiyatını muayeneden önce söylemez.
                 </p>
-                <p className="mt-1 text-4xl font-semibold tracking-[-0.02em] text-slate-900">
-                  20.000 TL
-                </p>
-                <p className="mt-2 text-xs text-slate-500">
-                  Bu, değer merdivenimizin ilk basamağıdır. Ödeme adımı bir
-                  sonraki fazda eklenecektir.
+                <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  Önce teşhis: işletmenizin hangi fonksiyonu tıkalı, kök
+                  problem nerede. Check-up ücreti ve tedavi planı, başvuru
+                  adımında net olarak paylaşılır. Sürpriz maliyet yoktur.
                 </p>
               </div>
             </div>

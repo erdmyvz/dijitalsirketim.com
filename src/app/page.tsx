@@ -28,9 +28,10 @@ const organizationJsonLd = {
     "@type": "Offer",
     name: "Dijital Check-Up",
     description:
-      "21 kontrol noktası analizi, yapay zekâ destekli 5 Neden görüşmesi, kök problem raporu, kişiselleştirilmiş tedavi reçetesi ve 30 dakikalık sonuç görüşmesi.",
-    price: "20000",
-    priceCurrency: "TRY",
+      "21 kontrol noktası analizi, yapay zekâ destekli kök problem analizi, Dijital Sağlık Karnesi, kişiselleştirilmiş tedavi reçetesi ve sonuç görüşmesi.",
+    // Fiyat bilinçli olarak yazılmıyor — bkz. KARARLAR.md (2026-09-03).
+    // Buraya price yazılırsa Google, sayfada görünmese bile fiyatı arama
+    // sonuçlarında gösterir.
   },
 };
 
@@ -64,10 +65,10 @@ const faqJsonLd = {
     },
     {
       "@type": "Question",
-      name: "Bu fiyata nasıl mümkün?",
+      name: "Neden fiyat sitede yazmıyor?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Bu, değer merdivenimizin ilk basamağıdır.",
+        text: "Çünkü işletmenizi henüz görmedik. Bir doktorun muayene etmeden tedavi fiyatı söylemesi ne kadar doğruysa, biz de hangi fonksiyonun tıkalı olduğunu bilmeden fiyat vermeyi doğru bulmuyoruz. Başvuru adımında check-up ücreti ve varsa tedavi planının maliyeti size net olarak, ödeme öncesinde yazılı şekilde iletilir. Sürpriz maliyet yoktur.",
       },
     },
   ],

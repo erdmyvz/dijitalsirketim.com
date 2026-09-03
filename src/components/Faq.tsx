@@ -20,8 +20,9 @@ const sorular = [
     cevap: "Check-up 48 saat içinde raporlanır.",
   },
   {
-    soru: "Bu fiyata nasıl mümkün?",
-    cevap: "Bu, değer merdivenimizin ilk basamağıdır.",
+    soru: "Neden fiyat sitede yazmıyor?",
+    cevap:
+      "Çünkü işletmenizi henüz görmedik. Bir doktorun muayene etmeden tedavi fiyatı söylemesi ne kadar doğruysa, biz de hangi fonksiyonun tıkalı olduğunu bilmeden fiyat vermeyi doğru bulmuyoruz. Başvuru adımında check-up ücreti ve varsa tedavi planının maliyeti size net olarak, ödeme öncesinde yazılı şekilde iletilir. Sürpriz maliyet yoktur.",
   },
 ];
 
