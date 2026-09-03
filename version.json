@@ -1,4 +1,4 @@
 {
-  "version": 25,
+  "version": 26,
   "not": "Taslak sürüm rozetinde gösterilen yayın numarası. Her commit'te bir artırılır. Site yayına çıkıp DraftVersionBanner kaldırıldığında bu dosya da silinebilir."
 }

@@ -1,10 +1,49 @@
 @AGENTS.md
 
+# Çalışma Protokolü
+
+**Bu bölüm her şeyden önce gelir.**
+
+## Oturum akışı
+
+1. **Oturum başında** [TASKS.md](TASKS.md)'yi oku, "Sıradaki Görev"i al.
+2. **İşe başlamadan önce** 3-5 maddelik bir plan sun ve **onay bekle.**
+   Onay gelmeden kod yazma.
+3. **İş bitince** şu sırayla:
+   - [TASKS.md](TASKS.md)'yi güncelle: biten görevi tarihi ve kısa notuyla
+     "Tamamlananlar"a taşı, bekleyenlerin en üstekini "Sıradaki Görev"e al.
+   - Yeni bir karar alındıysa [KARARLAR.md](KARARLAR.md)'ye bir satır ekle.
+   - [version.json](version.json)'daki `version` değerini bir artır.
+   - commit + push.
+   - Erdem'e **2 cümlelik** özet ver, ardından
+     *"sıradaki görev şu, başlayayım mı?"* diye sor.
+
+## Değişmez kurallar
+
+- **API anahtarları asla repoya girmez.** Yalnızca `.env.local` (gitignore'da)
+  ve Vercel ortam değişkenleri. Anahtar sohbete girdiyse Erdem'e yenilemesini
+  hatırlat.
+- **Uydurma müşteri yorumu, sahte referans veya doğrulanmamış istatistik
+  yazılmaz.** Gerçek veri yoksa metodoloji ve şeffaflık üzerinden anlatılır.
+- **Her değişiklik mobilde de kontrol edilir.** Mobil öncelikli düşün.
+- **Türkçe karakterler bozulmaz** (ı, ş, ğ, ü, ö, ç, İ).
+- Her iş sonunda `npm run lint` ve `npm run build` temiz geçmeli.
+
+## Ton ve marka dili
+
+Şirket doktorluğu metaforu; güven veren, net, **abartısız**. Doktor dili
+dozunda kullanılır — her cümleye sıkıştırılmaz. Vaat şişirilmez, kesin
+sonuç garantisi verilmez.
+
+---
+
 # Proje Yol Haritası — dijitalşirketim.com.tr
 
 Türkiye'nin Şirket Doktoru konsepti üzerine kurulu, doktor metaforlu bir
 dijital pazarlama danışmanlığı sitesi. Next.js 16 (App Router) +
 TypeScript + Tailwind CSS v4, Vercel'de yayında.
+
+Güncel görev listesi: [TASKS.md](TASKS.md) · Verilmiş kararlar: [KARARLAR.md](KARARLAR.md)
 
 ## Sayfa haritası
 
