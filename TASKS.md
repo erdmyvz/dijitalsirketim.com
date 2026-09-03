@@ -7,12 +7,11 @@
 
 ## Sıradaki Görev
 
-### 1. Ödeme entegrasyonu (iyzico / PayTR)
+### 1. Üyelik ve müşteri paneli
 
-Önce karşılaştırmalı araştırma (komisyon oranları, Türkiye'de tüzel kişilik
-gereksinimleri, entegrasyon zorluğu, test ortamı), sonra kurulum. Fiyat,
-ödeme ekranında ödemeden önce net ve açık gösterilecek — sitede fiyat
-göstermeme kararının karşılığı budur.
+Check-up sonuçlarının kaydedilmesi, kullanıcının geçmiş karnelerini görmesi,
+tedavi sürecinin takibi. Supabase Auth üzerine kurulacak — Supabase projesi
+kurulduktan sonra başlanabilir.
 
 ---
 
@@ -20,17 +19,18 @@ göstermeme kararının karşılığı budur.
 
 Öncelik sırasına dizilidir. Üstteki biter, "Sıradaki Görev"e taşınır.
 
-### 2. Üyelik ve müşteri paneli
-Check-up sonuçlarının kaydedilmesi, kullanıcının geçmiş karnelerini görmesi,
-tedavi sürecinin takibi. Supabase Auth üzerine kurulacak.
-
-### 3. KVKK / gizlilik metni ve çerez bildirimi
+### 2. KVKK / gizlilik metni ve çerez bildirimi
 Şu an footer'daki ve form altındaki yasal bağlantılar boş (`#`). Gerçek
 metinler hazırlanıp sayfa olarak eklenecek, çerez bildirimi kurulacak.
 
-### 4. SEO, performans ve mobil son cila
+### 3. SEO, performans ve mobil son cila
 Core Web Vitals ölçümü, görsel optimizasyonu, Search Console doğrulaması,
 mobilde son gözden geçirme.
+
+### 4. Sanal POS entegrasyonu (iyzico / PayTR)
+Şirket kurulduktan sonra. Komisyon oranları, entegrasyon zorluğu ve test
+ortamı karşılaştırılıp seçim yapılacak. Fiyat, ödeme ekranında ödemeden
+önce net gösterilecek.
 
 ---
 
@@ -38,6 +38,9 @@ mobilde son gözden geçirme.
 
 Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 
+- [ ] **Ödeme bilgileri** — `src/data/odeme.ts` içindeki ücret, IBAN ve
+      hesap sahibi adı doldurulmalı. Doldurulana kadar başvuru sonrası ekran
+      IBAN göstermeyip WhatsApp'a yönlendiriyor.
 - [ ] **Anthropic kredisi** — anahtar geçerli ve kurulu, ama hesapta bakiye
       yok. Yüklenene kadar `/check-up` AI kartı WhatsApp yedeğine düşüyor.
       (console.anthropic.com → Plans & Billing)
@@ -54,6 +57,14 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 ---
 
 ## Tamamlananlar
+
+### 2026-09-03 — Ödeme akışı (manuel havale/EFT)
+Her başvuruya sunucuda `DS-XXXX` referans kodu üretiliyor; başvuru sonrası
+ekran tutar/IBAN/alıcı ve bu kodu gösteriyor, WhatsApp dekont butonuna kod
+otomatik geçiyor. Ödeme bilgileri girilene kadar IBAN gösterilmiyor (yanlış
+hesaba ödeme riskine karşı). Ücret/IBAN/hesap sahibi tek dosyada:
+`src/data/odeme.ts`. Admin paneline ve veritabanı şemasına referans kodu
+kolonu eklendi.
 
 ### 2026-09-03 — Ana sayfadan fiyat kaldırıldı
 "20.000 TL" ve üstü çizili "100.000 $" kaldırıldı; yerine değer istifi ve

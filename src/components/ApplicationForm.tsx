@@ -2,6 +2,12 @@
 
 import { useState, type FormEvent } from "react";
 import { IconCheck, IconMessageCircle } from "./icons";
+import {
+  CHECKUP_UCRETI,
+  HESAP_SAHIBI,
+  IBAN,
+  odemeBilgileriHazirMi,
+} from "@/data/odeme";
 
 // Form/CRM entegrasyonu tamamlanana kadar WhatsApp geçici başvuru
 // kanalı olarak da sunuluyor.
@@ -18,6 +24,7 @@ type Durum = "hazir" | "gonderiliyor" | "basarili" | "hata";
 export default function ApplicationForm() {
   const [durum, setDurum] = useState<Durum>("hazir");
   const [hataMesaji, setHataMesaji] = useState("");
+  const [referansKodu, setReferansKodu] = useState<string | null>(null);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -45,6 +52,9 @@ export default function ApplicationForm() {
         throw new Error(json.error || "Bir şeyler ters gitti.");
       }
 
+      setReferansKodu(
+        typeof json.referansKodu === "string" ? json.referansKodu : null,
+      );
       setDurum("basarili");
       form.reset();
     } catch (err) {
@@ -56,18 +66,93 @@ export default function ApplicationForm() {
   }
 
   if (durum === "basarili") {
+    const odemeHazir = odemeBilgileriHazirMi();
+    const dekontMesaji = encodeURIComponent(
+      referansKodu
+        ? `Merhaba, ${referansKodu} referans kodlu Dijital Check-Up başvurumun ödemesini yaptım. Dekontu gönderiyorum.`
+        : "Merhaba, Dijital Check-Up başvurumun ödemesi hakkında bilgi almak istiyorum.",
+    );
+
     return (
-      <div className="animate-apple-in rounded-[28px] border border-teal-200 bg-teal-50 p-8 text-center">
-        <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-teal-600 text-white">
-          <IconCheck className="h-7 w-7" strokeWidth={2.25} />
-        </span>
-        <h3 className="mt-4 text-xl font-semibold text-teal-900">
-          Başvurunuz alındı!
-        </h3>
-        <p className="mt-2 text-sm leading-relaxed text-teal-800">
-          Dijital Check-Up başvurunuz elimize ulaştı. Ekibimiz en kısa
-          sürede sizinle iletişime geçecek.
-        </p>
+      <div className="animate-apple-in rounded-[28px] border border-teal-200 bg-teal-50 p-8">
+        <div className="text-center">
+          <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-teal-600 text-white">
+            <IconCheck className="h-7 w-7" strokeWidth={2.25} />
+          </span>
+          <h3 className="mt-4 text-xl font-semibold text-teal-900">
+            Başvurunuz alındı
+          </h3>
+        </div>
+
+        {referansKodu && (
+          <div className="mt-5 rounded-2xl border border-teal-200 bg-white p-4 text-center">
+            <p className="text-xs font-medium uppercase tracking-widest text-slate-500">
+              Referans Kodunuz
+            </p>
+            <p className="mt-1 font-mono text-2xl font-semibold tracking-wider text-slate-900">
+              {referansKodu}
+            </p>
+          </div>
+        )}
+
+        {odemeHazir ? (
+          <div className="mt-5 space-y-4 text-sm leading-relaxed text-teal-900">
+            <p>
+              Check-Up&apos;ınızı başlatmak için aşağıdaki hesaba havale/EFT
+              yapmanız yeterli. <strong>Açıklama kısmına referans kodunuzu
+              yazmayı unutmayın</strong> — ödemenizi başvurunuzla bu kodla
+              eşleştiriyoruz.
+            </p>
+
+            <dl className="space-y-3 rounded-2xl border border-teal-200 bg-white p-4">
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-widest text-slate-500">
+                  Tutar
+                </dt>
+                <dd className="mt-0.5 text-lg font-semibold text-slate-900">
+                  {CHECKUP_UCRETI}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-widest text-slate-500">
+                  Alıcı
+                </dt>
+                <dd className="mt-0.5 font-medium text-slate-900">
+                  {HESAP_SAHIBI}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-widest text-slate-500">
+                  IBAN
+                </dt>
+                <dd className="mt-0.5 font-mono text-sm font-medium tracking-wide text-slate-900">
+                  {IBAN}
+                </dd>
+              </div>
+            </dl>
+
+            <p className="text-xs text-teal-800">
+              Ödemeniz onaylandıktan sonra Check-Up süreciniz başlar ve
+              sonuçlarınız 48 saat içinde raporlanır.
+            </p>
+          </div>
+        ) : (
+          <p className="mt-5 text-sm leading-relaxed text-teal-800">
+            Check-Up ücreti ve ödeme bilgileri en kısa sürede sizinle
+            paylaşılacak. Dilerseniz WhatsApp&apos;tan doğrudan da
+            yazabilirsiniz.
+          </p>
+        )}
+
+        <a
+          href={`https://wa.me/${WHATSAPP_NUMARASI}?text=${dekontMesaji}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-5 flex items-center justify-center gap-2 rounded-full bg-teal-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-600/25 transition-all duration-300 ease-[var(--ease-apple)] hover:scale-[1.01] hover:bg-teal-700 active:scale-[0.99] motion-reduce:transition-none motion-reduce:hover:scale-100"
+        >
+          <IconMessageCircle className="h-4 w-4" strokeWidth={2} />
+          {odemeHazir ? "Dekontu WhatsApp'tan Gönder" : "WhatsApp'tan Yazın"}
+        </a>
       </div>
     );
   }

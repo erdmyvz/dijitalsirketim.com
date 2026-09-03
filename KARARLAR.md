@@ -6,6 +6,18 @@
 
 ---
 
+**2026-09-03 — MVP'de ödeme manuel havale/EFT ile alınır.**
+Sanal POS (iyzico/PayTR) tüzel kişilik gerektiriyor, şirket henüz kurulmadı.
+Talep gelmeye başlayınca şirket kurulup sanal POS'a geçilecek. Her başvuruya
+`DS-XXXX` biçiminde bir referans kodu üretilir; müşteri havale açıklamasına
+bunu yazar, gelen ödeme başvuruyla bu kodla eşleştirilir.
+
+**2026-09-03 — Ödeme bilgileri girilene kadar ekranda IBAN gösterilmez.**
+Ücret/IBAN/hesap sahibi [src/data/odeme.ts](src/data/odeme.ts)'de tek yerde
+tutulur; üçü de dolu değilse başvuru sonrası ekran IBAN yerine "bilgiler
+paylaşılacak" deyip WhatsApp'a yönlendirir. Gerekçe: yer tutucu bir IBAN'ın
+canlıya sızması, müşterinin yanlış hesaba para göndermesi demek olurdu.
+
 **2026-09-03 — Ana sayfada fiyat gösterilmez.**
 Fiyat, başvuru adımında açıklanır. Gerekçe: doktor metaforu tutarlılığı —
 teşhis konmadan tedavi fiyatı verilmez. Ödeme ekranı geldiğinde fiyat,

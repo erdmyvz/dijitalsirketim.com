@@ -6,6 +6,20 @@ import { createAdminClient } from "@/lib/supabase/admin";
 // değilse (yerel geliştirme / ilk kurulum) başvuruyu sunucu
 // günlüğüne yazar ve yine başarı döndürür — form ziyaretçi için
 // hiçbir zaman kırılmaz.
+// Havale/EFT açıklamasına yazılacak referans kodu. Gelen ödemeyi
+// başvuruyla eşleştirmek için — bu yüzden kod sunucuda üretilip hem
+// veritabanına yazılıyor hem yanıtta dönüyor; ekranda gösterilen ile
+// kayıttaki kod her zaman aynı oluyor.
+// Alfabede 0/O, 1/I gibi karışabilecek karakterler yok.
+function referansKoduUret(): string {
+  const alfabe = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let kod = "";
+  for (let i = 0; i < 4; i++) {
+    kod += alfabe[Math.floor(Math.random() * alfabe.length)];
+  }
+  return `DS-${kod}`;
+}
+
 export async function POST(request: Request) {
   const data = await request.json().catch(() => null);
 
@@ -22,11 +36,14 @@ export async function POST(request: Request) {
     );
   }
 
+  const referansKodu = referansKoduUret();
+
   const kayit = {
     ad_soyad: String(data.adSoyad).trim().slice(0, 200),
     isletme_adi: String(data.isletmeAdi ?? "").trim().slice(0, 200),
     sektor: String(data.sektor ?? "").trim().slice(0, 200),
     telefon: String(data.telefon).trim().slice(0, 50),
+    referans_kodu: referansKodu,
   };
 
   const supabase = createAdminClient();
@@ -36,7 +53,7 @@ export async function POST(request: Request) {
       "Supabase yapılandırılmamış (.env.local eksik) — başvuru yalnızca günlüğe yazıldı:",
       kayit,
     );
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({ ok: true, referansKodu });
   }
 
   const { error } = await supabase.from("basvurular").insert(kayit);
@@ -49,5 +66,5 @@ export async function POST(request: Request) {
     );
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, referansKodu });
 }

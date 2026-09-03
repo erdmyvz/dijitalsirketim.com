@@ -8,8 +8,15 @@ create table if not exists public.basvurular (
   ad_soyad text not null,
   isletme_adi text,
   sektor text,
-  telefon text not null
+  telefon text not null,
+  -- Havale/EFT açıklamasına yazılan kod. Gelen ödemeyi başvuruyla
+  -- eşleştirmek için kullanılır (ör. "DS-4K7M").
+  referans_kodu text
 );
+
+-- Şemayı daha önce çalıştırdıysanız, eksik kolonu eklemek için:
+alter table public.basvurular
+  add column if not exists referans_kodu text;
 
 -- Satır Düzeyi Güvenlik (RLS): tablo varsayılan olarak herkese kapalı.
 alter table public.basvurular enable row level security;

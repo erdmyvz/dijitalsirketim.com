@@ -13,6 +13,7 @@ type Basvuru = {
   isletme_adi: string | null;
   sektor: string | null;
   telefon: string;
+  referans_kodu: string | null;
 };
 
 // Admin panosu: gelen Check-Up başvurularını listeler.
@@ -28,7 +29,7 @@ export default async function AdminPanel() {
 
   const { data: basvurular, error } = await supabase
     .from("basvurular")
-    .select("id, created_at, ad_soyad, isletme_adi, sektor, telefon")
+    .select("id, created_at, ad_soyad, isletme_adi, sektor, telefon, referans_kodu")
     .order("created_at", { ascending: false })
     .returns<Basvuru[]>();
 
@@ -101,6 +102,7 @@ export default async function AdminPanel() {
                   <th className="px-5 py-3.5 font-semibold">İşletme</th>
                   <th className="px-5 py-3.5 font-semibold">Sektör</th>
                   <th className="px-5 py-3.5 font-semibold">Telefon</th>
+                  <th className="px-5 py-3.5 font-semibold">Referans</th>
                 </tr>
               </thead>
               <tbody>
@@ -131,6 +133,15 @@ export default async function AdminPanel() {
                       >
                         {b.telefon}
                       </a>
+                    </td>
+                    <td className="whitespace-nowrap px-5 py-3.5">
+                      {b.referans_kodu ? (
+                        <code className="rounded bg-slate-100 px-2 py-1 font-mono text-xs text-slate-700">
+                          {b.referans_kodu}
+                        </code>
+                      ) : (
+                        <span className="text-slate-400">—</span>
+                      )}
                     </td>
                   </tr>
                 ))}
