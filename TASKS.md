@@ -41,11 +41,9 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 - [ ] **Ödeme bilgileri** — `src/data/odeme.ts` içindeki ücret, IBAN ve
       hesap sahibi adı doldurulmalı. Doldurulana kadar başvuru sonrası ekran
       IBAN göstermeyip WhatsApp'a yönlendiriyor.
-- [ ] **Anthropic kredisi** — anahtar geçerli ve kurulu, ama hesapta bakiye
-      yok. Yüklenene kadar `/check-up` AI kartı WhatsApp yedeğine düşüyor.
-      (console.anthropic.com → Plans & Billing)
-- [ ] **Anthropic anahtarını yenile** — mevcut anahtar sohbete yapıştırıldı,
-      canlıya çıkmadan iptal edilip yenisi oluşturulmalı.
+- [ ] **Gemini API anahtarı** — aistudio.google.com/apikey'den ücretsiz
+      alınıp hem `.env.local`'e hem Vercel'e girilmeli. Girilene kadar
+      `/check-up` AI kartı WhatsApp yedeğine düşüyor.
 - [ ] **Supabase projesi** — oluşturulup [supabase/schema.sql](supabase/schema.sql)
       çalıştırılacak, admin kullanıcı eklenecek, 3 ortam değişkeni hem
       `.env.local`'e hem Vercel'e girilecek. Girilene kadar `/admin` kapalı,
@@ -57,6 +55,12 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 ---
 
 ## Tamamlananlar
+
+### 2026-09-03 — AI ön teşhis Gemini'ye taşındı
+Maliyet nedeniyle Anthropic yerine Google Gemini (`gemini-3.8-flash`,
+ücretsiz katman). Yapılandırılmış çıktı ile JSON şeması garanti altında.
+Gizlilik önlemi: ücretsiz katmanda veri model eğitimine gidebildiği için
+prompt'tan işletme adı çıkarıldı. Ortam değişkeni: `GEMINI_API_KEY`.
 
 ### 2026-09-03 — Ödeme akışı (manuel havale/EFT)
 Her başvuruya sunucuda `DS-XXXX` referans kodu üretiliyor; başvuru sonrası

@@ -6,6 +6,20 @@
 
 ---
 
+**2026-09-03 — AI ön teşhis Anthropic yerine Google Gemini ile çalışır.**
+Gerekçe: maliyet — Gemini'nin ücretsiz katmanı MVP için yeterli. Model
+`gemini-3.8-flash`, yapılandırılmış çıktı (responseJsonSchema) ile şemaya
+zorlanıyor.
+
+**2026-09-03 — AI'ya gönderilen veriden işletme adı çıkarılır.**
+Gemini'nin ÜCRETSİZ katmanında gönderilen içerik Google tarafından ürün
+geliştirme/model eğitimi için kullanılabiliyor (ücretli katmanda
+kullanılmıyor). Teşhise gönderilen veri sektör, ölçek, 21 cevap ve serbest
+problem metnini içerdiğinden, işletme adı gönderilmeyerek veri
+kimliksizleştiriliyor. Model isimden teşhise katkı sağlayacak bir şey
+çıkarmadığı için kalite kaybı yok. Ücretli katmana geçilirse bu kısıt
+gözden geçirilebilir. KVKK metninde bu aktarım açıklanmalı.
+
 **2026-09-03 — MVP'de ödeme manuel havale/EFT ile alınır.**
 Sanal POS (iyzico/PayTR) tüzel kişilik gerektiriyor, şirket henüz kurulmadı.
 Talep gelmeye başlayınca şirket kurulup sanal POS'a geçilecek. Her başvuruya

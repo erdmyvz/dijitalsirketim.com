@@ -43,8 +43,10 @@ export function teshisKullaniciMesaji(
 
   const kirmiziBolgeOzeti = sonuc.kirmiziBolge.map((f) => f.baslik).join(", ") || "yok";
 
+  // NOT: İşletme adı bilinçli olarak GÖNDERİLMİYOR — bkz. KARARLAR.md
+  // (2026-09-03). Model isimden teşhise katkı sağlayacak bir şey
+  // çıkarmıyor; göndermemek, veriyi kimliksizleştiriyor.
   return `İŞLETME PROFİLİ
-Ad: ${state.isletmeAdi || "Belirtilmedi"}
 Sektör: ${state.sektor || "Belirtilmedi"}
 İş modeli: ${isModeli}
 Çalışan sayısı: ${calisanSayisi}

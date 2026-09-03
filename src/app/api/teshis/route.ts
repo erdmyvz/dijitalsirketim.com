@@ -1,54 +1,50 @@
-import Anthropic from "@anthropic-ai/sdk";
+import { GoogleGenAI } from "@google/genai";
 import { NextResponse } from "next/server";
 import { skorHesapla, tumSorularCevaplandiMi } from "@/lib/checkup/scoring";
 import { TESHIS_SISTEM_PROMPTU, teshisKullaniciMesaji } from "@/lib/checkup/prompt";
 import type { CheckupState, TeshisSonucu } from "@/lib/checkup/types";
 
 // Modelin serbest metin yerine kesin bu şemada JSON döndürmesini
-// zorlamak için tool-use kullanıyoruz — metinden JSON ayrıştırmaya
-// (ve başarısız ayrıştırmaya) kıyasla çok daha güvenilir.
-const TESHIS_ARACI: Anthropic.Tool = {
-  name: "dijital_teshis_koy",
-  description:
-    "İşletmenin dijital check-up sonuçlarına göre yapılandırılmış bir ön teşhis kaydeder.",
-  input_schema: {
-    type: "object",
-    properties: {
-      ozet: {
-        type: "string",
-        description:
-          "Kırmızı bölgeyi işletmenin kendi cevaplarına atıf yaparak yorumlayan 2-3 cümlelik özet.",
-      },
-      kok_vida: {
-        type: "string",
-        enum: ["Yetkinlik", "Kültür", "Netlik"],
-        description: "5 Neden analiziyle ulaşılan muhtemel kök neden kategorisi.",
-      },
-      gerekce: {
-        type: "string",
-        description: "kok_vida seçimini işletmenin cevaplarına dayandıran kısa gerekçe.",
-      },
-      ilk_yardim: {
-        type: "array",
-        items: { type: "string" },
-        minItems: 3,
-        maxItems: 3,
-        description: "Bu hafta uygulanabilir, somut 3 madde.",
-      },
-      kapanis: {
-        type: "string",
-        description:
-          "Tam reçetenin ücretli teşhis görüşmesinde çıkarılacağını nazikçe belirten 1 cümlelik kapanış. Fiyat veya kesin garanti içermez.",
-      },
+// zorlamak için Gemini'nin yapılandırılmış çıktı (responseJsonSchema)
+// özelliğini kullanıyoruz — metinden JSON ayıklamaya kıyasla çok daha
+// güvenilir, ayrıştırma hatası riski yok.
+const TESHIS_SEMASI = {
+  type: "object",
+  properties: {
+    ozet: {
+      type: "string",
+      description:
+        "Kırmızı bölgeyi işletmenin kendi cevaplarına atıf yaparak yorumlayan 2-3 cümlelik özet.",
     },
-    required: ["ozet", "kok_vida", "gerekce", "ilk_yardim", "kapanis"],
+    kok_vida: {
+      type: "string",
+      enum: ["Yetkinlik", "Kültür", "Netlik"],
+      description: "5 Neden analiziyle ulaşılan muhtemel kök neden kategorisi.",
+    },
+    gerekce: {
+      type: "string",
+      description: "kok_vida seçimini işletmenin cevaplarına dayandıran kısa gerekçe.",
+    },
+    ilk_yardim: {
+      type: "array",
+      items: { type: "string" },
+      minItems: 3,
+      maxItems: 3,
+      description: "Bu hafta uygulanabilir, somut 3 madde.",
+    },
+    kapanis: {
+      type: "string",
+      description:
+        "Tam reçetenin ücretli teşhis görüşmesinde çıkarılacağını nazikçe belirten 1 cümlelik kapanış. Fiyat veya kesin garanti içermez.",
+    },
   },
+  required: ["ozet", "kok_vida", "gerekce", "ilk_yardim", "kapanis"],
 };
 
 export async function POST(request: Request) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    console.warn("ANTHROPIC_API_KEY tanımlı değil — /api/teshis devre dışı.");
+    console.warn("GEMINI_API_KEY tanımlı değil — /api/teshis devre dışı.");
     return NextResponse.json(
       { error: "Yapay zekâ teşhisi şu anda yapılandırılmamış." },
       { status: 503 },
@@ -69,28 +65,26 @@ export async function POST(request: Request) {
 
   try {
     const sonuc = skorHesapla(state);
-    const anthropic = new Anthropic({ apiKey });
+    const ai = new GoogleGenAI({ apiKey });
 
-    const mesaj = await anthropic.messages.create({
-      model: "claude-sonnet-5",
-      max_tokens: 1024,
-      system: TESHIS_SISTEM_PROMPTU,
-      tools: [TESHIS_ARACI],
-      tool_choice: { type: "tool", name: "dijital_teshis_koy" },
-      messages: [
-        { role: "user", content: teshisKullaniciMesaji(state, sonuc) },
-      ],
+    // NOT: teshisKullaniciMesaji() işletme adını bilinçli olarak dışarıda
+    // bırakır — ücretsiz katmanda gönderilen içerik Google tarafından
+    // ürün geliştirmede kullanılabildiği için veri kimliksiz gidiyor.
+    const yanit = await ai.models.generateContent({
+      model: "gemini-3.8-flash",
+      contents: teshisKullaniciMesaji(state, sonuc),
+      config: {
+        systemInstruction: TESHIS_SISTEM_PROMPTU,
+        responseMimeType: "application/json",
+        responseJsonSchema: TESHIS_SEMASI,
+        maxOutputTokens: 2048,
+      },
     });
 
-    const araclKullanimi = mesaj.content.find(
-      (blok): blok is Anthropic.ToolUseBlock => blok.type === "tool_use",
-    );
+    const metin = yanit.text;
+    if (!metin) throw new Error("Model boş yanıt döndürdü.");
 
-    if (!araclKullanimi) {
-      throw new Error("Model beklenen aracı çağırmadı.");
-    }
-
-    const teshis = araclKullanimi.input as TeshisSonucu;
+    const teshis = JSON.parse(metin) as TeshisSonucu;
     return NextResponse.json(teshis);
   } catch (err) {
     console.error("/api/teshis hatası:", err);
