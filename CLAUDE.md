@@ -23,6 +23,15 @@ TypeScript + Tailwind CSS v4, Vercel'de yayında.
 - **State**: veritabanı yok (bilinçli MVP kararı) — sihirbazın tüm state'i `localStorage`'da tutulur ([useCheckupState.ts](src/components/checkup/useCheckupState.ts)). Sihirbaz `next/dynamic({ ssr: false })` ile yükleniyor ([CheckupWizardClient.tsx](src/components/checkup/CheckupWizardClient.tsx)) — bu sayede localStorage'a bağlı state hiç sunucuda render edilmiyor, hidrasyon uyuşmazlığı riski yok.
 - **AI ön teşhis**: [src/lib/checkup/prompt.ts](src/lib/checkup/prompt.ts) sistem promptu + kullanıcı mesajını üretir; [/api/teshis/route.ts](src/app/api/teshis/route.ts) `claude-sonnet-5` modelini tool-use ile JSON şemaya zorlar. Kırmızı bölge sunucuda deterministik hesaplanır, model yalnızca yorumlar. `ANTHROPIC_API_KEY` tanımsızsa nazikçe 503 döner, kart WhatsApp fallback'ine düşer — sayfa asla boş kalmaz.
 
+## Sürüm rozeti (geçici)
+
+Sayfanın üstündeki sarı taslak rozeti, yayın numarasını
+[version.json](version.json)'dan okur ([next.config.ts](next.config.ts) build
+zamanında gömer). **Her commit'te `version.json` içindeki `version` değerini
+bir artırın.** (Daha önce bu sayı git commit sayısından hesaplanıyordu; Vercel
+build ortamı depoyu sığ klonladığı için hep yanlış çıkıyordu — bu yüzden
+dış bağımlılığı olmayan basit bir sayaç dosyasına geçildi.)
+
 ## Ortam değişkenleri
 
 Şablon: [.env.local.example](.env.local.example) (yerelde `.env.local` olarak kopyalayın; Vercel'de Project Settings → Environment Variables). `.env*` `.gitignore`'da — gerçek anahtarlar hiçbir zaman commit edilmez, yalnızca `.example` dosyası izleniyor.
