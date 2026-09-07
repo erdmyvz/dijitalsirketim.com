@@ -38,16 +38,25 @@ ortamı karşılaştırılıp seçim yapılacak. Fiyat, ödeme ekranında ödeme
 
 Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 
+- [x] **Gemini API anahtarı** — `.env.local`'e girildi, gerçek API'ye
+      karşı doğrulandı (anahtar geçerli, `gemini-3.8-flash` erişilebilir).
+      **Kalan:** aynı anahtar Vercel → Environment Variables'a da
+      girilmeli, canlıda uçtan uca test edilmeli (bu ortamda Gemini'nin
+      çıkarım uç noktasına giden istekler engellendiği için burada
+      denenemedi — GET/model listesi çalıştı, generateContent denenemedi).
+- [x] **Supabase projesi** — oluşturuldu, [supabase/schema.sql](supabase/schema.sql)
+      çalıştırıldı, 3 anahtar `.env.local`'e girildi ve canlı API'ye karşı
+      doğrulandı. RLS testi yapıldı: `service_role` okuyup yazabiliyor,
+      `anon` anahtarı hem okumayı hem yazmayı doğru şekilde reddediyor.
+      `/api/basvuru` gerçek bir kaydı Supabase'e yazdığı doğrulandı
+      (test kaydı silindi). **Kalan:**
+      - [ ] Admin kullanıcısı eklenmeli — Supabase → Authentication →
+        Users → Add user (e-posta/şifreyi Erdem kendisi belirler, bu adım
+        güvenlik gereği devredilemez).
+      - [ ] 3 anahtar Vercel → Environment Variables'a da girilmeli.
 - [ ] **Ödeme bilgileri** — `src/data/odeme.ts` içindeki ücret, IBAN ve
       hesap sahibi adı doldurulmalı. Doldurulana kadar başvuru sonrası ekran
       IBAN göstermeyip WhatsApp'a yönlendiriyor.
-- [ ] **Gemini API anahtarı** — aistudio.google.com/apikey'den ücretsiz
-      alınıp hem `.env.local`'e hem Vercel'e girilmeli. Girilene kadar
-      `/check-up` AI kartı WhatsApp yedeğine düşüyor.
-- [ ] **Supabase projesi** — oluşturulup [supabase/schema.sql](supabase/schema.sql)
-      çalıştırılacak, admin kullanıcı eklenecek, 3 ortam değişkeni hem
-      `.env.local`'e hem Vercel'e girilecek. Girilene kadar `/admin` kapalı,
-      başvurular yalnızca sunucu günlüğüne yazılıyor.
 - [ ] **`www` alt alan adı** — Vercel → Domains'e eklenmeli ki SSL alsın;
       koddaki www→apex yönlendirmesi ancak o zaman devreye girer.
 - [ ] **Google Search Console** — alan adı doğrulaması.
