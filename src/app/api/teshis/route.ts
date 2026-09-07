@@ -8,8 +8,6 @@ import type { CheckupState, TeshisSonucu } from "@/lib/checkup/types";
 // zorlamak için Gemini'nin KENDİ (OpenAPI alt kümesi) şema formatını
 // kullanıyoruz — responseSchema, Gemini API'nin en uzun süredir
 // desteklenen, en yaygın test edilmiş yapılandırılmış çıktı yolu.
-// (Daha yeni "responseJsonSchema" alanı denenmişti; bazı anahtar/model
-// kombinasyonlarında desteklenmediği için 500 hatasına yol açtı.)
 const TESHIS_SEMASI = {
   type: Type.OBJECT,
   properties: {
@@ -43,6 +41,18 @@ const TESHIS_SEMASI = {
   required: ["ozet", "kok_vida", "gerekce", "ilk_yardim", "kapanis"],
 };
 
+function geciciHataMi(err: unknown): boolean {
+  const status = (err as { status?: number } | null)?.status;
+  // 503 (aşırı yüklü/kullanılamıyor) ve 429 (kota) geçicidir, tekrar
+  // denemeye değer. Diğerleri (400 geçersiz istek, 403 izin vb.)
+  // tekrar denense de değişmez.
+  return status === 503 || status === 429;
+}
+
+function bekle(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export async function POST(request: Request) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
@@ -65,34 +75,56 @@ export async function POST(request: Request) {
     );
   }
 
-  try {
-    const sonuc = skorHesapla(state);
-    const ai = new GoogleGenAI({ apiKey });
+  const sonuc = skorHesapla(state);
+  const ai = new GoogleGenAI({ apiKey });
+  // NOT: teshisKullaniciMesaji() işletme adını bilinçli olarak dışarıda
+  // bırakır — ücretsiz katmanda gönderilen içerik Google tarafından
+  // ürün geliştirmede kullanılabildiği için veri kimliksiz gidiyor.
+  const kullaniciMesaji = teshisKullaniciMesaji(state, sonuc);
 
-    // NOT: teshisKullaniciMesaji() işletme adını bilinçli olarak dışarıda
-    // bırakır — ücretsiz katmanda gönderilen içerik Google tarafından
-    // ürün geliştirmede kullanılabildiği için veri kimliksiz gidiyor.
-    const yanit = await ai.models.generateContent({
-      model: "gemini-3.8-flash",
-      contents: teshisKullaniciMesaji(state, sonuc),
-      config: {
-        systemInstruction: TESHIS_SISTEM_PROMPTU,
-        responseMimeType: "application/json",
-        responseSchema: TESHIS_SEMASI,
-        maxOutputTokens: 2048,
-      },
-    });
+  const MAKS_DENEME = 3;
+  let sonHata: unknown;
 
-    const metin = yanit.text;
-    if (!metin) throw new Error("Model boş yanıt döndürdü.");
+  for (let deneme = 1; deneme <= MAKS_DENEME; deneme++) {
+    try {
+      const yanit = await ai.models.generateContent({
+        model: "gemini-3.8-flash",
+        contents: kullaniciMesaji,
+        config: {
+          systemInstruction: TESHIS_SISTEM_PROMPTU,
+          responseMimeType: "application/json",
+          responseSchema: TESHIS_SEMASI,
+          maxOutputTokens: 2048,
+        },
+      });
 
-    const teshis = JSON.parse(metin) as TeshisSonucu;
-    return NextResponse.json(teshis);
-  } catch (err) {
-    console.error("/api/teshis hatası:", err);
-    return NextResponse.json(
-      { error: "Teşhis oluşturulamadı." },
-      { status: 500 },
-    );
+      const metin = yanit.text;
+      if (!metin) throw new Error("Model boş yanıt döndürdü.");
+
+      const teshis = JSON.parse(metin) as TeshisSonucu;
+      return NextResponse.json(teshis);
+    } catch (err) {
+      sonHata = err;
+      const detay =
+        err && typeof err === "object" && "error" in err
+          ? JSON.stringify((err as { error: unknown }).error)
+          : String(err);
+      console.error(
+        `/api/teshis hatası (deneme ${deneme}/${MAKS_DENEME}):`,
+        detay,
+      );
+
+      if (deneme < MAKS_DENEME && geciciHataMi(err)) {
+        await bekle(deneme * 700); // 700ms, 1400ms — kademeli bekleme
+        continue;
+      }
+      break;
+    }
   }
+
+  console.error("/api/teshis nihai hata:", sonHata);
+  return NextResponse.json(
+    { error: "Teşhis oluşturulamadı." },
+    { status: 500 },
+  );
 }
