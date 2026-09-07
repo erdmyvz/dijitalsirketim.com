@@ -1,39 +1,41 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Type } from "@google/genai";
 import { NextResponse } from "next/server";
 import { skorHesapla, tumSorularCevaplandiMi } from "@/lib/checkup/scoring";
 import { TESHIS_SISTEM_PROMPTU, teshisKullaniciMesaji } from "@/lib/checkup/prompt";
 import type { CheckupState, TeshisSonucu } from "@/lib/checkup/types";
 
 // Modelin serbest metin yerine kesin bu şemada JSON döndürmesini
-// zorlamak için Gemini'nin yapılandırılmış çıktı (responseJsonSchema)
-// özelliğini kullanıyoruz — metinden JSON ayıklamaya kıyasla çok daha
-// güvenilir, ayrıştırma hatası riski yok.
+// zorlamak için Gemini'nin KENDİ (OpenAPI alt kümesi) şema formatını
+// kullanıyoruz — responseSchema, Gemini API'nin en uzun süredir
+// desteklenen, en yaygın test edilmiş yapılandırılmış çıktı yolu.
+// (Daha yeni "responseJsonSchema" alanı denenmişti; bazı anahtar/model
+// kombinasyonlarında desteklenmediği için 500 hatasına yol açtı.)
 const TESHIS_SEMASI = {
-  type: "object",
+  type: Type.OBJECT,
   properties: {
     ozet: {
-      type: "string",
+      type: Type.STRING,
       description:
         "Kırmızı bölgeyi işletmenin kendi cevaplarına atıf yaparak yorumlayan 2-3 cümlelik özet.",
     },
     kok_vida: {
-      type: "string",
+      type: Type.STRING,
       enum: ["Yetkinlik", "Kültür", "Netlik"],
       description: "5 Neden analiziyle ulaşılan muhtemel kök neden kategorisi.",
     },
     gerekce: {
-      type: "string",
+      type: Type.STRING,
       description: "kok_vida seçimini işletmenin cevaplarına dayandıran kısa gerekçe.",
     },
     ilk_yardim: {
-      type: "array",
-      items: { type: "string" },
-      minItems: 3,
-      maxItems: 3,
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      minItems: "3",
+      maxItems: "3",
       description: "Bu hafta uygulanabilir, somut 3 madde.",
     },
     kapanis: {
-      type: "string",
+      type: Type.STRING,
       description:
         "Tam reçetenin ücretli teşhis görüşmesinde çıkarılacağını nazikçe belirten 1 cümlelik kapanış. Fiyat veya kesin garanti içermez.",
     },
@@ -76,7 +78,7 @@ export async function POST(request: Request) {
       config: {
         systemInstruction: TESHIS_SISTEM_PROMPTU,
         responseMimeType: "application/json",
-        responseJsonSchema: TESHIS_SEMASI,
+        responseSchema: TESHIS_SEMASI,
         maxOutputTokens: 2048,
       },
     });
