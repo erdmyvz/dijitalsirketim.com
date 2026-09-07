@@ -38,12 +38,12 @@ ortamı karşılaştırılıp seçim yapılacak. Fiyat, ödeme ekranında ödeme
 
 Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 
-- [x] **Gemini API anahtarı** — `.env.local`'e girildi, gerçek API'ye
-      karşı doğrulandı (anahtar geçerli, `gemini-3.8-flash` erişilebilir).
-      **Kalan:** aynı anahtar Vercel → Environment Variables'a da
-      girilmeli, canlıda uçtan uca test edilmeli (bu ortamda Gemini'nin
-      çıkarım uç noktasına giden istekler engellendiği için burada
-      denenemedi — GET/model listesi çalıştı, generateContent denenemedi).
+- [x] **Gemini API anahtarı** — `.env.local`'e ve Vercel → Environment
+      Variables'a girildi, canlıda `/api/teshis` uçtan uca test edildi
+      (200, gerçek teşhis JSON'u döndü). Yol boyunca iki canlı hata
+      bulunup düzeltildi: model aşırı yüklenmesi (503 → gemini-2.5-flash'a
+      otomatik geçiş) ve 2.5-flash'ın "thinking" modunun JSON çıktısını
+      yarıda kesmesi (`thinkingBudget: 0` ile çözüldü). Detay: KARARLAR.md.
 - [x] **Supabase projesi** — oluşturuldu, [supabase/schema.sql](supabase/schema.sql)
       çalıştırıldı, 3 anahtar `.env.local`'e girildi ve canlı API'ye karşı
       doğrulandı. RLS testi yapıldı: `service_role` okuyup yazabiliyor,
@@ -65,6 +65,16 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 ---
 
 ## Tamamlananlar
+
+### 2026-09-07 — Gemini entegrasyonu canlıda uçtan uca doğrulandı
+API anahtarları (Gemini + Supabase) Vercel'e girildi, gerçek anahtarlarla
+canlı doğrulama yapıldı. `/api/teshis` canlıda iki ayrı hatayla karşılaştı,
+ikisi de log'lardan teşhis edilip düzeltildi: (1) `gemini-3.8-flash`
+ücretsiz katmanda zaman zaman 503 (aşırı talep) dönüyordu → otomatik olarak
+`gemini-2.5-flash`'a geçen model sırası eklendi; (2) 2.5-flash varsayılan
+"thinking" modu `maxOutputTokens`'ı tüketip JSON çıktısını yarıda kesiyordu
+→ 2.5 ailesinde düşünme kapatıldı (`thinkingBudget: 0`), pay 4096'ya
+çıkarıldı. Son test: 200, tutarlı bir teşhis metni, 6 saniyede.
 
 ### 2026-09-03 — AI ön teşhis Gemini'ye taşındı
 Maliyet nedeniyle Anthropic yerine Google Gemini (`gemini-3.8-flash`,
