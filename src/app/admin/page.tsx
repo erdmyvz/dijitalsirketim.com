@@ -17,8 +17,10 @@ type Basvuru = {
 };
 
 // Admin panosu: gelen Check-Up başvurularını listeler.
-// Oturum kontrolünün ilk hattı src/proxy.ts'te; burada ikinci kez
-// doğrulanır (derinlemesine savunma).
+// Oturum kontrolünün ilk hattı src/proxy.ts'te (yalnızca "giriş yapılmış
+// mı" bakar); burada ikinci kez doğrulanır (derinlemesine savunma) VE
+// is_admin kontrolü eklenir — üyelik açıldıktan sonra "giriş yapmış
+// olmak" artık "admin olmak" anlamına gelmiyor.
 export default async function AdminPanel() {
   const supabase = await createClient();
 
@@ -26,6 +28,13 @@ export default async function AdminPanel() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/admin/giris");
+
+  const { data: profil } = await supabase
+    .from("profiles")
+    .select("is_admin")
+    .eq("id", user.id)
+    .maybeSingle();
+  if (!profil?.is_admin) redirect("/");
 
   const { data: basvurular, error } = await supabase
     .from("basvurular")

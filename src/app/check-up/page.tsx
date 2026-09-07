@@ -15,7 +15,7 @@ export default function CheckUpPage() {
   return (
     <div className="min-h-screen bg-slate-50">
       <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-2xl items-center gap-2 px-4 py-4">
+        <div className="mx-auto flex max-w-2xl items-center justify-between gap-2 px-4 py-4">
           <Link href="/" className="flex items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-teal-600 text-base text-white">
               🩺
@@ -23,6 +23,12 @@ export default function CheckUpPage() {
             <span className="text-base font-semibold tracking-tight text-slate-900">
               dijital<span className="text-teal-600">şirketim</span>
             </span>
+          </Link>
+          <Link
+            href="/hesap"
+            className="text-sm font-medium text-slate-400 transition-colors duration-200 ease-[var(--ease-apple)] hover:text-teal-700"
+          >
+            Hesabım
           </Link>
         </div>
       </header>

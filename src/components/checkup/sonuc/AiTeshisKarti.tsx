@@ -1,44 +1,15 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import type { CheckupState, TeshisSonucu } from "@/lib/checkup/types";
+import type { AiTeshisDurumu } from "../useAiTeshis";
 import { IconHeartPulse, IconMessageCircle } from "@/components/icons";
 
 const WHATSAPP_NUMARASI = "905319956930";
 
-type Durum =
-  | { tip: "yukleniyor" }
-  | { tip: "hazir"; veri: TeshisSonucu }
-  | { tip: "hata" };
-
-export default function AiTeshisKarti({ state }: { state: CheckupState }) {
-  const [durum, setDurum] = useState<Durum>({ tip: "yukleniyor" });
-
-  useEffect(() => {
-    let iptalEdildi = false;
-
-    fetch("/api/teshis", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(state),
-    })
-      .then(async (res) => {
-        if (!res.ok) throw new Error("İstek başarısız");
-        const veri = (await res.json()) as TeshisSonucu;
-        if (!iptalEdildi) setDurum({ tip: "hazir", veri });
-      })
-      .catch(() => {
-        if (!iptalEdildi) setDurum({ tip: "hata" });
-      });
-
-    return () => {
-      iptalEdildi = true;
-    };
-    // state, sonuç ekranına gelindiğinde artık değişmiyor — yalnızca
-    // kartın kendisi mount olduğunda bir kez çağrılsın istiyoruz.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+// Salt gösterim bileşeni — veri çekme mantığı useAiTeshis hook'unda:
+// canlı sihirbazda SonucEkrani /api/teshis'i çağırıp sonucu buraya
+// prop olarak geçiyor; geçmiş bir karne görüntülenirken ise zaten
+// kaydedilmiş teşhis aynı `durum` şeklinde geçiliyor. Böylece tek bir
+// bileşen hem canlı hem geçmiş görünümde kullanılabiliyor, teşhis
+// hiçbir zaman görüntülenirken tekrar üretilmiyor.
+export default function AiTeshisKarti({ durum }: { durum: AiTeshisDurumu }) {
   return (
     <div className="rounded-[28px] border border-teal-100 bg-gradient-to-br from-teal-50 to-white p-6 sm:p-8">
       <div className="flex items-center gap-2">

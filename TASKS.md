@@ -7,11 +7,12 @@
 
 ## Sıradaki Görev
 
-### 1. Üyelik ve müşteri paneli
-
-Check-up sonuçlarının kaydedilmesi, kullanıcının geçmiş karnelerini görmesi,
-tedavi sürecinin takibi. Supabase Auth üzerine kurulacak — Supabase projesi
-kurulduktan sonra başlanabilir.
+### 1. KVKK / gizlilik metni ve çerez bildirimi
+Şu an footer'daki ve form altındaki yasal bağlantılar boş (`#`). Gerçek
+metinler hazırlanıp sayfa olarak eklenecek, çerez bildirimi kurulacak.
+Not: Artık üyelik + karne verisi de saklandığı için metinde bu veri
+işlemenin de (Auth, karneler tablosu, AI'ya giden anonimleştirilmiş veri)
+açıklanması gerekiyor.
 
 ---
 
@@ -19,18 +20,25 @@ kurulduktan sonra başlanabilir.
 
 Öncelik sırasına dizilidir. Üstteki biter, "Sıradaki Görev"e taşınır.
 
-### 2. KVKK / gizlilik metni ve çerez bildirimi
-Şu an footer'daki ve form altındaki yasal bağlantılar boş (`#`). Gerçek
-metinler hazırlanıp sayfa olarak eklenecek, çerez bildirimi kurulacak.
-
-### 3. SEO, performans ve mobil son cila
+### 2. SEO, performans ve mobil son cila
 Core Web Vitals ölçümü, görsel optimizasyonu, Search Console doğrulaması,
 mobilde son gözden geçirme.
 
-### 4. Sanal POS entegrasyonu (iyzico / PayTR)
+### 3. Sanal POS entegrasyonu (iyzico / PayTR)
 Şirket kurulduktan sonra. Komisyon oranları, entegrasyon zorluğu ve test
 ortamı karşılaştırılıp seçim yapılacak. Fiyat, ödeme ekranında ödemeden
 önce net gösterilecek.
+
+### 4. Admin panelinden karne durumu güncelleme
+"Tedavi sürecinin takibi" başlığının ikinci yarısı: `karneler.durum`
+alanı şu an yalnızca müşteri panelinde salt okunur gösteriliyor
+(varsayılan "Beklemede"). Admin panelinden bu alanı güncelleyebilme
+(ör. "İnceleniyor" / "Teklif Gönderildi" / "Tamamlandı") ayrı bir görev
+olarak bırakıldı.
+
+### 5. Şifremi unuttum akışı
+Müşteri girişinde (/hesap/giris) şifre sıfırlama bağlantısı yok. MVP'de
+bilinçli olarak dışarıda bırakıldı, ihtiyaç doğunca eklenecek.
 
 ---
 
@@ -65,6 +73,26 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 ---
 
 ## Tamamlananlar
+
+### 2026-09-07 — Üyelik ve müşteri paneli
+Supabase Auth üzerine müşteri hesabı sistemi: `/hesap/kayit`, `/hesap/giris`
+(admin girişinden tamamen ayrı), `/hesap` (geçmiş karnelerin listesi) ve
+`/hesap/karne/[id]` (detay). Check-up sonuç ekranına "Sonuçlarını Kaydet"
+kartı eklendi — giriş yapılmışsa AI teşhis tamamlanır tamamlanmaz otomatik
+kaydeder, yapılmamışsa hesap oluşturmaya yönlendirir (localStorage sayesinde
+hesap oluşturduktan sonra check-up'a dönüldüğünde aynı sonuç ekranı otomatik
+kaydedilir). Güvenlik ön koşulu: `profiles` tablosu + `is_admin` bayrağı
+eklendi, çünkü halka açık üyelik açılınca "authenticated = admin" varsayımı
+geçersiz hale geliyordu — `basvurular` tablosunun okuma kuralı yalnızca
+admin'e daraltıldı, admin panelinde de ikinci bir savunma katmanı olarak
+is_admin kontrolü eklendi. Yeni `karneler` tablosu yalnızca ham veriyi
+(profil + 21 cevap) saklıyor, skor her görüntülemede taze hesaplanıyor;
+AI teşhis ise tekrar üretilmeden bir "anlık görüntü" olarak saklanıyor.
+Canlı Supabase projesinde gerçek bir test hesabıyla uçtan uca doğrulandı
+(kayıt → trigger ile profil oluşumu → kendi karnesini okuma/yazma →
+`basvurular`'ı görememe → admin işaretlenince görebilme), test verileri
+temizlendi. "Tedavi sürecinin takibi" için `durum` alanı eklendi ama admin
+tarafından güncellenmesi ayrı bir göreve bırakıldı (bkz. Bekleyen Görevler).
 
 ### 2026-09-07 — Gemini entegrasyonu canlıda uçtan uca doğrulandı
 API anahtarları (Gemini + Supabase) Vercel'e girildi, gerçek anahtarlarla

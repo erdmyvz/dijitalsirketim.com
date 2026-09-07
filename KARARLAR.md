@@ -6,6 +6,26 @@
 
 ---
 
+**2026-09-07 — Üyelik açılınca "authenticated = admin" varsayımı terk edildi.**
+`basvurular` tablosunun RLS kuralı önceden "herhangi bir giriş yapmış
+kullanıcı okuyabilir" idi — güvenliydi çünkü Supabase Auth'a yalnızca admin
+hesabı elle ekleniyordu. Halka açık müşteri kaydı açılınca bu varsayım
+yanlış hale geldi: herhangi bir müşteri hesabı da tüm başvuruları
+okuyabilirdi. Çözüm: `profiles` tablosu + `is_admin` bayrağı eklendi
+(yeni kullanıcılar tetikleyiciyle `is_admin=false` alır), `basvurular`
+kuralı yalnızca `is_admin=true` olanlara daraltıldı, admin panelinde de
+ikinci savunma katmanı olarak aynı kontrol eklendi.
+
+**2026-09-07 — `karneler` tablosu ham veriyi saklar, skoru saklamaz.**
+Check-up sonucu (profil + 21 cevap) Supabase'e kaydedilirken toplam puan /
+skor yüzdesi gibi türetilmiş alanlar AYRICA saklanmadı — bunun yerine her
+görüntülemede `skorHesapla()` ile taze hesaplanıyor. Gerekçe: puanlama
+mantığı ileride değişirse (eşikler, ağırlıklar) liste ve detay ekranları
+hep tutarlı kalsın, tek doğruluk kaynağı `scoring.ts` olsun. AI teşhis
+(`ai_teshis`) ise istisna: o bir LLM çıktısı olduğu için görüntülemede
+yeniden üretilmiyor (hem maliyet hem "her açılışta farklı metin çıkması"
+riskine karşı), olduğu gibi saklanan bir anlık görüntü.
+
 **2026-09-07 — gemini-2.5-flash için "thinking" kapatıldı, çıktı bütçesi büyütüldü.**
 Canlı log'da görüldü: fallback devreye girip gemini-2.5-flash'a geçtiğinde
 yanıt `SyntaxError: Unterminated string in JSON` ile yarıda kesiliyordu.
