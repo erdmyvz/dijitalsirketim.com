@@ -53,7 +53,8 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
       - [ ] Admin kullanıcısı eklenmeli — Supabase → Authentication →
         Users → Add user (e-posta/şifreyi Erdem kendisi belirler, bu adım
         güvenlik gereği devredilemez).
-      - [ ] 3 anahtar Vercel → Environment Variables'a da girilmeli.
+      - [x] 3 anahtar Vercel → Environment Variables'a da girildi
+        (Erdem ekran görüntüleriyle doğruladı, 2026-09-07).
 - [ ] **Ödeme bilgileri** — `src/data/odeme.ts` içindeki ücret, IBAN ve
       hesap sahibi adı doldurulmalı. Doldurulana kadar başvuru sonrası ekran
       IBAN göstermeyip WhatsApp'a yönlendiriyor.

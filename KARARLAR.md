@@ -6,6 +6,16 @@
 
 ---
 
+**2026-09-07 — gemini-2.5-flash için "thinking" kapatıldı, çıktı bütçesi büyütüldü.**
+Canlı log'da görüldü: fallback devreye girip gemini-2.5-flash'a geçtiğinde
+yanıt `SyntaxError: Unterminated string in JSON` ile yarıda kesiliyordu.
+Sebep: 2.5-flash varsayılan olarak "thinking" modunda çalışıyor, iç düşünme
+token'ları `maxOutputTokens` (2048) bütçesini tüketip asıl JSON çıktısına yer
+bırakmıyordu. Bu görev (sabit şemaya göre kısa yorum) derin düşünme
+gerektirmediğinden 2.5 ailesinde `thinkingBudget: 0` ile düşünme kapatıldı;
+ayrıca tüm modeller için pay 2048'den 4096'ya çıkarıldı. `gemini-3.8-flash`'ta
+bu alan set edilmiyor (desteklenmeyebilir, zaten tek gözlemlenen hatası 503).
+
 **2026-09-07 — AI ön teşhis, model aşırı yüklendiğinde gemini-2.5-flash'a geçer.**
 Canlıda gözlemlendi: gemini-3.8-flash ücretsiz katmanda zaman zaman
 "UNAVAILABLE — model şu an aşırı talep görüyor" (503) döndürüyor. Kod/anahtar

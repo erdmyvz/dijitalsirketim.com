@@ -102,7 +102,19 @@ export async function POST(request: Request) {
           systemInstruction: TESHIS_SISTEM_PROMPTU,
           responseMimeType: "application/json",
           responseSchema: TESHIS_SEMASI,
-          maxOutputTokens: 2048,
+          // Canlıda gözlemlendi: gemini-2.5-flash varsayılan olarak
+          // "thinking" modunda çalışıyor ve iç düşünme token'ları
+          // maxOutputTokens bütçesini tüketip asıl JSON çıktısını
+          // yarıda kesiyor (SyntaxError: Unterminated string). Bu görev
+          // (sabit şemaya göre kısa yorum) derin düşünme gerektirmediği
+          // için 2.5 ailesinde düşünme kapatılıyor. gemini-3.8-flash'ta
+          // bu alan desteklenmeyebileceğinden yalnızca 2.5 için ekleniyor.
+          ...(model.startsWith("gemini-2.5")
+            ? { thinkingConfig: { thinkingBudget: 0 } }
+            : {}),
+          // 2048 bazı yanıtlarda düşünme + JSON toplamına yetmiyordu;
+          // pay büyütüldü.
+          maxOutputTokens: 4096,
         },
       });
 
