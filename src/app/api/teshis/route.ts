@@ -41,11 +41,19 @@ const TESHIS_SEMASI = {
   required: ["ozet", "kok_vida", "gerekce", "ilk_yardim", "kapanis"],
 };
 
+// Canlıda gözlemlendi: "gemini-3.8-flash" ücretsiz katmanda zaman zaman
+// "UNAVAILABLE — model şu an aşırı talep görüyor" (503) döndürüyor —
+// Google'ın kendi kapasite kısıtı, bizim kodumuzdan bağımsız. Aynı
+// modeli defalarca denemek yerine, tıkandığında daha uzun süredir GA
+// (kararlı) olan gemini-2.5-flash'a geçiyoruz — sırayla denenecek
+// modeller listesi.
+const MODEL_SIRASI = ["gemini-3.8-flash", "gemini-2.5-flash", "gemini-2.5-flash"];
+
 function geciciHataMi(err: unknown): boolean {
   const status = (err as { status?: number } | null)?.status;
-  // 503 (aşırı yüklü/kullanılamıyor) ve 429 (kota) geçicidir, tekrar
-  // denemeye değer. Diğerleri (400 geçersiz istek, 403 izin vb.)
-  // tekrar denense de değişmez.
+  // 503 (aşırı yüklü/kullanılamıyor) ve 429 (kota) geçicidir, farklı
+  // bir modelle/tekrar denemeye değer. Diğerleri (400 geçersiz istek,
+  // 403 izin vb.) tekrar denense de değişmez.
   return status === 503 || status === 429;
 }
 
@@ -82,13 +90,13 @@ export async function POST(request: Request) {
   // ürün geliştirmede kullanılabildiği için veri kimliksiz gidiyor.
   const kullaniciMesaji = teshisKullaniciMesaji(state, sonuc);
 
-  const MAKS_DENEME = 3;
   let sonHata: unknown;
 
-  for (let deneme = 1; deneme <= MAKS_DENEME; deneme++) {
+  for (let i = 0; i < MODEL_SIRASI.length; i++) {
+    const model = MODEL_SIRASI[i];
     try {
       const yanit = await ai.models.generateContent({
-        model: "gemini-3.8-flash",
+        model,
         contents: kullaniciMesaji,
         config: {
           systemInstruction: TESHIS_SISTEM_PROMPTU,
@@ -109,13 +117,11 @@ export async function POST(request: Request) {
         err && typeof err === "object" && "error" in err
           ? JSON.stringify((err as { error: unknown }).error)
           : String(err);
-      console.error(
-        `/api/teshis hatası (deneme ${deneme}/${MAKS_DENEME}):`,
-        detay,
-      );
+      console.error(`/api/teshis hatası (model: ${model}):`, detay);
 
-      if (deneme < MAKS_DENEME && geciciHataMi(err)) {
-        await bekle(deneme * 700); // 700ms, 1400ms — kademeli bekleme
+      const sonDeneme = i === MODEL_SIRASI.length - 1;
+      if (!sonDeneme && geciciHataMi(err)) {
+        await bekle(400);
         continue;
       }
       break;

@@ -6,6 +6,13 @@
 
 ---
 
+**2026-09-07 — AI ön teşhis, model aşırı yüklendiğinde gemini-2.5-flash'a geçer.**
+Canlıda gözlemlendi: gemini-3.8-flash ücretsiz katmanda zaman zaman
+"UNAVAILABLE — model şu an aşırı talep görüyor" (503) döndürüyor. Kod/anahtar
+sorunu değil, Google'ın kapasite kısıtı. Çözüm: 3.8-flash başarısız olursa
+otomatik olarak daha uzun süredir kararlı (GA) olan gemini-2.5-flash'a
+geçiliyor. 429 (kota) için de aynı kademeli geçiş uygulanıyor.
+
 **2026-09-03 — AI ön teşhis Anthropic yerine Google Gemini ile çalışır.**
 Gerekçe: maliyet — Gemini'nin ücretsiz katmanı MVP için yeterli. Model
 `gemini-3.8-flash`, yapılandırılmış çıktı (responseJsonSchema) ile şemaya
