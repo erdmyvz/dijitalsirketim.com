@@ -21,6 +21,11 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Erdem Yavuz" }],
   creator: "Erdem Yavuz",
+  // Google Search Console mülk doğrulaması — bu değer gizli değil,
+  // <meta name="google-site-verification"> olarak yayınlanması gerekiyor.
+  verification: {
+    google: "_4SX-X-Csl2xN44SE9qQJXDNEgzoVJwDsnliIHebBw4",
+  },
   robots: {
     index: true,
     follow: true,
