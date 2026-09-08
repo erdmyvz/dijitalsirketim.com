@@ -5,14 +5,39 @@
 
 ---
 
+## Uzun Vadeli Vizyon
+
+**2026-09-08, Erdem'in kendi ifadesiyle:** "Bu site birisine bağlı
+kalmadan işletmelerin ihtiyaçlarını karşılayan bir para basma makinesine
+dönüşmeli. Tüm işletmeler gözle görülür bir şekilde gelirlerini
+arttırmalı ve bu sisteme dahil olup sadakat zincirine dönüşmeli. Eski
+işletmelerin başarıları ile yeni işletmeler sisteme dahil olarak bu
+sistemin başarısı kanıtlanmalıdır."
+
+Kendi kendini besleyen döngü: müşteri → ölçülebilir gelir artışı →
+sisteme sadakat → o başarı yeni müşteri getirir. Bu bölümdeki hiçbir
+madde henüz onaylanmış bir görev DEĞİL — yalnızca gelecekteki
+önceliklendirmede filtre olarak kullanılacak bir yön. Somut bir adıma
+dönüştürmeden önce her zaman plan sunulup onay beklenecek (bkz.
+CLAUDE.md). Olası yönler:
+- Gerçek sonuç/vaka çalışmaları — **ancak** gerçek ücretli müşteriler ve
+  ölçülmüş sonuçlar oluştuktan sonra (CLAUDE.md: sahte referans/uydurma
+  istatistik asla yazılmaz — şu an gerçek müşteri yok).
+- Sadakat/tavsiye programı — eski müşteri yeni müşteri getirirse ne
+  kazanır?
+- Müşterinin kendi sonuç/gelir ilerlemesini gördüğü bir pano —
+  mevcut `/hesap` panelinin (karne geçmişi) ötesinde.
+
+İlk somut adım muhtemelen: ilk gerçek ücretli müşteriler geldikten
+sonra sonuçlarını ölçüp göstermenin altyapısını kurmak.
+
+---
+
 ## Sıradaki Görev
 
-### 1. KVKK / gizlilik metni ve çerez bildirimi
-Şu an footer'daki ve form altındaki yasal bağlantılar boş (`#`). Gerçek
-metinler hazırlanıp sayfa olarak eklenecek, çerez bildirimi kurulacak.
-Not: Artık üyelik + karne verisi de saklandığı için metinde bu veri
-işlemenin de (Auth, karneler tablosu, AI'ya giden anonimleştirilmiş veri)
-açıklanması gerekiyor.
+### 1. SEO, performans ve mobil son cila
+Core Web Vitals ölçümü, görsel optimizasyonu, Search Console doğrulaması,
+mobilde son gözden geçirme.
 
 ---
 
@@ -20,23 +45,19 @@ açıklanması gerekiyor.
 
 Öncelik sırasına dizilidir. Üstteki biter, "Sıradaki Görev"e taşınır.
 
-### 2. SEO, performans ve mobil son cila
-Core Web Vitals ölçümü, görsel optimizasyonu, Search Console doğrulaması,
-mobilde son gözden geçirme.
-
-### 3. Sanal POS entegrasyonu (iyzico / PayTR)
+### 2. Sanal POS entegrasyonu (iyzico / PayTR)
 Şirket kurulduktan sonra. Komisyon oranları, entegrasyon zorluğu ve test
 ortamı karşılaştırılıp seçim yapılacak. Fiyat, ödeme ekranında ödemeden
 önce net gösterilecek.
 
-### 4. Admin panelinden karne durumu güncelleme
+### 3. Admin panelinden karne durumu güncelleme
 "Tedavi sürecinin takibi" başlığının ikinci yarısı: `karneler.durum`
 alanı şu an yalnızca müşteri panelinde salt okunur gösteriliyor
 (varsayılan "Beklemede"). Admin panelinden bu alanı güncelleyebilme
 (ör. "İnceleniyor" / "Teklif Gönderildi" / "Tamamlandı") ayrı bir görev
 olarak bırakıldı.
 
-### 5. Şifremi unuttum akışı
+### 4. Şifremi unuttum akışı
 Müşteri girişinde (/hesap/giris) şifre sıfırlama bağlantısı yok. MVP'de
 bilinçli olarak dışarıda bırakıldı, ihtiyaç doğunca eklenecek.
 
@@ -73,6 +94,29 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 ---
 
 ## Tamamlananlar
+
+### 2026-09-08 — KVKK Aydınlatma Metni, Gizlilik Politikası ve çerez bildirimi
+`/kvkk` (KVKK Aydınlatma Metni — veri sorumlusu: Erdem Yavuz, şahıs;
+şirket kurulunca güncellenecek) ve `/gizlilik` (Gizlilik Politikası +
+Çerezler, sade dille) sayfaları eklendi — toplanan veriler (başvuru,
+check-up, hesap, karneler), Supabase ve Google Gemini'ye aktarım
+(işletme adının bilinçli olarak dışarıda bırakıldığı dahil), saklama
+süresi ve KVKK m.11 hakları anlatılıyor. Footer'daki ve başvuru
+formundaki `#` yer tutucular gerçek sayfalara bağlandı. Site'de yalnızca
+zorunlu/işlevsel çerez (Supabase Auth oturum çerezi) kullanıldığından —
+takip/analiz çerezi yok — ağır bir kabul/red ekranı yerine tek
+"Anladım" ile kapanan, localStorage'da hatırlanan hafif bir şerit
+eklendi (`CerezBildirimi.tsx`, hidrasyon uyuşmazlığına karşı
+`next/dynamic({ssr:false})` ile yükleniyor — `useCheckupState.ts`'teki
+aynı desen). `/kvkk` ve `/gizlilik` sitemap.xml'e eklendi.
+
+Ayrıca bu görevi doğrularken canlıda bulunan bir hata da düzeltildi:
+`/admin` ve `/hesap` 500 veriyordu (Vercel'deki `NEXT_PUBLIC_SUPABASE_URL`
+değeri "ANAHTAR=DEĞER" biçiminde yanlış girilmişti). `proxy.ts` artık
+URL'nin `http(s)://` ile başladığını da kontrol ediyor, geçersizse
+çökmek yerine `/`'e yönlendiriyor. Erdem değeri Vercel'de düzeltip
+redeploy etti, canlıda gerçek bir test hesabıyla (kayıt → check-up →
+otomatik kayıt → panelde görüntüleme) uçtan uca doğrulandı.
 
 ### 2026-09-07 — Üyelik ve müşteri paneli
 Supabase Auth üzerine müşteri hesabı sistemi: `/hesap/kayit`, `/hesap/giris`

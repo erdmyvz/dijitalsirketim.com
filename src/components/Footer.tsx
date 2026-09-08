@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
     <footer className="bg-slate-950 text-slate-400">
@@ -79,16 +81,15 @@ export default function Footer() {
             <div>
               <p className="font-semibold text-white">Yasal</p>
               <ul className="mt-3 space-y-2">
-                {/* NOT: Aşağıdaki bağlantıları gerçek KVKK/Gizlilik sayfalarınızla değiştirin. */}
                 <li>
-                  <a href="#" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
+                  <Link href="/kvkk" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
                     KVKK Aydınlatma Metni
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
+                  <Link href="/gizlilik" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
                     Gizlilik Politikası
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

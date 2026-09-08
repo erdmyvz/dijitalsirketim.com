@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import { IconCheck, IconMessageCircle } from "./icons";
 import {
   CHECKUP_UCRETI,
@@ -233,10 +234,14 @@ export default function ApplicationForm() {
             className="mt-0.5 h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500"
           />
           <span>
-            {/* NOT: Aşağıdaki bağlantıyı gerçek KVKK Aydınlatma Metni sayfanızla değiştirin. */}
-            <a href="#" className="underline hover:text-teal-700">
+            <Link
+              href="/kvkk"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-teal-700"
+            >
               KVKK Aydınlatma Metni
-            </a>
+            </Link>
             &apos;ni okudum, bilgilerimin işlenmesini kabul ediyorum.
           </span>
         </label>

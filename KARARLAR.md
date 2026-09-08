@@ -6,6 +6,18 @@
 
 ---
 
+**2026-09-08 — KVKK Aydınlatma Metni'nde veri sorumlusu: Erdem Yavuz (şahıs).**
+Şirket henüz kurulmadığı için tüzel kişilik yerine gerçek kişi adı
+yazıldı; metinde "şirket kurulunca güncellenecek" notu var. Erdem
+onayladı.
+
+**2026-09-08 — Çerez bildirimi: ağır kabul/red ekranı yerine bilgilendirici şerit.**
+Site'de reklam/analiz/takip çerezi yok, yalnızca Supabase Auth'un zorunlu
+oturum çerezi var. Zorunlu çerezler KVKK/GDPR pratiğinde açık rıza
+gerektirmediği için tam bir "çerez tercihleri" consent akışı yerine tek
+"Anladım" ile kapanan, localStorage'da hatırlanan hafif bir şerit
+yeterli görüldü.
+
 **2026-09-08 — proxy.ts artık bozuk NEXT_PUBLIC_SUPABASE_URL ile çökmüyor.**
 Canlıda /admin ve /hesap 500 veriyordu: `@supabase/ssr`, URL "http(s)://"
 ile başlamıyorsa (yalnızca tanımsızsa değil) doğrudan fırlatıyor, biz de

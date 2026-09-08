@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import DraftVersionBanner from "@/components/DraftVersionBanner";
+import CerezBildirimiClient from "@/components/CerezBildirimiClient";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* GEÇİCİ: site yayına hazır olduğunda bu satırı kaldırın. */}
         <DraftVersionBanner />
         {children}
+        <CerezBildirimiClient />
       </body>
     </html>
   );
