@@ -6,6 +6,19 @@
 
 ---
 
+**2026-09-08 — proxy.ts artık bozuk NEXT_PUBLIC_SUPABASE_URL ile çökmüyor.**
+Canlıda /admin ve /hesap 500 veriyordu: `@supabase/ssr`, URL "http(s)://"
+ile başlamıyorsa (yalnızca tanımsızsa değil) doğrudan fırlatıyor, biz de
+yalnızca "tanımsız mı" diye bakıyorduk. Kök neden: Vercel'deki
+`NEXT_PUBLIC_SUPABASE_URL` değeri muhtemelen "ANAHTAR=DEĞER" biçiminde
+(değer kutusuna anahtar adı da dahil edilerek) yanlış girilmişti — bunu
+yerelde aynı bozuk değerle build alıp doğrulandı. Kod tarafı artık
+`/^https?:\/\//i` ile de kontrol edip geçersizse `/`'e yönlendiriyor
+(500 yerine), ayrıca değerin şeklini (uzunluk + önizleme, anahtarın
+kendisini değil) loglayarak tekrar olursa teşhisi kolaylaştırıyor. Bu,
+Vercel'deki değerin GERÇEKTEN düzeltilmesinin yerini tutmaz — yalnızca
+çökmeyi önler; düzeltilmezse özellik sessizce devre dışı kalır.
+
 **2026-09-07 — Üyelik açılınca "authenticated = admin" varsayımı terk edildi.**
 `basvurular` tablosunun RLS kuralı önceden "herhangi bir giriş yapmış
 kullanıcı okuyabilir" idi — güvenliydi çünkü Supabase Auth'a yalnızca admin

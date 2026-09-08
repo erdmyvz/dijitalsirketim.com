@@ -22,7 +22,19 @@ export async function proxy(request: NextRequest) {
   const anaSayfa = alan === "hesap" ? "/hesap" : "/admin";
 
   // Supabase yapılandırılmadıysa korumalı alanı tamamen kapalı tut.
-  if (!url || !anonKey) {
+  // NOT: yalnızca "tanımsız mı" değil, "http(s) ile başlıyor mu" diye de
+  // bakıyoruz — @supabase/ssr bunu kontrol etmiyor, doğrudan fırlatıyor
+  // ("Invalid supabaseUrl"), bu da tüm /admin ve /hesap'ı 500'e
+  // düşürüyordu. Canlıda bir kez gözlemlendi: env değişkeni Vercel'e
+  // muhtemelen "ANAHTAR=DEĞER" olarak (değer kutusuna anahtar adı da
+  // dahil edilerek) yanlış girilmişti. Burada erken yakalayıp güvenli
+  // bir önizlemeyle logluyoruz ki tekrarlarsa gerçek değeri görelim.
+  if (!url || !anonKey || !/^https?:\/\//i.test(url)) {
+    if (url && !/^https?:\/\//i.test(url)) {
+      console.error(
+        `[proxy] NEXT_PUBLIC_SUPABASE_URL "http(s)://" ile başlamıyor — uzunluk: ${url.length}, önizleme: "${url.slice(0, 20)}"`,
+      );
+    }
     return NextResponse.redirect(new URL("/", request.url));
   }
 
