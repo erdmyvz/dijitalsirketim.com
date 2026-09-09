@@ -35,9 +35,10 @@ sonra sonuçlarını ölçüp göstermenin altyapısını kurmak.
 
 ## Sıradaki Görev
 
-### 1. SEO, performans ve mobil son cila
-Core Web Vitals ölçümü, görsel optimizasyonu, Search Console doğrulaması,
-mobilde son gözden geçirme.
+### 1. Sanal POS entegrasyonu (iyzico / PayTR)
+Şirket kurulduktan sonra. Komisyon oranları, entegrasyon zorluğu ve test
+ortamı karşılaştırılıp seçim yapılacak. Fiyat, ödeme ekranında ödemeden
+önce net gösterilecek.
 
 ---
 
@@ -45,21 +46,21 @@ mobilde son gözden geçirme.
 
 Öncelik sırasına dizilidir. Üstteki biter, "Sıradaki Görev"e taşınır.
 
-### 2. Sanal POS entegrasyonu (iyzico / PayTR)
-Şirket kurulduktan sonra. Komisyon oranları, entegrasyon zorluğu ve test
-ortamı karşılaştırılıp seçim yapılacak. Fiyat, ödeme ekranında ödemeden
-önce net gösterilecek.
-
-### 3. Admin panelinden karne durumu güncelleme
+### 2. Admin panelinden karne durumu güncelleme
 "Tedavi sürecinin takibi" başlığının ikinci yarısı: `karneler.durum`
 alanı şu an yalnızca müşteri panelinde salt okunur gösteriliyor
 (varsayılan "Beklemede"). Admin panelinden bu alanı güncelleyebilme
 (ör. "İnceleniyor" / "Teklif Gönderildi" / "Tamamlandı") ayrı bir görev
 olarak bırakıldı.
 
-### 4. Şifremi unuttum akışı
+### 3. Şifremi unuttum akışı
 Müşteri girişinde (/hesap/giris) şifre sıfırlama bağlantısı yok. MVP'de
 bilinçli olarak dışarıda bırakıldı, ihtiyaç doğunca eklenecek.
+
+### 4. Sosyal medya hesapları açılınca JSON-LD'ye eklenmeli
+Şu an Instagram/LinkedIn vb. yok (2026-09-09 itibarıyla). Açılırsa
+`organizationJsonLd`'deki (`src/app/page.tsx`) `sameAs` alanına
+eklenmeli — Google'a "bu hesaplar aynı işletmeye ait" sinyali verir.
 
 ---
 
@@ -89,11 +90,33 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
       IBAN göstermeyip WhatsApp'a yönlendiriyor.
 - [ ] **`www` alt alan adı** — Vercel → Domains'e eklenmeli ki SSL alsın;
       koddaki www→apex yönlendirmesi ancak o zaman devreye girer.
-- [ ] **Google Search Console** — alan adı doğrulaması.
+- [x] **Google Search Console** — mülk doğrulandı (`layout.tsx`'e
+      eklenen `google-site-verification` etiketiyle), sitemap.xml
+      gönderildi, ana sayfa için dizine eklenme talep edildi
+      (2026-09-09, Erdem tarafından).
 
 ---
 
 ## Tamamlananlar
+
+### 2026-09-09 — SEO: Google Search Console, OG görseli, mobil kontrol
+Site Google'da hiç dizine alınmamıştı (`site:` araması sıfır sonuç) —
+sebep kötü SEO değil, ~1 haftalık yeni bir alan adının henüz taranmamış
+olması. Yapılanlar: (1) Google Search Console mülk doğrulaması
+(`layout.tsx`'e `google-site-verification` etiketi eklendi), Erdem
+sitemap.xml'i gönderdi ve ana sayfa için dizine eklenmeyi talep etti;
+(2) `next/og` ile kod-tabanlı, marka tutarlı bir Open Graph paylaşım
+görseli eklendi (`src/app/opengraph-image.tsx`, 1200x630) — önceden
+WhatsApp/sosyal paylaşımlarda hiç önizleme görseli çıkmıyordu; (3) mobil
+son kontrol yapıldı, sorun bulunmadı (içerik sunucu tarafında render
+ediliyor, 0.5s'lik CSS "belirme" animasyonu LCP'yi etkilemiyor).
+Teknik SEO temeli (title/description/canonical/robots meta/JSON-LD
+ProfessionalService+FAQPage) zaten sağlamdı, incelemede doğrulandı.
+`sameAs` (sosyal medya) ve Google İşletme Profili, Erdem'in kararıyla
+şimdilik atlandı — sosyal hesap yok, GİP istenmiyor (bkz. Bekleyen
+Görevler #4). Not: "en üstte çıkma" kod değişikliğiyle garanti
+edilemeyeceği, zamana/geri bağlantıya bağlı olduğu Erdem'e açıkça
+belirtildi.
 
 ### 2026-09-08 — KVKK Aydınlatma Metni, Gizlilik Politikası ve çerez bildirimi
 `/kvkk` (KVKK Aydınlatma Metni — veri sorumlusu: Erdem Yavuz, şahıs;

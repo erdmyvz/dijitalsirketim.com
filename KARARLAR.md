@@ -6,6 +6,20 @@
 
 ---
 
+**2026-09-09 — Google İşletme Profili ve sosyal medya (sameAs) şimdilik yok.**
+Erdem, Google İşletme Profili açmak istemedi; Instagram/LinkedIn gibi
+sosyal hesap da henüz yok. JSON-LD'deki `sameAs` alanı bu yüzden
+eklenmedi — uydurma/varsayımsal profil linki yazılmadı. Hesap açılırsa
+[TASKS.md](TASKS.md) "Bekleyen Görevler"deki madde hatırlatıyor.
+
+**2026-09-09 — "Google'da en üstte çıkma" kod değişikliğiyle garanti edilemez.**
+Site dizine bile alınmamıştı (yeni alan adı, sıfır geri bağlantı, GSC
+kaydı yoktu) — teknik SEO temeli zaten sağlamdı. Yapılabilecek: dizine
+girmeyi hızlandırmak (GSC doğrulama+sitemap+indexing talebi) ve teknik
+altyapıyı (OG görseli vb.) tamamlamak. Rekabetçi genel terimlerde
+üst sıralarda çıkmak zamana, içerik üretimine ve geri bağlantıya bağlı
+bir süreç — Erdem'e abartılı vaat verilmedi (CLAUDE.md marka kuralı).
+
 **2026-09-08 — KVKK Aydınlatma Metni'nde veri sorumlusu: Erdem Yavuz (şahıs).**
 Şirket henüz kurulmadığı için tüzel kişilik yerine gerçek kişi adı
 yazıldı; metinde "şirket kurulunca güncellenecek" notu var. Erdem
