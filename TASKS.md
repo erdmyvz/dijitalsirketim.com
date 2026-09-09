@@ -15,21 +15,47 @@ işletmelerin başarıları ile yeni işletmeler sisteme dahil olarak bu
 sistemin başarısı kanıtlanmalıdır."
 
 Kendi kendini besleyen döngü: müşteri → ölçülebilir gelir artışı →
-sisteme sadakat → o başarı yeni müşteri getirir. Bu bölümdeki hiçbir
-madde henüz onaylanmış bir görev DEĞİL — yalnızca gelecekteki
-önceliklendirmede filtre olarak kullanılacak bir yön. Somut bir adıma
-dönüştürmeden önce her zaman plan sunulup onay beklenecek (bkz.
-CLAUDE.md). Olası yönler:
-- Gerçek sonuç/vaka çalışmaları — **ancak** gerçek ücretli müşteriler ve
-  ölçülmüş sonuçlar oluştuktan sonra (CLAUDE.md: sahte referans/uydurma
-  istatistik asla yazılmaz — şu an gerçek müşteri yok).
-- Sadakat/tavsiye programı — eski müşteri yeni müşteri getirirse ne
-  kazanır?
-- Müşterinin kendi sonuç/gelir ilerlemesini gördüğü bir pano —
-  mevcut `/hesap` panelinin (karne geçmişi) ötesinde.
+sisteme sadakat → o başarı yeni müşteri getirir.
 
-İlk somut adım muhtemelen: ilk gerçek ücretli müşteriler geldikten
-sonra sonuçlarını ölçüp göstermenin altyapısını kurmak.
+**2026-09-09'da netleşen ürün modeli (Erdem'in kendi ifadesiyle):**
+"Ben sistemden tamamen bağımsız olmak istiyorum. Sadece özel müşteriler
+bana gelip benden danışmanlık alabilirler. Diğer tüm işletme sahipleri bu
+site ile şirket içerisindeki sorunları tespit edip gelirlerini arttırma
+konusunda ilerleyecektir. (…) Alanında uzman kişilerde bu sisteme kayıt
+olabilecek ve şirketlerin tespit edilen sorunlarına doğru kişiyi
+eşleştirerek çözüm sağlayacak."
+
+Buradan çıkan **dört katmanlı ürün**:
+
+1. **Self-servis teşhis** — bugün var: `/check-up` → Dijital Sağlık
+   Karnesi + AI ön teşhis.
+2. **Self-servis tedavi modülleri** — asıl eksik parça. Teşhisteki
+   kırmızı bölgeye göre açılan, adım adım uygulanabilir modüller: ör.
+   "Müşteri Bulma Modülü"; netlik sorunu olanlar için temel görev
+   tanımları. Erdem'in hiç dahil olmadığı, ölçeklenen kısım.
+3. **Uzman pazar yeri** — uzmanlar sisteme kayıt olur, tespit edilen
+   soruna göre doğru uzmanla eşleştirilir. Not: mevcut 7 fonksiyonluk
+   model (Müşteri Bulma / Satış / Operasyon / Ürün Geliştirme / Para
+   Yönetimi / Karar Alma / Ekip Kurma) eşleştirme için hazır bir
+   taksonomi — uzman hangi fonksiyonlarda uzman olduğunu seçer,
+   check-up'ın "kırmızı bölge"si zaten o fonksiyonları adlandırıyor.
+   `profiles` tablosunun tek bir `is_admin` bayrağının ötesinde rol
+   (müşteri / uzman / admin) taşımasını gerektirecek.
+4. **Şirkete özel otomasyon satışı** — ileriki versiyon. Tekrar eden
+   manuel işlerin (ör. elle teklif hazırlama) otomasyonu; görüşmeyle
+   satılan, yüksek dokunuşlu iş. Danışmanlık da yalnızca bu "özel
+   müşteri" katmanında.
+
+**Karar filtresi:** Yeni bir özellik önerirken sor — "bunu Erdem mi
+yapıyor, sistem mi?" Müşterinin Erdem'e ihtiyaç duyduğu her manuel adım
+(elle şifre sıfırlama, elle durum güncelleme, elle içerik teslimi)
+vizyona aykırı.
+
+Bu bölümdeki hiçbir madde henüz onaylanmış bir görev DEĞİL — somut bir
+adıma dönüştürmeden önce her zaman plan sunulup onay beklenecek (bkz.
+CLAUDE.md). Ayrıca: gerçek sonuç/vaka çalışmaları ancak gerçek ücretli
+müşteriler ve ölçülmüş sonuçlar oluştuktan sonra yazılabilir — sahte
+referans/uydurma istatistik asla yazılmaz.
 
 ---
 
@@ -53,9 +79,13 @@ alanı şu an yalnızca müşteri panelinde salt okunur gösteriliyor
 (ör. "İnceleniyor" / "Teklif Gönderildi" / "Tamamlandı") ayrı bir görev
 olarak bırakıldı.
 
-### 3. Şifremi unuttum akışı
-Müşteri girişinde (/hesap/giris) şifre sıfırlama bağlantısı yok. MVP'de
-bilinçli olarak dışarıda bırakıldı, ihtiyaç doğunca eklenecek.
+### 3. Kendi SMTP'ni bağla (e-posta gönderimi)
+Supabase'in ücretsiz katmandaki yerleşik e-posta gönderimi saatte birkaç
+e-postayla sınırlı ve çoğu zaman spam klasörüne düşer. Kayıt onayı ve
+şifre sıfırlama e-postaları buna bağlı olduğu için, gerçek kullanıcılar
+gelmeye başlayınca kendi SMTP'si (ör. Resend / Brevo ücretsiz katman)
+Supabase → Authentication → SMTP Settings'e bağlanmalı. Erdem'in kararı
+(2026-09-09): müşteriler gelene kadar ücretsiz katmanda kalınacak.
 
 ### 4. Sosyal medya hesapları açılınca JSON-LD'ye eklenmeli
 Şu an Instagram/LinkedIn vb. yok (2026-09-09 itibarıyla). Açılırsa
@@ -98,6 +128,28 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 ---
 
 ## Tamamlananlar
+
+### 2026-09-09 — Şifremi unuttum akışı
+Müşteri artık şifresini kendi sıfırlayabiliyor — daha önce Erdem'in
+Supabase panelinden elle müdahalesi gerekiyordu, bu da "sistemden
+bağımsız olma" vizyonuna aykırıydı. Eklenenler: `/hesap/sifremi-unuttum`
+(e-posta ile sıfırlama bağlantısı ister; kayıtlı olmayan e-posta için de
+aynı ekranı gösterir — hangi e-postanın kayıtlı olduğunu sızdırmamak
+için), `/hesap/sifre-yenile/dogrula` (e-postadaki tek kullanımlık kodu
+oturuma çeviren Route Handler — cookie yazmak gerektiği için Server
+Component'te yapılamaz; hem PKCE `?code=` hem klasik
+`?token_hash=&type=recovery` biçimini karşılar), `/hesap/sifre-yenile`
+(yeni şifre formu). `proxy.ts` güncellendi: `/hesap/sifremi-unuttum`
+oturumsuz erişilebilir, doğrulama route'u guard'ın tamamen dışında
+(oturum açıkken de çalışmalı), `/hesap/sifre-yenile` ise korumalı kaldı.
+Giriş sayfasına "Şifremi unuttum" bağlantısı eklendi.
+
+Uçtan uca doğrulandı (tek kullanımlık test hesabıyla, e-posta
+göndermeden — admin API ile gerçek kurtarma token'ı üretilerek):
+bağlantı → oturum açılıyor → yeni şifre kaydediliyor → panele
+yönlendiriyor; yeni şifreyle giriş çalışıyor, eski şifre reddediliyor.
+Geçersiz/süresi dolmuş bağlantı, açıklayıcı uyarıyla sıfırlama sayfasına
+geri gönderiyor. Mobil kontrol yapıldı, test verisi temizlendi.
 
 ### 2026-09-09 — SEO: Google Search Console, OG görseli, mobil kontrol
 Site Google'da hiç dizine alınmamıştı (`site:` araması sıfır sonuç) —

@@ -15,10 +15,24 @@ export async function proxy(request: NextRequest) {
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   const pathname = request.nextUrl.pathname;
+
+  // Şifre sıfırlama bağlantısının düştüğü route, guard'ın TAMAMEN
+  // dışında kalmalı: oturum yokken çalışması gerekiyor (oturumu zaten
+  // o route açıyor), ama oturum varken de "giriş sayfası" sayılıp
+  // /hesap'a atılmamalı — yoksa başka sekmede oturumu açık olan bir
+  // kullanıcının sıfırlama bağlantısı sessizce çalışmaz.
+  if (pathname === "/hesap/sifre-yenile/dogrula") {
+    return response;
+  }
+
   const alan = pathname.startsWith("/hesap") ? "hesap" : "admin";
   const girisYolu = alan === "hesap" ? "/hesap/giris" : "/admin/giris";
+  // Oturum açmadan girilebilen sayfalar. NOT: /hesap/sifre-yenile
+  // bilerek burada DEĞİL — oturum gerektiren korumalı bir sayfa.
   const girisAlaniYollari =
-    alan === "hesap" ? ["/hesap/giris", "/hesap/kayit"] : ["/admin/giris"];
+    alan === "hesap"
+      ? ["/hesap/giris", "/hesap/kayit", "/hesap/sifremi-unuttum"]
+      : ["/admin/giris"];
   const anaSayfa = alan === "hesap" ? "/hesap" : "/admin";
 
   // Supabase yapılandırılmadıysa korumalı alanı tamamen kapalı tut.

@@ -1,57 +1,57 @@
 "use client";
 
-import { Suspense, useState, type FormEvent } from "react";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
 
-// Müşteri girişi — admin girişinden (/admin/giris) tamamen ayrı.
-// useSearchParams kullandığı için Suspense sınırı gerekiyor (Next.js
-// prod build'de bu olmadan hata verir).
-function GirisFormu() {
+// Yeni şifre belirleme. Buraya ancak e-postadaki bağlantı doğrulandıktan
+// (yani ./dogrula route'u oturumu açtıktan) sonra gelinebiliyor —
+// oturum yoksa proxy.ts zaten /hesap/giris'e yönlendirir.
+export default function SifreYenile() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const sonraki = searchParams.get("sonraki") || "/hesap";
   const [hata, setHata] = useState("");
   const [gonderiliyor, setGonderiliyor] = useState(false);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setHata("");
-    setGonderiliyor(true);
 
     const formData = new FormData(e.currentTarget);
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
-      email: String(formData.get("email") ?? ""),
-      password: String(formData.get("password") ?? ""),
-    });
+    const sifre = String(formData.get("password") ?? "");
+    const sifreTekrar = String(formData.get("password_tekrar") ?? "");
 
-    if (error) {
-      setGonderiliyor(false);
-      setHata("Giriş başarısız: e-posta veya şifre hatalı.");
+    if (sifre !== sifreTekrar) {
+      setHata("Şifreler eşleşmiyor.");
       return;
     }
 
-    router.replace(sonraki);
+    setGonderiliyor(true);
+    const supabase = createClient();
+    const { error } = await supabase.auth.updateUser({ password: sifre });
+
+    if (error) {
+      setGonderiliyor(false);
+      setHata("Şifre güncellenemedi: " + error.message);
+      return;
+    }
+
+    // Şifre değişti ve oturum zaten açık — doğrudan panele al.
+    router.replace("/hesap");
     router.refresh();
   }
-
-  const kayitHref =
-    sonraki === "/hesap" ? "/hesap/kayit" : `/hesap/kayit?sonraki=${encodeURIComponent(sonraki)}`;
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 px-6">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-teal-600 text-xl text-white">
-            🩺
+            🔑
           </span>
           <h1 className="mt-4 text-2xl font-semibold tracking-[-0.02em] text-slate-900">
-            Hesabına Giriş Yap
+            Yeni Şifre Belirle
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            Check-Up karnelerini gör, ilerlemeni takip et.
+            Yeni şifreni yaz, hemen panele geçelim.
           </p>
         </div>
 
@@ -61,45 +61,39 @@ function GirisFormu() {
         >
           <div>
             <label
-              htmlFor="email"
+              htmlFor="password"
               className="mb-1 block text-sm font-medium text-slate-700"
             >
-              E-posta
+              Yeni şifre
             </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              autoComplete="email"
-              className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition-all duration-200 ease-[var(--ease-apple)] focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10"
-              placeholder="ornek@sirket.com"
-            />
-          </div>
-
-          <div>
-            <div className="mb-1 flex items-baseline justify-between gap-2">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-slate-700"
-              >
-                Şifre
-              </label>
-              <Link
-                href="/hesap/sifremi-unuttum"
-                className="text-xs font-medium text-teal-700 hover:underline"
-              >
-                Şifremi unuttum
-              </Link>
-            </div>
             <input
               id="password"
               name="password"
               type="password"
               required
-              autoComplete="current-password"
+              minLength={6}
+              autoComplete="new-password"
               className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition-all duration-200 ease-[var(--ease-apple)] focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10"
-              placeholder="••••••••"
+              placeholder="En az 6 karakter"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="password_tekrar"
+              className="mb-1 block text-sm font-medium text-slate-700"
+            >
+              Yeni şifre (tekrar)
+            </label>
+            <input
+              id="password_tekrar"
+              name="password_tekrar"
+              type="password"
+              required
+              minLength={6}
+              autoComplete="new-password"
+              className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition-all duration-200 ease-[var(--ease-apple)] focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10"
+              placeholder="Aynı şifreyi tekrar yaz"
             />
           </div>
 
@@ -114,25 +108,10 @@ function GirisFormu() {
             disabled={gonderiliyor}
             className="w-full rounded-full bg-teal-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-600/25 transition-all duration-300 ease-[var(--ease-apple)] hover:bg-teal-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {gonderiliyor ? "Giriş yapılıyor..." : "Giriş Yap"}
+            {gonderiliyor ? "Kaydediliyor..." : "Şifreyi Güncelle"}
           </button>
         </form>
-
-        <p className="mt-6 text-center text-sm text-slate-500">
-          Hesabın yok mu?{" "}
-          <Link href={kayitHref} className="font-semibold text-teal-700 hover:underline">
-            Kayıt ol
-          </Link>
-        </p>
       </div>
     </div>
-  );
-}
-
-export default function HesapGiris() {
-  return (
-    <Suspense fallback={null}>
-      <GirisFormu />
-    </Suspense>
   );
 }

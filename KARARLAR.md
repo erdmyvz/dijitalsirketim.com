@@ -6,6 +6,33 @@
 
 ---
 
+**2026-09-09 — Ürün dört katmana ayrıldı; ölçüt: "bunu Erdem mi yapıyor, sistem mi?"**
+Erdem "sistemden tamamen bağımsız" olmak istiyor: (1) self-servis teşhis
+[var], (2) self-servis tedavi modülleri, (3) uzmanların kayıt olup
+tespit edilen sorunla eşleştirildiği pazar yeri, (4) şirkete özel
+otomasyon satışı [danışmanlık yalnızca burada]. Sonuç: müşterinin
+Erdem'e ihtiyaç duyduğu her manuel adım vizyona aykırı sayılıyor ve
+önceliklendirmede bu ölçüt kullanılıyor. Detay: [TASKS.md](TASKS.md)
+"Uzun Vadeli Vizyon". Not: uzman eşleştirmesi için mevcut 7 fonksiyonluk
+model hazır bir taksonomi; `profiles` ileride rol (müşteri/uzman/admin)
+taşımalı.
+
+**2026-09-09 — Şifre sıfırlamada oturum, Route Handler'da açılıyor.**
+E-postadaki tek kullanımlık kodu oturuma çevirmek cookie yazmayı
+gerektiriyor; bu Server Component'ten yapılamadığı için
+`/hesap/sifre-yenile/dogrula` bir Route Handler. Hem PKCE (`?code=`) hem
+klasik şablon (`?token_hash=&type=recovery`) biçimi destekleniyor —
+hangisinin geleceği Supabase e-posta şablonuna bağlı, ikisini de
+karşılamak bağlantının sessizce çalışmamasını önlüyor. Bu route,
+proxy guard'ının tamamen dışında: oturum yokken çalışmalı (oturumu zaten
+o açıyor), oturum varken de "giriş sayfası" sayılıp panele atılmamalı.
+
+**2026-09-09 — E-posta gönderimi müşteriler gelene kadar Supabase ücretsiz katmanında.**
+Ücretsiz katmanın yerleşik SMTP'si saatte birkaç e-postayla sınırlı ve
+sık sık spam'e düşüyor; kayıt onayı ve şifre sıfırlama buna bağlı.
+Erdem'in kararı: müşteriler gelmeye başlayınca ücretli/kendi SMTP'sine
+geçilecek. O zamana kadar bu bilinen bir kısıt.
+
 **2026-09-09 — Google İşletme Profili ve sosyal medya (sameAs) şimdilik yok.**
 Erdem, Google İşletme Profili açmak istemedi; Instagram/LinkedIn gibi
 sosyal hesap da henüz yok. JSON-LD'deki `sameAs` alanı bu yüzden
