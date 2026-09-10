@@ -8,6 +8,36 @@ import { createClient } from "@/lib/supabase/browser";
 // Müşteri girişi — admin girişinden (/admin/giris) tamamen ayrı.
 // useSearchParams kullandığı için Suspense sınırı gerekiyor (Next.js
 // prod build'de bu olmadan hata verir).
+/**
+ * Girişten sonra nereye gidileceğini belirler.
+ *
+ * Kullanıcı belirli bir sayfaya gitmek isterken girişe düştüyse
+ * (ör. bir modül bağlantısı → ?sonraki=/tedavi/...) oraya devam edilir.
+ * Hedef belirtilmemişse admin doğrudan yönetim paneline alınır —
+ * yönetici her girişte müşteri panelinden geçmek zorunda kalmasın.
+ *
+ * Profil okunamazsa sessizce /hesap'a düşer: yönlendirme kolaylığı için
+ * girişi bloklamaya değmez.
+ */
+async function hedefiBelirle(
+  supabase: ReturnType<typeof createClient>,
+  kullaniciId: string | undefined,
+  sonraki: string,
+): Promise<string> {
+  if (sonraki !== "/hesap" || !kullaniciId) return sonraki;
+
+  try {
+    const { data } = await supabase
+      .from("profiles")
+      .select("is_admin")
+      .eq("id", kullaniciId)
+      .maybeSingle<{ is_admin: boolean }>();
+    return data?.is_admin ? "/admin" : sonraki;
+  } catch {
+    return sonraki;
+  }
+}
+
 function GirisFormu() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -22,7 +52,7 @@ function GirisFormu() {
 
     const formData = new FormData(e.currentTarget);
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: String(formData.get("email") ?? ""),
       password: String(formData.get("password") ?? ""),
     });
@@ -33,7 +63,7 @@ function GirisFormu() {
       return;
     }
 
-    router.replace(sonraki);
+    router.replace(await hedefiBelirle(supabase, data.user?.id, sonraki));
     router.refresh();
   }
 
