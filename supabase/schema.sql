@@ -75,15 +75,21 @@ create trigger on_auth_user_created
   for each row execute function public.handle_new_user();
 
 -- TEK SEFERLİK BACKFILL: bu ALTER'ı ilk çalıştırdığınızda henüz
--- profiles satırı olmayan kullanıcı(lar) — o an yalnızca elle
--- eklediğiniz admin hesabınız — admin olarak işaretlenir. Var olan bir
--- profiles satırını asla GÜNCELLEMEZ (ON CONFLICT DO NOTHING), yani
--- bu SQL'i tekrar çalıştırmak ileride kaydolan müşterileri admin
--- yapmaz.
+-- Admin hesabı E-POSTAYA SABİTLENMİŞTİR.
+--
+-- Eski sürüm "profiles satırı olmayan HERKESİ admin yapar" diyordu.
+-- Tehlikesi: tetikleyici bir kez çalışmazsa ya da bir profil satırı
+-- silinirse, sıradan bir müşteri bu SQL'in bir sonraki çalıştırılışında
+-- admin olurdu. (2026-09-10'da admin profil satırının kaybolduğu
+-- gözlemlendikten sonra sıkılaştırıldı.)
+--
+-- Yeni admin eklemek için: aşağıdaki e-postayı değiştirip yalnızca bu
+-- bloğu çalıştırın. Bu blok aynı zamanda KURTARMA yoludur — profil
+-- satırı kaybolursa tekrar çalıştırmak yetkiyi geri verir.
 insert into public.profiles (id, is_admin)
 select id, true from auth.users
-where id not in (select id from public.profiles)
-on conflict (id) do nothing;
+where email = 'erdem.yvz@hotmail.com'
+on conflict (id) do update set is_admin = true;
 
 -- basvurular: "authenticated = admin" artık geçersiz — yalnızca
 -- profiles.is_admin=true olanlar okuyabilsin.

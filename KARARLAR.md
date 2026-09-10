@@ -6,6 +6,22 @@
 
 ---
 
+**2026-09-10 — Admin yetkisi e-postaya sabitlendi.**
+`schema.sql`'deki eski kural "profiles satırı olmayan HERKESİ admin
+yapar" idi (ilk kurulumda tek kullanıcı admin olduğu için pratikti).
+Tehlikesi: tetikleyici bir kez çalışmazsa ya da bir profil satırı
+silinirse, sıradan bir müşteri bu SQL'in bir sonraki çalıştırılışında
+admin olabilirdi. Canlıda admin profil satırının kaybolduğu gözlemlendi
+(sebebi saptanamadı; hesap duruyordu, yalnızca `profiles` satırı yoktu)
+ve yetki elle geri verildi. Artık atama `where email = '...'` ile
+sabit; blok idempotent olduğu için aynı zamanda kurtarma yolu.
+
+**2026-09-10 — Müşteri panelinde admin'e özel "Yönetim Paneli" bağlantısı.**
+Admin hesabıyla giriş yapan kişi `/hesap`'a düşüyor ve oradan `/admin`'e
+ulaşmanın hiçbir yolu yoktu — adresi elle yazmak gerekiyordu. İki ayrı
+giriş sayfası (`/hesap/giris`, `/admin/giris`) olduğu için bu kafa
+karıştırıcıydı. Bağlantı yalnızca `is_admin` olanlara gösteriliyor.
+
 **2026-09-10 — Başvuru formu, ana huniden çıkıp "özel çalışma" kanalı oldu.**
 Ana huni artık: ücretsiz check-up → hesap → tedavi planı → ödeme. Eski
 başvuru formu (ad/işletme/telefon → `basvurular`) bu huninin parçası
