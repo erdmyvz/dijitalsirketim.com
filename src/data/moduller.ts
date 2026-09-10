@@ -17,6 +17,35 @@ export type KokVida = "Yetkinlik" | "Kültür" | "Netlik";
 
 export type ModulDurumu = "hazir" | "yakinda";
 
+/**
+ * Bir modülün tek adımı.
+ *
+ * İÇERİK EKLEME: modülün `adimlar` dizisine nesne eklemek yeterli.
+ * `adimlar` boşsa modül "içerik hazırlanıyor" durumunda kalır; dolunca
+ * adım ekranı, ilerleme kaydı ve bitiş kontrolü kendiliğinden devreye
+ * girer — kodda değişiklik gerekmez.
+ */
+export type ModulAdimi = {
+  /** İlerleme kaydının anahtarı — sonradan DEĞİŞTİRİLMEMELİ. */
+  id: string;
+  baslik: string;
+  /** Ne yapılacak ve neden — kısa, uygulanabilir. */
+  aciklama: string;
+  /**
+   * Doldurulabilir şablon. Yoksa adım yalnızca "yaptım" işaretiyle
+   * kapanır; varsa kullanıcının yazdığı metin saklanır ve geri
+   * döndüğünde karşısına çıkar.
+   */
+  sablon?: {
+    etiket: string;
+    ipucu: string;
+    /** textarea satır sayısı — varsayılan 4. */
+    satir?: number;
+  };
+  /** "Bu adım bitti" demenin somut ölçüsü. */
+  bitisKriteri: string;
+};
+
 export type Modul = {
   /** URL parçası — /tedavi/<fonksiyon>/<bu id> */
   id: string;
@@ -36,6 +65,11 @@ export type Modul = {
   onardigiSorular: string[];
   /** İşletmenin nefes alması için önce yapılması gerekenler. */
   acil?: boolean;
+  /**
+   * Modülün adımları. Boşsa içerik henüz yazılmamış demektir —
+   * ekranda "hazırlanıyor" görünür.
+   */
+  adimlar: ModulAdimi[];
 };
 
 export type TedaviFonksiyonu = {
@@ -70,6 +104,7 @@ export const TEDAVI_FONKSIYONLARI: TedaviFonksiyonu[] = [
         kokVida: ["Netlik"],
         onardigiSorular: ["musteri_bulma.surec", "musteri_bulma.sistem"],
         acil: true,
+        adimlar: [],
       },
       {
         id: "duzenli-pazarlama-ritmi",
@@ -81,6 +116,7 @@ export const TEDAVI_FONKSIYONLARI: TedaviFonksiyonu[] = [
         katmanlar: ["surec"],
         kokVida: ["Kültür"],
         onardigiSorular: ["musteri_bulma.surec", "musteri_bulma.yapi"],
+        adimlar: [],
       },
     ],
   },
@@ -102,6 +138,7 @@ export const TEDAVI_FONKSIYONLARI: TedaviFonksiyonu[] = [
         katmanlar: ["surec"],
         kokVida: ["Yetkinlik"],
         onardigiSorular: ["satis.surec"],
+        adimlar: [],
       },
       {
         id: "satis-takibi-ve-donusum",
@@ -113,6 +150,7 @@ export const TEDAVI_FONKSIYONLARI: TedaviFonksiyonu[] = [
         katmanlar: ["sistem", "yapi"],
         kokVida: ["Netlik"],
         onardigiSorular: ["satis.sistem", "satis.yapi"],
+        adimlar: [],
       },
     ],
   },
@@ -133,6 +171,7 @@ export const TEDAVI_FONKSIYONLARI: TedaviFonksiyonu[] = [
         katmanlar: ["surec"],
         kokVida: ["Netlik"],
         onardigiSorular: ["operasyon.surec"],
+        adimlar: [],
       },
       {
         id: "operasyon-gostergeleri",
@@ -144,6 +183,7 @@ export const TEDAVI_FONKSIYONLARI: TedaviFonksiyonu[] = [
         katmanlar: ["sistem"],
         kokVida: ["Netlik"],
         onardigiSorular: ["operasyon.sistem"],
+        adimlar: [],
       },
     ],
   },
@@ -165,6 +205,7 @@ export const TEDAVI_FONKSIYONLARI: TedaviFonksiyonu[] = [
         katmanlar: ["surec"],
         kokVida: ["Kültür"],
         onardigiSorular: ["urun_gelistirme.surec"],
+        adimlar: [],
       },
       {
         id: "urun-karlilik-analizi",
@@ -176,6 +217,7 @@ export const TEDAVI_FONKSIYONLARI: TedaviFonksiyonu[] = [
         katmanlar: ["sistem"],
         kokVida: ["Netlik"],
         onardigiSorular: ["urun_gelistirme.sistem", "urun_gelistirme.yapi"],
+        adimlar: [],
       },
     ],
   },
@@ -201,6 +243,7 @@ export const TEDAVI_FONKSIYONLARI: TedaviFonksiyonu[] = [
           "para_yonetimi.sistem",
           "para_yonetimi.yapi",
         ],
+        adimlar: [],
       },
     ],
   },
@@ -222,6 +265,7 @@ export const TEDAVI_FONKSIYONLARI: TedaviFonksiyonu[] = [
         katmanlar: ["surec", "sistem"],
         kokVida: ["Kültür"],
         onardigiSorular: ["karar_alma.surec", "karar_alma.sistem"],
+        adimlar: [],
       },
       {
         id: "yonetici-kafa-yapisi",
@@ -232,6 +276,7 @@ export const TEDAVI_FONKSIYONLARI: TedaviFonksiyonu[] = [
         katmanlar: ["yapi"],
         kokVida: ["Kültür", "Yetkinlik"],
         onardigiSorular: ["karar_alma.yapi"],
+        adimlar: [],
       },
     ],
   },
@@ -252,6 +297,7 @@ export const TEDAVI_FONKSIYONLARI: TedaviFonksiyonu[] = [
         katmanlar: ["yapi"],
         kokVida: ["Netlik"],
         onardigiSorular: ["ekip_kurma.yapi"],
+        adimlar: [],
       },
       {
         id: "ise-alim-ve-alistirma",
@@ -263,6 +309,7 @@ export const TEDAVI_FONKSIYONLARI: TedaviFonksiyonu[] = [
         katmanlar: ["surec", "sistem"],
         kokVida: ["Yetkinlik"],
         onardigiSorular: ["ekip_kurma.surec", "ekip_kurma.sistem"],
+        adimlar: [],
       },
       {
         id: "devretme-sensiz-yuruyen-isletme",
@@ -274,6 +321,7 @@ export const TEDAVI_FONKSIYONLARI: TedaviFonksiyonu[] = [
         katmanlar: ["yapi"],
         kokVida: ["Kültür"],
         onardigiSorular: ["operasyon.yapi", "ekip_kurma.yapi"],
+        adimlar: [],
       },
     ],
   },

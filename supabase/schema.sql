@@ -258,3 +258,49 @@ insert into public.ayarlar (anahtar, deger) values
   ('iban', ''),
   ('hesap_sahibi', '')
 on conflict (anahtar) do nothing;
+
+-- ---------------------------------------------------------------------
+-- Modül ilerlemesi: kullanıcının hangi adımı bitirdiği, şablona ne yazdığı
+-- ---------------------------------------------------------------------
+-- modul_id / adim_id, src/data/moduller.ts'teki id'lerdir. Bu yüzden o
+-- id'ler bir kez yayına çıktıktan sonra DEĞİŞTİRİLMEMELİ — değişirse
+-- kullanıcının ilerlemesi o adıma bağlanamaz.
+
+create table if not exists public.modul_ilerleme (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  modul_id text not null,
+  adim_id text not null,
+  tamamlandi boolean not null default false,
+  -- Kullanıcının şablona yazdığı metin; yarıda bırakıp dönebilsin.
+  sablon_metni text,
+  guncellendi timestamptz not null default now(),
+  unique (user_id, modul_id, adim_id)
+);
+
+create index if not exists modul_ilerleme_user_modul_idx
+  on public.modul_ilerleme (user_id, modul_id);
+
+alter table public.modul_ilerleme enable row level security;
+
+-- Kullanıcı yalnızca kendi ilerlemesini görür ve yazar.
+drop policy if exists "Kullanici kendi ilerlemesini yonetir" on public.modul_ilerleme;
+create policy "Kullanici kendi ilerlemesini yonetir"
+  on public.modul_ilerleme
+  for all
+  to authenticated
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+
+-- Adminler ilerlemeyi okuyabilir (destek/takip için).
+drop policy if exists "Adminler ilerlemeyi okur" on public.modul_ilerleme;
+create policy "Adminler ilerlemeyi okur"
+  on public.modul_ilerleme
+  for select
+  to authenticated
+  using (
+    exists (
+      select 1 from public.profiles p
+      where p.id = auth.uid() and p.is_admin
+    )
+  );

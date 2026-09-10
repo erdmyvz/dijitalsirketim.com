@@ -116,7 +116,11 @@ export default async function ModulSayfasi({
         </div>
       )}
 
-      <ModulIcerigi fonksiyonId={fonksiyon.id} durum={modul.durum} />
+      <ModulIcerigi
+        fonksiyonId={fonksiyon.id}
+        fonksiyonSlug={fonksiyon.slug}
+        modul={modul}
+      />
 
       <div className="mt-10 text-center">
         <Link

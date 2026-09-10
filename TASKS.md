@@ -135,9 +135,9 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
       `anon` anahtarı hem okumayı hem yazmayı doğru şekilde reddediyor.
       `/api/basvuru` gerçek bir kaydı Supabase'e yazdığı doğrulandı
       (test kaydı silindi). **Kalan:**
-      - [ ] Admin kullanıcısı eklenmeli — Supabase → Authentication →
-        Users → Add user (e-posta/şifreyi Erdem kendisi belirler, bu adım
-        güvenlik gereği devredilemez).
+      - [x] Admin kullanıcısı eklendi: **erdem.yvz@hotmail.com**
+        (`profiles.is_admin = true`, e-posta onaylı — 2026-09-10'da
+        doğrulandı).
       - [x] 3 anahtar Vercel → Environment Variables'a da girildi
         (Erdem ekran görüntüleriyle doğruladı, 2026-09-07).
 - [x] **`ayarlar` tablosu** — çalıştırıldı (2026-09-10), admin ayarlar
@@ -146,6 +146,10 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
       doğrulandı: kilitli modül → admin panelinden "1 ay ekle" → kilit
       açıldı; plana dahil olmayan fonksiyonun modülü kilitli kaldı;
       geri sayım ve son-7-gün uyarısı doğru çalıştı.
+- [ ] **`modul_ilerleme` tablosu çalıştırılmalı** — [supabase/schema.sql](supabase/schema.sql)'in
+      sonundaki `-- Modül ilerlemesi:` bölümü Supabase → SQL Editor'de bir
+      kez çalıştırılmalı. Olmadan kullanıcı adımları işaretleyemez /
+      şablon dolduramaz (sayfa çökmez, adımlar okunur ama kaydedilmez).
 - [ ] **Abonelik ödeme bilgileri girilmeli** — Admin → Ayarlar
       ekranından IBAN ve hesap sahibi. Girilene kadar `/hesap/odeme`
       ekranı IBAN göstermeyip WhatsApp'a yönlendiriyor (yanlış hesaba
@@ -160,6 +164,32 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 ---
 
 ## Tamamlananlar
+
+### 2026-09-10 — Modül motoru (içerik olmadan altyapı)
+Modüllerin içeriğini taşıyacak mekanizma kuruldu; 14 modülün `adimlar`
+dizisi bilinçli olarak boş. İçerik geldiğinde tek yapılacak iş
+`moduller.ts`'e yazmak — kod dokunulmayacak.
+
+- **Adım veri yapısı** (`ModulAdimi`): başlık, açıklama, isteğe bağlı
+  doldurulabilir şablon, bitiş kriteri. `adimlar` boşsa modül otomatik
+  "içerik hazırlanıyor" durumunda kalıyor.
+- **Adım ekranı** (`ModulAdimlari.tsx`): ilerleme çubuğu, adım adım
+  kartlar, şablon alanları, "Yaptım" işaretleri. Yazma tarayıcıdan
+  doğrudan Supabase'e (RLS koruyor, KaydetKarti ile aynı desen);
+  şablon metni alandan çıkınca kaydediliyor, her tuşta değil.
+- **`modul_ilerleme` tablosu**: kullanıcı × modül × adım, benzersiz
+  kısıtla. Kullanıcı yalnızca kendi satırını yönetiyor, admin okuyabiliyor.
+- **Bitiş kontrolü — döngüyü kapatan parça**: tüm adımlar bitince
+  modülün onardığı check-up soruları tekrar soruluyor
+  (`/tedavi/[f]/[m]/bitir`), cevaplar **yeni bir karne** oluşturuyor
+  (eski karne geçmişte kalıyor, diğer 19 sorunun cevabı taşınıyor).
+  Skor yükseliyor, aylık tutar düşüyor. Eski AI teşhis bilinçli olarak
+  taşınmıyor — yeni duruma ait değil.
+
+Geçici iki test adımıyla ekran doğrulandı, sonra geri alındı. Tablo
+yokken sayfanın çökmediği, adımların okunabilir kaldığı da görüldü.
+**Henüz test edilmedi:** ilerleme kaydı ve bitiş kontrolü —
+`modul_ilerleme` tablosu oluşturulduktan sonra uçtan uca doğrulanacak.
 
 ### 2026-09-10 — /tedavi giriş arkasına alındı
 Erdem'in kararı: modül içerikleri tamamlanmadan ana sayfada

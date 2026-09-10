@@ -1,24 +1,28 @@
 import Link from "next/link";
 import type { FonksiyonId } from "@/data/questions";
-import type { ModulDurumu } from "@/data/moduller";
+import type { Modul } from "@/data/moduller";
 import { erisimDurumu, fonksiyonaErisimVarMi } from "@/lib/tedavi/erisim";
 import { IconArrowRight } from "@/components/icons";
+import ModulAdimlari from "./ModulAdimlari";
 
 /**
  * Modül sayfasının içerik bölümü. Üç hâli var:
  *   1. İçerik henüz yazılmadı  → "hazırlanıyor" (kilit gösterilmez;
  *      olmayan şeyi kilitli göstermek dürüst olmaz)
  *   2. İçerik var, erişim yok  → kilit + plana yönlendirme
- *   3. İçerik var, erişim var  → adımlar (modül içerikleri geldiğinde)
+ *   3. İçerik var, erişim var  → adım adım uygulama ekranı
  */
 export default async function ModulIcerigi({
   fonksiyonId,
-  durum,
+  fonksiyonSlug,
+  modul,
 }: {
   fonksiyonId: FonksiyonId;
-  durum: ModulDurumu;
+  fonksiyonSlug: string;
+  modul: Modul;
 }) {
-  if (durum === "yakinda") {
+  // "Yakında" ya da adımı yazılmamış modül: içerik yok demektir.
+  if (modul.durum === "yakinda" || modul.adimlar.length === 0) {
     return (
       <div className="mt-8 rounded-[24px] border border-dashed border-slate-300 bg-slate-100/60 p-8 text-center">
         <p className="text-base font-semibold text-slate-800">
@@ -59,16 +63,11 @@ export default async function ModulIcerigi({
     );
   }
 
-  // Erişim var ama içerik henüz yok — modül içerikleri sıradaki görevde
-  // yazılacak (bkz. TASKS.md).
   return (
-    <div className="mt-8 rounded-[24px] border border-slate-200 bg-white p-8 text-center">
-      <p className="text-base font-semibold text-slate-800">
-        Modül adımları burada görünecek.
-      </p>
-      <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-slate-500">
-        Erişimin açık — içerik yayına alındığında bu bölüm dolacak.
-      </p>
-    </div>
+    <ModulAdimlari
+      modulId={modul.id}
+      fonksiyonSlug={fonksiyonSlug}
+      adimlar={modul.adimlar}
+    />
   );
 }
