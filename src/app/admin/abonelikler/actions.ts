@@ -8,6 +8,7 @@ import { skorHesapla } from "@/lib/checkup/scoring";
 import { karneyiCheckupStateYap } from "@/lib/checkup/karne";
 import { tedaviPlaniHesapla } from "@/lib/tedavi/fiyat";
 import { fiyatAyarlariniOku } from "@/lib/tedavi/ayarlar";
+import { FONKSIYONLAR } from "@/data/questions";
 import type { Karne } from "@/lib/checkup/types";
 
 /**
@@ -18,6 +19,10 @@ import type { Karne } from "@/lib/checkup/types";
  * fonksiyonlar ve tutar, kullanıcının EN SON karnesinden hesaplanıp
  * satıra donduruluyor — sonradan karne değişse bile ödenen dönemin
  * kapsamı sabit kalır.
+ *
+ * Karnesi olmayan kullanıcıya da erişim verilebilir (pilot müşteri,
+ * test hesabı): o durumda 7 fonksiyonun tamamı açılır ve tutar boş
+ * kalır, çünkü hesaplanacak bir teşhis yoktur.
  */
 export async function aboneligeAyEkle(formData: FormData) {
   await adminOlmaliVeyaHata();
@@ -47,15 +52,25 @@ export async function aboneligeAyEkle(formData: FormData) {
     .limit(1)
     .maybeSingle<Karne>();
 
-  if (!karne) {
-    throw new Error("Bu kullanıcının check-up karnesi yok, plan çıkarılamaz.");
-  }
+  // Karne varsa kapsam ve tutar ondan hesaplanır. Karne yoksa erişim
+  // yine verilebilmeli (pilot müşteri, test hesabı, jest) — o durumda
+  // 7 fonksiyonun tamamı açılır ve tutar boş bırakılır, çünkü
+  // hesaplanacak bir teşhis yok.
+  let fonksiyonlar: string[];
+  let aylikTutar: number | null;
 
-  const ayarlar = await fiyatAyarlariniOku();
-  const plan = tedaviPlaniHesapla(
-    skorHesapla(karneyiCheckupStateYap(karne)),
-    ayarlar,
-  );
+  if (karne) {
+    const ayarlar = await fiyatAyarlariniOku();
+    const plan = tedaviPlaniHesapla(
+      skorHesapla(karneyiCheckupStateYap(karne)),
+      ayarlar,
+    );
+    fonksiyonlar = plan.kalemler.map((k) => k.fonksiyon.id);
+    aylikTutar = plan.aylikTutar;
+  } else {
+    fonksiyonlar = FONKSIYONLAR.map((f) => f.id);
+    aylikTutar = null;
+  }
 
   // Mevcut aktif abonelik varsa onun bitişinden devam et.
   const { data: mevcut } = await admin
@@ -75,9 +90,11 @@ export async function aboneligeAyEkle(formData: FormData) {
     user_id: kullaniciId,
     baslangic: baslangic.toISOString(),
     bitis: bitis.toISOString(),
-    fonksiyonlar: plan.kalemler.map((k) => k.fonksiyon.id),
-    aylik_tutar: plan.aylikTutar,
-    aciklama: `${ay} ay — panelden onaylandı`,
+    fonksiyonlar,
+    aylik_tutar: aylikTutar,
+    aciklama: karne
+      ? `${ay} ay — panelden onaylandı`
+      : `${ay} ay — check-up yok, tüm fonksiyonlar açıldı`,
     olusturan: adminKullanici?.id ?? null,
   });
 

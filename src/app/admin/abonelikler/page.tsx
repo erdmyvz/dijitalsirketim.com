@@ -130,9 +130,11 @@ export default async function AbonelikYonetimi() {
             Ödeme Onayı ve Erişim
           </h2>
           <p className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-500">
-            Havale geldiğinde ilgili kullanıcıya süre tanı. Kapsanan
-            fonksiyonlar ve tutar, kullanıcının son karnesinden otomatik
-            hesaplanır ve onay anında sabitlenir.
+            Havale geldiğinde ilgili kullanıcıya süre tanı. Check-up
+            yapmışsa kapsanan fonksiyonlar ve tutar karnesinden hesaplanıp
+            onay anında sabitlenir; yapmamışsa 7 fonksiyonun tamamı açılır.
+            Süre, mevcut aboneliğin bitişinden devam eder — üst üste ödeme
+            yapan müşteri gün kaybetmez.
           </p>
         </div>
 
@@ -178,7 +180,7 @@ export default async function AbonelikYonetimi() {
                   )}
                 </div>
 
-                {plan && (
+                {plan ? (
                   <p className="mt-3 text-sm text-slate-600">
                     Hesaplanan plan:{" "}
                     <span className="font-semibold text-slate-900">
@@ -192,11 +194,30 @@ export default async function AbonelikYonetimi() {
                       </span>
                     )}
                   </p>
+                ) : (
+                  /* Karne yoksa plan hesaplanamaz; yine de erişim
+                     verilebilmeli (pilot müşteri, test hesabı vb.) —
+                     o durumda 7 fonksiyonun tamamı açılır. */
+                  <p className="mt-3 text-sm text-slate-500">
+                    Check-up yapılmadığı için plan hesaplanamıyor. Süre
+                    tanırsan <span className="font-medium">7 fonksiyonun
+                    tamamı</span> açılır; kullanıcı check-up yaptığında
+                    planı kendiliğinden netleşir.
+                  </p>
                 )}
 
-                {sonKarne && (
-                  <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-4">
-                    {[1, 3, 6].map((ay) => (
+                {/* Aktif aboneliğin kapsamı — ne verdiğini görebilesin. */}
+                {aktifAbonelik && (
+                  <p className="mt-2 text-xs text-slate-400">
+                    Verilen erişim: {aktifAbonelik.fonksiyonlar.length} fonksiyon
+                    {aktifAbonelik.aylik_tutar
+                      ? ` · onaydaki tutar ${tutarBicimle(Number(aktifAbonelik.aylik_tutar))}/ay`
+                      : ""}
+                  </p>
+                )}
+
+                <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-4">
+                  {[1, 3, 6].map((ay) => (
                       <form key={ay} action={aboneligeAyEkle}>
                         <input
                           type="hidden"
@@ -213,23 +234,22 @@ export default async function AbonelikYonetimi() {
                       </form>
                     ))}
 
-                    {aktifAbonelik && (
-                      <form action={aboneligiSonlandir} className="ml-auto">
-                        <input
-                          type="hidden"
-                          name="abonelik_id"
-                          value={aktifAbonelik.id}
-                        />
-                        <button
-                          type="submit"
-                          className="rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 transition-colors duration-200 ease-[var(--ease-apple)] hover:border-red-300 hover:text-red-600"
-                        >
-                          Erişimi kapat
-                        </button>
-                      </form>
-                    )}
-                  </div>
-                )}
+                  {aktifAbonelik && (
+                    <form action={aboneligiSonlandir} className="ml-auto">
+                      <input
+                        type="hidden"
+                        name="abonelik_id"
+                        value={aktifAbonelik.id}
+                      />
+                      <button
+                        type="submit"
+                        className="rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 transition-colors duration-200 ease-[var(--ease-apple)] hover:border-red-300 hover:text-red-600"
+                      >
+                        Erişimi kapat
+                      </button>
+                    </form>
+                  )}
+                </div>
               </div>
             ))}
           </div>
