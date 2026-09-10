@@ -61,19 +61,7 @@ referans/uydurma istatistik asla yazılmaz.
 
 ## Sıradaki Görev
 
-### 1. Fiyat motoru + tedavi planı ekranı
-Karneden aylık ücreti hesaplayan motor (formül: KARARLAR.md 2026-09-10) ve
-kullanıcıya "tedavi planın hazır" ekranı: hangi fonksiyonlar kapsanıyor,
-hangi modüller açılacak, aylık tutar ne. Birim ücret / Nabız Planı tabanı
-`ayarlar` tablosundan okunur, kodda sabit tutulmaz.
-
----
-
-## Bekleyen Görevler
-
-Öncelik sırasına dizilidir. Üstteki biter, "Sıradaki Görev"e taşınır.
-
-### 2. Erişim ve ödeme sistemi
+### 1. Erişim ve ödeme sistemi
 `abonelikler` + `ayarlar` tabloları, modül kilit ekranı, ödeme sayfası
 (tutar + IBAN + alıcı adı; **referans kodu yok**), admin onay paneli
 ("1 ay ver"), admin ayarlar ekranı (birim ücret, taban, IBAN, hesap
@@ -81,34 +69,40 @@ sahibi). `/hesap` altında "Aboneliğim" bölümü: geri sayım + son 7 günde
 uygulama içi uyarı şeridi. Erişim, planın kapsadığı fonksiyonlarla
 sınırlı.
 
-### 3. Ana sayfa teklif metninin düzeltilmesi
+---
+
+## Bekleyen Görevler
+
+Öncelik sırasına dizilidir. Üstteki biter, "Sıradaki Görev"e taşınır.
+
+### 2. Ana sayfa teklif metninin düzeltilmesi
 Ana sayfadaki "Teklif" bölümü hâlâ **ücretli tek seferlik check-up**
 satıyor; model değişti (check-up ücretsiz, sistem ücretli). Metin üyelik
 teklifine dönüşmeli. Fiyat yine gösterilmeyecek — teşhisten hesaplandığı
 için zaten önceden söylenemez.
 
-### 4. Modül içerikleri (modül modül)
+### 3. Modül içerikleri (modül modül)
 Katalog ve sayfa iskeleti hazır, içerikler boş. Sıra: önce **Müşteri
 Bulma Planı** (acil müdahale modülü — içeriği Erdem ile netleştirilecek),
 sonra diğerleri. Her modül: 4-7 adım, doldurulabilir şablonlar, bitiş
 kontrolü (onardığı check-up sorusunun tekrar cevaplanması).
 
-### 5. Uzman pazar yeri
+### 4. Uzman pazar yeri
 Uzmanların kayıt olup tespit edilen sorunla eşleştirildiği katman.
 `profiles` tablosunun rol (müşteri / uzman / admin) taşıması gerekecek.
 Eşleştirme anahtarı: 7 fonksiyonluk taksonomi.
 
-### 6. Sanal POS entegrasyonu (iyzico / PayTR)
+### 5. Sanal POS entegrasyonu (iyzico / PayTR)
 Şirket kurulduktan sonra. Şu an ödeme manuel havale/EFT + admin onayı.
 
-### 7. Admin panelinden karne durumu güncelleme
+### 6. Admin panelinden karne durumu güncelleme
 "Tedavi sürecinin takibi" başlığının ikinci yarısı: `karneler.durum`
 alanı şu an yalnızca müşteri panelinde salt okunur gösteriliyor
 (varsayılan "Beklemede"). Admin panelinden bu alanı güncelleyebilme
 (ör. "İnceleniyor" / "Teklif Gönderildi" / "Tamamlandı") ayrı bir görev
 olarak bırakıldı.
 
-### 8. Kendi SMTP'ni bağla (e-posta gönderimi)
+### 7. Kendi SMTP'ni bağla (e-posta gönderimi)
 Supabase'in ücretsiz katmandaki yerleşik e-posta gönderimi saatte birkaç
 e-postayla sınırlı ve çoğu zaman spam klasörüne düşer. Kayıt onayı ve
 şifre sıfırlama e-postaları buna bağlı olduğu için, gerçek kullanıcılar
@@ -118,7 +112,7 @@ Supabase → Authentication → SMTP Settings'e bağlanmalı. Erdem'in kararı
 Abonelik bitiş hatırlatması da bu bağlandığında e-postayla gönderilebilir
 (şimdilik yalnızca uygulama içi uyarı).
 
-### 9. Sosyal medya hesapları açılınca JSON-LD'ye eklenmeli
+### 8. Sosyal medya hesapları açılınca JSON-LD'ye eklenmeli
 Şu an Instagram/LinkedIn vb. yok (2026-09-09 itibarıyla). Açılırsa
 `organizationJsonLd`'deki (`src/app/page.tsx`) `sameAs` alanına
 eklenmeli — Google'a "bu hesaplar aynı işletmeye ait" sinyali verir.
@@ -146,9 +140,15 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
         güvenlik gereği devredilemez).
       - [x] 3 anahtar Vercel → Environment Variables'a da girildi
         (Erdem ekran görüntüleriyle doğruladı, 2026-09-07).
+- [ ] **`ayarlar` tablosu çalıştırılmalı** — [supabase/schema.sql](supabase/schema.sql)'in
+      sonuna eklenen `ayarlar` bölümü Supabase → SQL Editor'de bir kez
+      çalıştırılmalı. Çalıştırılmazsa site çökmez, koddaki varsayılan
+      fiyatlarla (birim 10.000 TL, Nabız tabanı 5.000 TL) devam eder —
+      ama fiyatları panelden değiştiremezsin.
 - [ ] **Ödeme bilgileri** — `src/data/odeme.ts` içindeki ücret, IBAN ve
       hesap sahibi adı doldurulmalı. Doldurulana kadar başvuru sonrası ekran
-      IBAN göstermeyip WhatsApp'a yönlendiriyor.
+      IBAN göstermeyip WhatsApp'a yönlendiriyor. (Not: erişim/ödeme
+      sistemi geldiğinde bu değerler `ayarlar` tablosuna taşınacak.)
 - [ ] **`www` alt alan adı** — Vercel → Domains'e eklenmeli ki SSL alsın;
       koddaki www→apex yönlendirmesi ancak o zaman devreye girer.
 - [x] **Google Search Console** — mülk doğrulandı (`layout.tsx`'e
@@ -159,6 +159,32 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 ---
 
 ## Tamamlananlar
+
+### 2026-09-10 — Fiyat motoru ve tedavi planı ekranı
+Teşhise dayalı fiyatlama çalışır durumda. Saf hesap fonksiyonu
+[src/lib/tedavi/fiyat.ts](src/lib/tedavi/fiyat.ts): kırmızı ×1, sarı
+×0,5, yeşil ×0; toplam × birim ücret + Nabız Planı tabanı. Erdem'in
+verdiği uçlara karşı doğrulandı (7 kırmızı → 75.000 TL, 1 kırmızı →
+15.000 TL, 2 kırmızı+3 sarı → 40.000 TL, hepsi yeşil → 5.000 TL Nabız).
+
+`/hesap/plan` ekranı: aylık tutar, kalem kalem hangi fonksiyondan ne
+kadar geldiği, planla açılacak modüllerin listesi. Yeşil fonksiyonlar
+plana hiç girmiyor — ödenmeyen şey listede de görünmüyor. 7 fonksiyon da
+yeşilse ekran Nabız Planı'na dönüyor. "Fonksiyonların iyileştikçe bu
+tutar düşer" notu bilinçli: faturanın düşmesi sistemin işe yaradığının
+kanıtı, satış argümanının kendisi.
+
+Fiyat ayarları `ayarlar` tablosundan okunuyor (schema.sql'e eklendi;
+herkes okur, yalnızca admin yazar). Tablo yoksa/erişilemezse koddaki
+varsayılana düşüyor — fiyat ekranının tamamen kaybolmasındansa
+varsayılanla çalışması yeğ.
+
+Check-up sonuç ekranındaki eski CTA ("ücretli teşhis görüşmesine
+başvurun" — artık geçersiz model) "Tedavi Planımı Gör"e dönüştü. Tutar
+bilinçli olarak sonuç ekranında gösterilmiyor: ayarlar sunucuda,
+istemcide tahmini rakam gösterip planda başkasını göstermek olmaz.
+`/hesap` paneline de plan bağlantısı eklendi. Gerçek test hesabıyla iki
+senaryo da doğrulandı, mobil kontrol yapıldı, test verisi temizlendi.
 
 ### 2026-09-10 — Tedavi modülleri: katalog ve menü iskeleti
 Ürünün asıl değer katmanının çatısı kuruldu. `/tedavi` haritası ("Bir

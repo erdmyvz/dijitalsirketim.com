@@ -75,19 +75,23 @@ export default function SonucEkrani(props: Props) {
         </div>
       )}
 
+      {/* Teşhis bitti; sıra reçetede. Tutar bilinçli olarak burada
+          gösterilmiyor: fiyat ayarları sunucuda tutuluyor ve plan
+          ekranında güncel değerle hesaplanıyor — burada tahmini bir
+          rakam gösterip planda başkasını göstermek olmaz. */}
       <div className="mt-10 rounded-[28px] bg-slate-900 p-6 text-center sm:p-8">
         <p className="text-lg font-semibold text-white">
-          Karne teşhis koydu. Tedavi planı sırada.
+          Karne teşhis koydu. Sıra reçetede.
         </p>
-        <p className="mt-1.5 text-sm text-slate-300">
-          Kırmızı bölgeyi kapatacak kişiselleştirilmiş reçete için ücretli
-          teşhis görüşmesine başvurun.
+        <p className="mx-auto mt-1.5 max-w-md text-sm leading-relaxed text-slate-300">
+          Tedavi planın, tam olarak bu karnedeki kırmızı ve sarı
+          fonksiyonlardan çıkarılır — yeşil olanlar için ödeme yapmazsın.
         </p>
         <Link
-          href="/#teklif"
+          href="/hesap/plan"
           className="mt-5 inline-flex items-center justify-center rounded-full bg-teal-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-600/25 transition-transform duration-300 ease-[var(--ease-apple)] hover:scale-[1.02] active:scale-[0.98] motion-reduce:transition-none motion-reduce:hover:scale-100 sm:text-base"
         >
-          Tam Teşhis Raporu ve Tedavi Planı için Başvur
+          Tedavi Planımı Gör
         </Link>
       </div>
     </div>

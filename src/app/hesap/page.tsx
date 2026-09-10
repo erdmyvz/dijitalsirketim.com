@@ -58,6 +58,25 @@ export default async function HesapPaneli() {
       </header>
 
       <main className="mx-auto max-w-3xl px-6 py-10">
+        {/* Karne varsa reçeteye giden yol her zaman görünür olmalı —
+            teşhisin karşılığı tedavi planıdır. */}
+        {karneler && karneler.length > 0 && (
+          <Link
+            href="/hesap/plan"
+            className="group mb-6 flex items-center justify-between gap-3 rounded-[24px] border border-teal-200 bg-teal-50/60 px-5 py-4 transition-all duration-300 ease-[var(--ease-apple)] hover:border-teal-300 hover:shadow-sm"
+          >
+            <div>
+              <p className="font-semibold text-slate-900">Tedavi Planım</p>
+              <p className="mt-0.5 text-sm text-slate-600">
+                Son karnenden çıkan reçete ve aylık tutar.
+              </p>
+            </div>
+            <span className="flex-none text-sm font-semibold text-teal-700">
+              Görüntüle →
+            </span>
+          </Link>
+        )}
+
         <div className="mb-6 flex items-end justify-between gap-3">
           <div>
             <h2 className="text-2xl font-semibold tracking-[-0.02em] text-slate-900">

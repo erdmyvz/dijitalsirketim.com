@@ -148,3 +148,50 @@ create policy "Adminler tum karneleri okur"
       where p.id = auth.uid() and p.is_admin
     )
   );
+
+-- ---------------------------------------------------------------------
+-- Ayarlar: fiyat ve ödeme bilgileri (admin panelinden düzenlenir)
+-- ---------------------------------------------------------------------
+-- Fiyat kodda sabit tutulmuyor; birim ücret, Nabız Planı tabanı ve
+-- ödeme bilgileri buradan okunuyor (bkz. KARARLAR.md 2026-09-10).
+-- Tablo okunamazsa uygulama koddaki varsayılana düşer, çökmez.
+
+create table if not exists public.ayarlar (
+  anahtar text primary key,
+  deger text not null,
+  guncellendi timestamptz not null default now()
+);
+
+alter table public.ayarlar enable row level security;
+
+-- Fiyat ve IBAN zaten kullanıcıya gösterilen bilgiler — okuması serbest.
+drop policy if exists "Ayarlari herkes okuyabilir" on public.ayarlar;
+create policy "Ayarlari herkes okuyabilir"
+  on public.ayarlar
+  for select
+  using (true);
+
+-- Yazma yalnızca adminlere açık.
+drop policy if exists "Ayarlari sadece admin yazar" on public.ayarlar;
+create policy "Ayarlari sadece admin yazar"
+  on public.ayarlar
+  for all
+  to authenticated
+  using (
+    exists (
+      select 1 from public.profiles p
+      where p.id = auth.uid() and p.is_admin
+    )
+  )
+  with check (
+    exists (
+      select 1 from public.profiles p
+      where p.id = auth.uid() and p.is_admin
+    )
+  );
+
+-- Başlangıç değerleri (yalnızca yoksa eklenir — mevcut değerleri ezmez).
+insert into public.ayarlar (anahtar, deger) values
+  ('birim_ucret', '10000'),
+  ('nabiz_tabani', '5000')
+on conflict (anahtar) do nothing;
