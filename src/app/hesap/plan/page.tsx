@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { sonKarneSonucu } from "@/lib/tedavi/sonKarne";
 import { fiyatAyarlariniOku } from "@/lib/tedavi/ayarlar";
+import { erisimDurumu, tarihBicimle } from "@/lib/tedavi/erisim";
 import { tedaviPlaniHesapla, tutarBicimle } from "@/lib/tedavi/fiyat";
 import { SEVIYE_STILI, seviyeEtiketi } from "@/lib/tedavi/seviye";
 import { TEDAVI_FONKSIYONLARI } from "@/data/moduller";
@@ -53,6 +54,7 @@ export default async function TedaviPlanim() {
 
   const ayarlar = await fiyatAyarlariniOku();
   const plan = tedaviPlaniHesapla(sonuc, ayarlar);
+  const erisim = await erisimDurumu();
 
   // Plana giren fonksiyonların modülleri — müşteri ne satın aldığını
   // kalem kalem görsün.
@@ -245,22 +247,52 @@ export default async function TedaviPlanim() {
 
             {/* Başlama */}
             <div className="mt-10 rounded-[28px] border border-teal-200 bg-teal-50/60 p-6 text-center sm:p-8">
-              <p className="text-base font-semibold text-slate-900">
-                Başlamaya hazır mısın?
-              </p>
-              <p className="mx-auto mt-1.5 max-w-md text-sm leading-relaxed text-slate-600">
-                Ödeme adımı hazırlanıyor. O zamana kadar başlamak
-                istersen WhatsApp&apos;tan yazabilirsin — planını
-                birlikte gözden geçirelim.
-              </p>
-              <a
-                href={`https://wa.me/${WHATSAPP_NUMARASI}?text=${whatsappMesaji}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center justify-center rounded-full bg-teal-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-600/25 transition-all duration-300 ease-[var(--ease-apple)] hover:bg-teal-700"
-              >
-                WhatsApp&apos;tan Yaz
-              </a>
+              {erisim.aktif ? (
+                <>
+                  <p className="text-base font-semibold text-slate-900">
+                    Aboneliğin aktif
+                  </p>
+                  <p className="mx-auto mt-1.5 max-w-md text-sm leading-relaxed text-slate-600">
+                    {tarihBicimle(erisim.bitis!)} tarihine kadar
+                    ({erisim.kalanGun} gün) planındaki modüllere
+                    erişebilirsin.
+                  </p>
+                  <Link
+                    href="/tedavi"
+                    className="mt-5 inline-flex items-center justify-center rounded-full bg-teal-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-600/25 transition-all duration-300 ease-[var(--ease-apple)] hover:bg-teal-700"
+                  >
+                    Modüllere Git
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <p className="text-base font-semibold text-slate-900">
+                    Başlamaya hazır mısın?
+                  </p>
+                  <p className="mx-auto mt-1.5 max-w-md text-sm leading-relaxed text-slate-600">
+                    Ödemeni yaptığında planındaki {kapsananModuller.length}{" "}
+                    modül açılır. Ödeme havale/EFT ile alınıyor.
+                  </p>
+                  <Link
+                    href="/hesap/odeme"
+                    className="mt-5 inline-flex items-center justify-center rounded-full bg-teal-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-teal-600/25 transition-all duration-300 ease-[var(--ease-apple)] hover:bg-teal-700"
+                  >
+                    Ödeme Bilgilerini Gör
+                  </Link>
+                  <p className="mt-3 text-xs text-slate-500">
+                    Sorman gereken bir şey varsa{" "}
+                    <a
+                      href={`https://wa.me/${WHATSAPP_NUMARASI}?text=${whatsappMesaji}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium text-teal-700 hover:underline"
+                    >
+                      WhatsApp&apos;tan yazabilirsin
+                    </a>
+                    .
+                  </p>
+                </>
+              )}
             </div>
           </>
         )}

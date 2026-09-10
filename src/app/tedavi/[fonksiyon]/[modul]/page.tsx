@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import TedaviKabugu from "@/components/tedavi/TedaviKabugu";
+import ModulIcerigi from "@/components/tedavi/ModulIcerigi";
 import { TEDAVI_FONKSIYONLARI, modulBul } from "@/data/moduller";
 import { FONKSIYONLAR, KATMAN_ETIKETLERI } from "@/data/questions";
 import { IconAlertTriangle, IconCheck } from "@/components/icons";
@@ -115,15 +116,7 @@ export default async function ModulSayfasi({
         </div>
       )}
 
-      <div className="mt-8 rounded-[24px] border border-dashed border-slate-300 bg-slate-100/60 p-8 text-center">
-        <p className="text-base font-semibold text-slate-800">
-          Bu modülün içeriği hazırlanıyor.
-        </p>
-        <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-slate-500">
-          Adımlar, şablonlar ve bitiş kontrolü yayına alındığında burada
-          görünecek.
-        </p>
-      </div>
+      <ModulIcerigi fonksiyonId={fonksiyon.id} durum={modul.durum} />
 
       <div className="mt-10 text-center">
         <Link

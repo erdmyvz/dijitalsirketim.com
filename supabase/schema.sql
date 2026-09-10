@@ -195,3 +195,66 @@ insert into public.ayarlar (anahtar, deger) values
   ('birim_ucret', '10000'),
   ('nabiz_tabani', '5000')
 on conflict (anahtar) do nothing;
+
+-- ---------------------------------------------------------------------
+-- Abonelikler: tedavi sistemine erişim hakkı
+-- ---------------------------------------------------------------------
+-- Ödeme manuel havale/EFT ile alınıyor; admin bankadan görüp panelden
+-- onaylıyor ve süre tanıyor (bkz. KARARLAR.md 2026-09-10).
+-- Erişim, planın kapsadığı FONKSİYONLARLA SINIRLI: 4 fonksiyon için
+-- ödeyen, yalnızca o 4 fonksiyonun modüllerini görür.
+
+create table if not exists public.abonelikler (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  baslangic timestamptz not null default now(),
+  bitis timestamptz not null,
+  -- questions.ts'teki FonksiyonId değerleri: 'musteri_bulma' vb.
+  fonksiyonlar text[] not null default '{}',
+  -- Onay anındaki aylık tutar — kayıt/denetim için.
+  aylik_tutar numeric,
+  aciklama text,
+  -- Hangi admin onayladı.
+  olusturan uuid references auth.users(id),
+  created_at timestamptz not null default now()
+);
+
+create index if not exists abonelikler_user_bitis_idx
+  on public.abonelikler (user_id, bitis desc);
+
+alter table public.abonelikler enable row level security;
+
+drop policy if exists "Kullanici kendi aboneligini okur" on public.abonelikler;
+create policy "Kullanici kendi aboneligini okur"
+  on public.abonelikler
+  for select
+  to authenticated
+  using (auth.uid() = user_id);
+
+-- Aboneliği yalnızca admin oluşturur/değiştirir — kullanıcı kendine
+-- erişim yazamaz.
+drop policy if exists "Abonelikleri sadece admin yonetir" on public.abonelikler;
+create policy "Abonelikleri sadece admin yonetir"
+  on public.abonelikler
+  for all
+  to authenticated
+  using (
+    exists (
+      select 1 from public.profiles p
+      where p.id = auth.uid() and p.is_admin
+    )
+  )
+  with check (
+    exists (
+      select 1 from public.profiles p
+      where p.id = auth.uid() and p.is_admin
+    )
+  );
+
+-- Ödeme bilgileri de ayarlardan okunur (boş bırakılırsa ekranda IBAN
+-- gösterilmez, WhatsApp'a yönlendirilir — yanlış hesaba ödeme riskine
+-- karşı, mevcut odeme.ts davranışının aynısı).
+insert into public.ayarlar (anahtar, deger) values
+  ('iban', ''),
+  ('hesap_sahibi', '')
+on conflict (anahtar) do nothing;

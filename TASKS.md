@@ -61,13 +61,11 @@ referans/uydurma istatistik asla yazılmaz.
 
 ## Sıradaki Görev
 
-### 1. Erişim ve ödeme sistemi
-`abonelikler` + `ayarlar` tabloları, modül kilit ekranı, ödeme sayfası
-(tutar + IBAN + alıcı adı; **referans kodu yok**), admin onay paneli
-("1 ay ver"), admin ayarlar ekranı (birim ücret, taban, IBAN, hesap
-sahibi). `/hesap` altında "Aboneliğim" bölümü: geri sayım + son 7 günde
-uygulama içi uyarı şeridi. Erişim, planın kapsadığı fonksiyonlarla
-sınırlı.
+### 1. Ana sayfa teklif metninin düzeltilmesi
+Ana sayfadaki "Teklif" bölümü hâlâ **ücretli tek seferlik check-up**
+satıyor; model değişti (check-up ücretsiz, sistem ücretli). Metin üyelik
+teklifine dönüşmeli. Fiyat yine gösterilmeyecek — teşhisten hesaplandığı
+için zaten önceden söylenemez.
 
 ---
 
@@ -75,34 +73,28 @@ sınırlı.
 
 Öncelik sırasına dizilidir. Üstteki biter, "Sıradaki Görev"e taşınır.
 
-### 2. Ana sayfa teklif metninin düzeltilmesi
-Ana sayfadaki "Teklif" bölümü hâlâ **ücretli tek seferlik check-up**
-satıyor; model değişti (check-up ücretsiz, sistem ücretli). Metin üyelik
-teklifine dönüşmeli. Fiyat yine gösterilmeyecek — teşhisten hesaplandığı
-için zaten önceden söylenemez.
-
-### 3. Modül içerikleri (modül modül)
+### 2. Modül içerikleri (modül modül)
 Katalog ve sayfa iskeleti hazır, içerikler boş. Sıra: önce **Müşteri
 Bulma Planı** (acil müdahale modülü — içeriği Erdem ile netleştirilecek),
 sonra diğerleri. Her modül: 4-7 adım, doldurulabilir şablonlar, bitiş
 kontrolü (onardığı check-up sorusunun tekrar cevaplanması).
 
-### 4. Uzman pazar yeri
+### 3. Uzman pazar yeri
 Uzmanların kayıt olup tespit edilen sorunla eşleştirildiği katman.
 `profiles` tablosunun rol (müşteri / uzman / admin) taşıması gerekecek.
 Eşleştirme anahtarı: 7 fonksiyonluk taksonomi.
 
-### 5. Sanal POS entegrasyonu (iyzico / PayTR)
+### 4. Sanal POS entegrasyonu (iyzico / PayTR)
 Şirket kurulduktan sonra. Şu an ödeme manuel havale/EFT + admin onayı.
 
-### 6. Admin panelinden karne durumu güncelleme
+### 5. Admin panelinden karne durumu güncelleme
 "Tedavi sürecinin takibi" başlığının ikinci yarısı: `karneler.durum`
 alanı şu an yalnızca müşteri panelinde salt okunur gösteriliyor
 (varsayılan "Beklemede"). Admin panelinden bu alanı güncelleyebilme
 (ör. "İnceleniyor" / "Teklif Gönderildi" / "Tamamlandı") ayrı bir görev
 olarak bırakıldı.
 
-### 7. Kendi SMTP'ni bağla (e-posta gönderimi)
+### 6. Kendi SMTP'ni bağla (e-posta gönderimi)
 Supabase'in ücretsiz katmandaki yerleşik e-posta gönderimi saatte birkaç
 e-postayla sınırlı ve çoğu zaman spam klasörüne düşer. Kayıt onayı ve
 şifre sıfırlama e-postaları buna bağlı olduğu için, gerçek kullanıcılar
@@ -112,7 +104,7 @@ Supabase → Authentication → SMTP Settings'e bağlanmalı. Erdem'in kararı
 Abonelik bitiş hatırlatması da bu bağlandığında e-postayla gönderilebilir
 (şimdilik yalnızca uygulama içi uyarı).
 
-### 8. Sosyal medya hesapları açılınca JSON-LD'ye eklenmeli
+### 7. Sosyal medya hesapları açılınca JSON-LD'ye eklenmeli
 Şu an Instagram/LinkedIn vb. yok (2026-09-09 itibarıyla). Açılırsa
 `organizationJsonLd`'deki (`src/app/page.tsx`) `sameAs` alanına
 eklenmeli — Google'a "bu hesaplar aynı işletmeye ait" sinyali verir.
@@ -140,15 +132,21 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
         güvenlik gereği devredilemez).
       - [x] 3 anahtar Vercel → Environment Variables'a da girildi
         (Erdem ekran görüntüleriyle doğruladı, 2026-09-07).
-- [ ] **`ayarlar` tablosu çalıştırılmalı** — [supabase/schema.sql](supabase/schema.sql)'in
-      sonuna eklenen `ayarlar` bölümü Supabase → SQL Editor'de bir kez
-      çalıştırılmalı. Çalıştırılmazsa site çökmez, koddaki varsayılan
-      fiyatlarla (birim 10.000 TL, Nabız tabanı 5.000 TL) devam eder —
-      ama fiyatları panelden değiştiremezsin.
-- [ ] **Ödeme bilgileri** — `src/data/odeme.ts` içindeki ücret, IBAN ve
-      hesap sahibi adı doldurulmalı. Doldurulana kadar başvuru sonrası ekran
-      IBAN göstermeyip WhatsApp'a yönlendiriyor. (Not: erişim/ödeme
-      sistemi geldiğinde bu değerler `ayarlar` tablosuna taşınacak.)
+- [x] **`ayarlar` tablosu** — çalıştırıldı (2026-09-10), admin ayarlar
+      ekranından yazma canlı veritabanına karşı doğrulandı.
+- [ ] **`abonelikler` tablosu çalıştırılmalı** — [supabase/schema.sql](supabase/schema.sql)'in
+      sonundaki `-- Abonelikler:` bölümü Supabase → SQL Editor'de bir kez
+      çalıştırılmalı. Çalıştırılmadan erişim onayı verilemez (site
+      çökmez, herkes "erişim yok" görünür).
+- [ ] **Abonelik ödeme bilgileri girilmeli** — Admin → Ayarlar
+      ekranından IBAN ve hesap sahibi. Girilene kadar `/hesap/odeme`
+      ekranı IBAN göstermeyip WhatsApp'a yönlendiriyor (yanlış hesaba
+      ödeme riskine karşı bilinçli).
+- [ ] **Eski başvuru akışındaki `src/data/odeme.ts`** — ana sayfadaki
+      başvuru formunun kullandığı ayrı, eski akış (ücret + IBAN +
+      `DS-XXXX` referans kodu). Ana sayfa teklif metni üyeliğe
+      dönüştürülünce (Sıradaki Görev #1) muhtemelen tamamen kalkacak;
+      o zamana kadar boş bırakılabilir.
 - [ ] **`www` alt alan adı** — Vercel → Domains'e eklenmeli ki SSL alsın;
       koddaki www→apex yönlendirmesi ancak o zaman devreye girer.
 - [x] **Google Search Console** — mülk doğrulandı (`layout.tsx`'e
@@ -159,6 +157,37 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 ---
 
 ## Tamamlananlar
+
+### 2026-09-10 — Erişim ve ödeme sistemi
+Manuel havale + admin onayı akışı kuruldu. `abonelikler` tablosu
+(schema.sql'e eklendi): kullanıcı, bitiş tarihi, **kapsanan
+fonksiyonlar**, onay anındaki tutar, onaylayan admin. Erişim kontrolü
+tek satır: `bitis > now()`, ve erişim **planın kapsadığı fonksiyonlarla
+sınırlı** — 4 fonksiyon için ödeyen yalnızca o 4 fonksiyonun modüllerini
+görür.
+
+Eklenenler: `/hesap/odeme` (tutar + IBAN + alıcı adı, **referans kodu
+yok**), modül sayfalarında kilit ekranı, `/hesap` altında "Aboneliğim"
+(geri sayım) ve son 7 günde uyarı şeridi, `/admin/abonelikler` (kullanıcı
+listesi + hesaplanan plan + "1/3/6 ay ekle" + "erişimi kapat"),
+`/admin/ayarlar` (birim ücret, Nabız tabanı, IBAN, hesap sahibi).
+
+Güvenlik: Server Action'lar herkese açık uç noktalar olduğu için servis
+anahtarıyla iş yapan her aksiyon `adminOlmaliVeyaHata()` ile başlıyor
+([src/lib/admin/yetki.ts](src/lib/admin/yetki.ts)) — sayfayı proxy
+korusa bile aksiyon doğrudan çağrılabilir.
+
+Doğrulananlar: ayarlar ekranından yazma canlı veritabanına işledi
+(birim ücret 10.000→12.000 yapıldı, plan 40.000→47.000 TL'ye güncellendi,
+IBAN ödeme ekranında göründü — sonra hepsi geri alındı, sahte IBAN
+canlıda bırakılmadı). `abonelikler` tablosu henüz oluşturulmadığı için
+kodun bu durumda çökmediği, herkesi "erişim yok" gösterdiği doğrulandı.
+Bir modül "hazir" yapılıp build denendi: Next.js o sayfayı otomatik
+dinamiğe çeviriyor, "yakında" olanlar statik kalıyor — kilitli hâlin
+önbelleğe alınma tuzağı yok.
+
+**Henüz test edilmedi:** "N ay ekle" aksiyonu — `abonelikler` tablosu
+oluşturulduktan sonra uçtan uca doğrulanacak.
 
 ### 2026-09-10 — Fiyat motoru ve tedavi planı ekranı
 Teşhise dayalı fiyatlama çalışır durumda. Saf hesap fonksiyonu

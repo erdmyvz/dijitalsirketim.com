@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { skorHesapla } from "@/lib/checkup/scoring";
 import { karneyiCheckupStateYap } from "@/lib/checkup/karne";
+import { erisimDurumu, tarihBicimle } from "@/lib/tedavi/erisim";
 import type { Karne } from "@/lib/checkup/types";
 
 export const metadata = {
@@ -30,6 +31,7 @@ export default async function HesapPaneli() {
     .returns<Karne[]>();
 
   const adSoyad = (user.user_metadata as { ad_soyad?: string } | null)?.ad_soyad;
+  const erisim = await erisimDurumu();
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -58,23 +60,62 @@ export default async function HesapPaneli() {
       </header>
 
       <main className="mx-auto max-w-3xl px-6 py-10">
-        {/* Karne varsa reçeteye giden yol her zaman görünür olmalı —
-            teşhisin karşılığı tedavi planıdır. */}
+        {/* Süre dolmaya yakınsa en üstte uyarı — kullanıcı erişimini
+            farkında olmadan kaybetmesin. */}
+        {erisim.aktif && erisim.yakindaBitiyor && (
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-[20px] border border-amber-200 bg-amber-50 px-5 py-4">
+            <p className="text-sm leading-relaxed text-amber-900">
+              <span className="font-semibold">
+                Aboneliğinin bitmesine {erisim.kalanGun} gün kaldı.
+              </span>{" "}
+              Erişimin {tarihBicimle(erisim.bitis!)} tarihinde kapanacak.
+            </p>
+            <Link
+              href="/hesap/odeme"
+              className="flex-none rounded-full bg-amber-600 px-4 py-2 text-sm font-semibold text-white transition-colors duration-200 ease-[var(--ease-apple)] hover:bg-amber-700"
+            >
+              Uzat
+            </Link>
+          </div>
+        )}
+
+        {/* Aboneliğim — aktifse geri sayım, değilse plana yönlendirme. */}
         {karneler && karneler.length > 0 && (
-          <Link
-            href="/hesap/plan"
-            className="group mb-6 flex items-center justify-between gap-3 rounded-[24px] border border-teal-200 bg-teal-50/60 px-5 py-4 transition-all duration-300 ease-[var(--ease-apple)] hover:border-teal-300 hover:shadow-sm"
-          >
-            <div>
-              <p className="font-semibold text-slate-900">Tedavi Planım</p>
-              <p className="mt-0.5 text-sm text-slate-600">
-                Son karnenden çıkan reçete ve aylık tutar.
-              </p>
-            </div>
-            <span className="flex-none text-sm font-semibold text-teal-700">
-              Görüntüle →
-            </span>
-          </Link>
+          <div className="mb-6 rounded-[24px] border border-teal-200 bg-teal-50/60 px-5 py-4">
+            {erisim.aktif ? (
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="font-semibold text-slate-900">Aboneliğim</p>
+                  <p className="mt-0.5 text-sm text-slate-600">
+                    {erisim.kalanGun} gün kaldı ·{" "}
+                    {tarihBicimle(erisim.bitis!)} tarihine kadar ·{" "}
+                    {erisim.fonksiyonlar.length} fonksiyon kapsamda
+                  </p>
+                </div>
+                <Link
+                  href="/tedavi"
+                  className="flex-none text-sm font-semibold text-teal-700 hover:underline"
+                >
+                  Modüllere git →
+                </Link>
+              </div>
+            ) : (
+              <Link
+                href="/hesap/plan"
+                className="flex flex-wrap items-center justify-between gap-3"
+              >
+                <div>
+                  <p className="font-semibold text-slate-900">Tedavi Planım</p>
+                  <p className="mt-0.5 text-sm text-slate-600">
+                    Son karnenden çıkan reçete ve aylık tutar.
+                  </p>
+                </div>
+                <span className="flex-none text-sm font-semibold text-teal-700">
+                  Görüntüle →
+                </span>
+              </Link>
+            )}
+          </div>
         )}
 
         <div className="mb-6 flex items-end justify-between gap-3">

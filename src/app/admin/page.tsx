@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
@@ -57,14 +58,30 @@ export default async function AdminPanel() {
               <p className="text-xs text-slate-400">{user.email}</p>
             </div>
           </div>
-          <form action="/admin/cikis" method="post">
-            <button
-              type="submit"
-              className="rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 transition-colors duration-200 ease-[var(--ease-apple)] hover:border-red-300 hover:text-red-600"
-            >
-              Çıkış Yap
-            </button>
-          </form>
+          <div className="flex items-center gap-4">
+            <nav className="flex items-center gap-4 text-sm">
+              <Link
+                href="/admin/abonelikler"
+                className="font-medium text-slate-500 transition-colors duration-200 ease-[var(--ease-apple)] hover:text-teal-700"
+              >
+                Abonelikler
+              </Link>
+              <Link
+                href="/admin/ayarlar"
+                className="font-medium text-slate-500 transition-colors duration-200 ease-[var(--ease-apple)] hover:text-teal-700"
+              >
+                Ayarlar
+              </Link>
+            </nav>
+            <form action="/admin/cikis" method="post">
+              <button
+                type="submit"
+                className="rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 transition-colors duration-200 ease-[var(--ease-apple)] hover:border-red-300 hover:text-red-600"
+              >
+                Çıkış Yap
+              </button>
+            </form>
+          </div>
         </div>
       </header>
 
