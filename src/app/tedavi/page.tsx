@@ -10,7 +10,9 @@ export const metadata: Metadata = {
   title: "Tedavi Modülleri | Dijital Şirketim",
   description:
     "Bir işletme 7 fonksiyondan oluşur: müşteri bulma, satış, operasyon, ürün geliştirme, para yönetimi, karar alma, ekip kurma. Her birinin adım adım tedavi modülü burada.",
-  alternates: { canonical: "/tedavi" },
+  // Modül içerikleri tamamlanana kadar bu bölüm giriş arkasında —
+  // arama sonucunda gösterilmesin (bkz. sitemap.ts'teki not).
+  robots: { index: false, follow: false },
 };
 
 export default async function TedaviHaritasi() {

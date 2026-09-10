@@ -78,22 +78,31 @@ giriyor — ek iş yok.
 
 Öncelik sırasına dizilidir. Üstteki biter, "Sıradaki Görev"e taşınır.
 
-### 2. Uzman pazar yeri
+### 2. Modüller bitince /tedavi'yi herkese aç
+Tüm modül içerikleri tamamlandığında (Sıradaki Görev #1) yapılacaklar:
+`proxy.ts` matcher'ından `/tedavi` çıkarılacak, üç sayfadaki
+`robots: { index: false }` kaldırılacak, 15 sayfa `sitemap.ts`'e geri
+eklenecek, Navbar'a "Modüller" bağlantısı `<Link>` olarak konacak ve ana
+sayfaya "hangi modüller var, ne işe yarıyorlar" bölümü eklenecek
+(Erdem'in isteği, 2026-09-10). Hepsi ~15 dakikalık iş — tek engel
+içeriklerin hazır olması.
+
+### 3. Uzman pazar yeri
 Uzmanların kayıt olup tespit edilen sorunla eşleştirildiği katman.
 `profiles` tablosunun rol (müşteri / uzman / admin) taşıması gerekecek.
 Eşleştirme anahtarı: 7 fonksiyonluk taksonomi.
 
-### 3. Sanal POS entegrasyonu (iyzico / PayTR)
+### 4. Sanal POS entegrasyonu (iyzico / PayTR)
 Şirket kurulduktan sonra. Şu an ödeme manuel havale/EFT + admin onayı.
 
-### 4. Admin panelinden karne durumu güncelleme
+### 5. Admin panelinden karne durumu güncelleme
 "Tedavi sürecinin takibi" başlığının ikinci yarısı: `karneler.durum`
 alanı şu an yalnızca müşteri panelinde salt okunur gösteriliyor
 (varsayılan "Beklemede"). Admin panelinden bu alanı güncelleyebilme
 (ör. "İnceleniyor" / "Teklif Gönderildi" / "Tamamlandı") ayrı bir görev
 olarak bırakıldı.
 
-### 5. Kendi SMTP'ni bağla (e-posta gönderimi)
+### 6. Kendi SMTP'ni bağla (e-posta gönderimi)
 Supabase'in ücretsiz katmandaki yerleşik e-posta gönderimi saatte birkaç
 e-postayla sınırlı ve çoğu zaman spam klasörüne düşer. Kayıt onayı ve
 şifre sıfırlama e-postaları buna bağlı olduğu için, gerçek kullanıcılar
@@ -103,7 +112,7 @@ Supabase → Authentication → SMTP Settings'e bağlanmalı. Erdem'in kararı
 Abonelik bitiş hatırlatması da bu bağlandığında e-postayla gönderilebilir
 (şimdilik yalnızca uygulama içi uyarı).
 
-### 6. Sosyal medya hesapları açılınca JSON-LD'ye eklenmeli
+### 7. Sosyal medya hesapları açılınca JSON-LD'ye eklenmeli
 Şu an Instagram/LinkedIn vb. yok (2026-09-09 itibarıyla). Açılırsa
 `organizationJsonLd`'deki (`src/app/page.tsx`) `sameAs` alanına
 eklenmeli — Google'a "bu hesaplar aynı işletmeye ait" sinyali verir.
@@ -151,6 +160,21 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 ---
 
 ## Tamamlananlar
+
+### 2026-09-10 — /tedavi giriş arkasına alındı
+Erdem'in kararı: modül içerikleri tamamlanmadan ana sayfada
+tanıtılmasınlar; hesap açan müşteriler erişsin. Yapılanlar: Navbar'dan
+"Modüller" bağlantısı kaldırıldı, `proxy.ts` matcher'ına `/tedavi`
+eklendi (oturumsuz → `/hesap/giris?sonraki=...`, gitmek istediği modüle
+girişten sonra dönüyor), üç `/tedavi` sayfasına `noindex` kondu ve 15
+sayfa sitemap'ten çıkarıldı — giriş sayfasına yönlenen URL'yi Google'a
+bildirmek doğru olmazdı. Ana sayfadaki teklif bölümünden de "14 tedavi
+modülü" ifadesi çıkarıldı (hem modül reklamı, hem de içerik yokken
+doğrulanamayan bir vaat).
+
+Bunun bedeli: sitemap 25'ten 3 URL'ye düştü, "ince içerik" SEO zaafı
+geri geldi. Modüller bitince tersine çevrilecek (Bekleyen Görevler #2 —
+adım adım yazıldı).
 
 ### 2026-09-10 — Ana sayfa yeni modele göre yeniden yazıldı
 Site hâlâ "ücretli tek seferlik check-up" satıyordu; model değişmişti.

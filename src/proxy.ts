@@ -25,7 +25,11 @@ export async function proxy(request: NextRequest) {
     return response;
   }
 
-  const alan = pathname.startsWith("/hesap") ? "hesap" : "admin";
+  // /admin dışındaki her korumalı yol müşteri alanı: /hesap ve /tedavi.
+  // Tedavi modülleri, içerikleri tamamlanana kadar herkese açık değil —
+  // yalnızca hesap açan müşteriler görüyor (modülün İÇERİĞİ ayrıca
+  // aboneliğe bağlı, bkz. ModulIcerigi.tsx).
+  const alan = pathname.startsWith("/admin") ? "admin" : "hesap";
   const girisYolu = alan === "hesap" ? "/hesap/giris" : "/admin/giris";
   // Oturum açmadan girilebilen sayfalar. NOT: /hesap/sifre-yenile
   // bilerek burada DEĞİL — oturum gerektiren korumalı bir sayfa.
@@ -77,7 +81,13 @@ export async function proxy(request: NextRequest) {
   const girisSayfasindaMi = girisAlaniYollari.includes(pathname);
 
   if (!user && !girisSayfasindaMi) {
-    return NextResponse.redirect(new URL(girisYolu, request.url));
+    // Gitmek istediği yeri koru: giriş sayfası `sonraki` parametresini
+    // zaten okuyor, kullanıcı girişten sonra tıkladığı modüle döner.
+    const hedef = new URL(girisYolu, request.url);
+    if (alan === "hesap" && pathname !== "/hesap") {
+      hedef.searchParams.set("sonraki", pathname);
+    }
+    return NextResponse.redirect(hedef);
   }
   if (user && girisSayfasindaMi) {
     return NextResponse.redirect(new URL(anaSayfa, request.url));
@@ -87,5 +97,12 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/admin", "/hesap/:path*", "/hesap"],
+  matcher: [
+    "/admin/:path*",
+    "/admin",
+    "/hesap/:path*",
+    "/hesap",
+    "/tedavi/:path*",
+    "/tedavi",
+  ],
 };

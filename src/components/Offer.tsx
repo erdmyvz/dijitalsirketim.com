@@ -2,7 +2,6 @@ import Link from "next/link";
 import ApplicationForm from "./ApplicationForm";
 import Reveal from "./Reveal";
 import { IconArrowRight, IconCheck } from "./icons";
-import { TEDAVI_FONKSIYONLARI, TOPLAM_MODUL_SAYISI } from "@/data/moduller";
 
 const ucretsizOlanlar = [
   "21 kontrol noktalı check-up",
@@ -11,10 +10,13 @@ const ucretsizOlanlar = [
   "Kişiye özel tedavi planı ve aylık tutarın hesabı",
 ];
 
+// NOT: Modüllerin adları/sayısı bilinçli olarak burada YOK. İçerikler
+// tamamlanana kadar ana sayfada tanıtılmıyorlar; hazır olunca "hangi
+// modüller ve ne işe yarıyorlar" ayrı bir bölüm olarak eklenecek.
 const ucretliOlanlar = [
-  `${TEDAVI_FONKSIYONLARI.length} fonksiyonun altında ${TOPLAM_MODUL_SAYISI} tedavi modülü`,
-  "Adım adım uygulama planı ve doldurulabilir şablonlar",
-  "Modül bitince check-up'ı tekrarlayıp skorunu ölçme",
+  "Kırmızı ve sarı fonksiyonlarınız için adım adım tedavi programı",
+  "Uygulanabilir haftalık görevler ve doldurulabilir şablonlar",
+  "Adımlar bitince check-up'ı tekrarlayıp skorunuzu yeniden ölçme",
   "Karne geçmişi ve ilerleme takibi",
 ];
 

@@ -1,33 +1,12 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
-import { TEDAVI_FONKSIYONLARI } from "@/data/moduller";
 
+// NOT: /tedavi sayfaları bilinçli olarak sitemap'te YOK. Modül
+// içerikleri tamamlanana kadar bu bölüm giriş arkasında; giriş
+// sayfasına yönlenen bir URL'yi Google'a bildirmek doğru olmaz.
+// Modüller yayına alınıp bölüm herkese açıldığında buraya geri
+// eklenecek (o zaman 15 sayfalık gerçek içerik SEO'ya iyi gelir).
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Tedavi kataloğu: harita + 7 fonksiyon + tüm modül sayfaları.
-  // Katalog büyüdükçe sitemap kendiliğinden büyür.
-  const tedaviSayfalari: MetadataRoute.Sitemap = [
-    {
-      url: `${SITE_URL}/tedavi`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    ...TEDAVI_FONKSIYONLARI.flatMap((f) => [
-      {
-        url: `${SITE_URL}/tedavi/${f.slug}`,
-        lastModified: new Date(),
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-      },
-      ...f.moduller.map((m) => ({
-        url: `${SITE_URL}/tedavi/${f.slug}/${m.id}`,
-        lastModified: new Date(),
-        changeFrequency: "monthly" as const,
-        priority: 0.6,
-      })),
-    ]),
-  ];
-
   return [
     {
       url: SITE_URL,
@@ -35,7 +14,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
-    ...tedaviSayfalari,
     {
       url: `${SITE_URL}/kvkk`,
       lastModified: new Date(),

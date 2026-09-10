@@ -25,7 +25,7 @@ export async function generateMetadata({
   return {
     title: `${fonksiyon.baslik} Modülleri | Dijital Şirketim`,
     description: fonksiyon.ozet,
-    alternates: { canonical: `/tedavi/${fonksiyon.slug}` },
+    robots: { index: false, follow: false },
   };
 }
 
