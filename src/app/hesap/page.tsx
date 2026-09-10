@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { skorHesapla } from "@/lib/checkup/scoring";
 import { karneyiCheckupStateYap } from "@/lib/checkup/karne";
 import { erisimDurumu, tarihBicimle } from "@/lib/tedavi/erisim";
+import { adminMi } from "@/lib/admin/yetki";
 import type { Karne } from "@/lib/checkup/types";
 
 export const metadata = {
@@ -32,6 +33,7 @@ export default async function HesapPaneli() {
 
   const adSoyad = (user.user_metadata as { ad_soyad?: string } | null)?.ad_soyad;
   const erisim = await erisimDurumu();
+  const yoneticiMi = await adminMi();
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -48,14 +50,27 @@ export default async function HesapPaneli() {
               <p className="text-xs text-slate-400">{user.email}</p>
             </div>
           </div>
-          <form action="/hesap/cikis" method="post">
-            <button
-              type="submit"
-              className="rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 transition-colors duration-200 ease-[var(--ease-apple)] hover:border-red-300 hover:text-red-600"
-            >
-              Çıkış Yap
-            </button>
-          </form>
+          <div className="flex items-center gap-4">
+            {/* Yönetim paneline giden tek görünür yol — yalnızca admin
+                hesaplarında çıkar. Olmadığında adresi elle yazmak
+                gerekiyordu. */}
+            {yoneticiMi && (
+              <Link
+                href="/admin"
+                className="whitespace-nowrap text-sm font-semibold text-teal-700 transition-colors duration-200 ease-[var(--ease-apple)] hover:text-teal-800"
+              >
+                Yönetim Paneli →
+              </Link>
+            )}
+            <form action="/hesap/cikis" method="post">
+              <button
+                type="submit"
+                className="rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 transition-colors duration-200 ease-[var(--ease-apple)] hover:border-red-300 hover:text-red-600"
+              >
+                Çıkış Yap
+              </button>
+            </form>
+          </div>
         </div>
       </header>
 
