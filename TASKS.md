@@ -61,10 +61,11 @@ referans/uydurma istatistik asla yazılmaz.
 
 ## Sıradaki Görev
 
-### 1. Sanal POS entegrasyonu (iyzico / PayTR)
-Şirket kurulduktan sonra. Komisyon oranları, entegrasyon zorluğu ve test
-ortamı karşılaştırılıp seçim yapılacak. Fiyat, ödeme ekranında ödemeden
-önce net gösterilecek.
+### 1. Fiyat motoru + tedavi planı ekranı
+Karneden aylık ücreti hesaplayan motor (formül: KARARLAR.md 2026-09-10) ve
+kullanıcıya "tedavi planın hazır" ekranı: hangi fonksiyonlar kapsanıyor,
+hangi modüller açılacak, aylık tutar ne. Birim ücret / Nabız Planı tabanı
+`ayarlar` tablosundan okunur, kodda sabit tutulmaz.
 
 ---
 
@@ -72,22 +73,52 @@ ortamı karşılaştırılıp seçim yapılacak. Fiyat, ödeme ekranında ödeme
 
 Öncelik sırasına dizilidir. Üstteki biter, "Sıradaki Görev"e taşınır.
 
-### 2. Admin panelinden karne durumu güncelleme
+### 2. Erişim ve ödeme sistemi
+`abonelikler` + `ayarlar` tabloları, modül kilit ekranı, ödeme sayfası
+(tutar + IBAN + alıcı adı; **referans kodu yok**), admin onay paneli
+("1 ay ver"), admin ayarlar ekranı (birim ücret, taban, IBAN, hesap
+sahibi). `/hesap` altında "Aboneliğim" bölümü: geri sayım + son 7 günde
+uygulama içi uyarı şeridi. Erişim, planın kapsadığı fonksiyonlarla
+sınırlı.
+
+### 3. Ana sayfa teklif metninin düzeltilmesi
+Ana sayfadaki "Teklif" bölümü hâlâ **ücretli tek seferlik check-up**
+satıyor; model değişti (check-up ücretsiz, sistem ücretli). Metin üyelik
+teklifine dönüşmeli. Fiyat yine gösterilmeyecek — teşhisten hesaplandığı
+için zaten önceden söylenemez.
+
+### 4. Modül içerikleri (modül modül)
+Katalog ve sayfa iskeleti hazır, içerikler boş. Sıra: önce **Müşteri
+Bulma Planı** (acil müdahale modülü — içeriği Erdem ile netleştirilecek),
+sonra diğerleri. Her modül: 4-7 adım, doldurulabilir şablonlar, bitiş
+kontrolü (onardığı check-up sorusunun tekrar cevaplanması).
+
+### 5. Uzman pazar yeri
+Uzmanların kayıt olup tespit edilen sorunla eşleştirildiği katman.
+`profiles` tablosunun rol (müşteri / uzman / admin) taşıması gerekecek.
+Eşleştirme anahtarı: 7 fonksiyonluk taksonomi.
+
+### 6. Sanal POS entegrasyonu (iyzico / PayTR)
+Şirket kurulduktan sonra. Şu an ödeme manuel havale/EFT + admin onayı.
+
+### 7. Admin panelinden karne durumu güncelleme
 "Tedavi sürecinin takibi" başlığının ikinci yarısı: `karneler.durum`
 alanı şu an yalnızca müşteri panelinde salt okunur gösteriliyor
 (varsayılan "Beklemede"). Admin panelinden bu alanı güncelleyebilme
 (ör. "İnceleniyor" / "Teklif Gönderildi" / "Tamamlandı") ayrı bir görev
 olarak bırakıldı.
 
-### 3. Kendi SMTP'ni bağla (e-posta gönderimi)
+### 8. Kendi SMTP'ni bağla (e-posta gönderimi)
 Supabase'in ücretsiz katmandaki yerleşik e-posta gönderimi saatte birkaç
 e-postayla sınırlı ve çoğu zaman spam klasörüne düşer. Kayıt onayı ve
 şifre sıfırlama e-postaları buna bağlı olduğu için, gerçek kullanıcılar
 gelmeye başlayınca kendi SMTP'si (ör. Resend / Brevo ücretsiz katman)
 Supabase → Authentication → SMTP Settings'e bağlanmalı. Erdem'in kararı
 (2026-09-09): müşteriler gelene kadar ücretsiz katmanda kalınacak.
+Abonelik bitiş hatırlatması da bu bağlandığında e-postayla gönderilebilir
+(şimdilik yalnızca uygulama içi uyarı).
 
-### 4. Sosyal medya hesapları açılınca JSON-LD'ye eklenmeli
+### 9. Sosyal medya hesapları açılınca JSON-LD'ye eklenmeli
 Şu an Instagram/LinkedIn vb. yok (2026-09-09 itibarıyla). Açılırsa
 `organizationJsonLd`'deki (`src/app/page.tsx`) `sameAs` alanına
 eklenmeli — Google'a "bu hesaplar aynı işletmeye ait" sinyali verir.
@@ -128,6 +159,29 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 ---
 
 ## Tamamlananlar
+
+### 2026-09-10 — Tedavi modülleri: katalog ve menü iskeleti
+Ürünün asıl değer katmanının çatısı kuruldu. `/tedavi` haritası ("Bir
+işletme 7 organdan oluşur, yedisinin de reçetesi burada"), 7 fonksiyon
+sayfası ve 14 modül sayfası. Üst seviye her zaman 7 kutu — tamlık hissini
+veren şey bu; modüller alt seviyede serbestçe büyür.
+
+Katalog tek dosyada: [src/data/moduller.ts](src/data/moduller.ts). Sıra =
+dizi sırası (taşımak için kes-yapıştır), yeni modül = diziye yeni nesne —
+`questions.ts` ile aynı "kod bilmeden düzenlenebilir" deseni.
+
+Kişiselleştirme: giriş yapmış ve check-up yapmış kullanıcıda kartlar kendi
+skoruyla renkleniyor (kırmızı/sarı/yeşil), üstte "önce şuradan başla"
+şeridi çıkıyor. Check-up yapmamış ziyaretçi ve Google nötr haritayı
+görüyor. Supabase erişilemese bile katalog ayakta kalıyor (sonKarne.ts
+asla fırlatmıyor — proxy.ts'teki hatadan alınan ders).
+
+Her modül `onardigiSorular` ile check-up sorularına bağlı; modül
+sayfasında "bu modül check-up'ında neyi onarır?" bölümünde o soruların
+metni gösteriliyor. Modül içerikleri bilinçli olarak boş ("Yakında"),
+sıradaki görevlerde doldurulacak. 14 modül sayfası sitemap'e eklendi —
+sitenin en büyük SEO zaafı olan "tek sayfalık ince içerik" sorununa da
+doğrudan iyi geliyor. Mobil kontrol yapıldı.
 
 ### 2026-09-09 — Şifremi unuttum akışı
 Müşteri artık şifresini kendi sıfırlayabiliyor — daha önce Erdem'in

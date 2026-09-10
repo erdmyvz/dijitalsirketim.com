@@ -6,6 +6,61 @@
 
 ---
 
+**2026-09-10 — Check-up ücretsiz, tedavi sistemi ücretli. Fiyat teşhisten hesaplanır.**
+Model tersine döndü: eskiden check-up ücretliydi, artık **check-up herkese
+ücretsiz**, para **tedavi modüllerine erişimden** kazanılıyor. Aylık ücret
+kullanıcının kendi karnesinden hesaplanır:
+
+```
+Aylık Ücret = Nabız Planı tabanı + (Birim Ücret × Σ fonksiyon ağırlığı)
+  Kırmızı (0-2 puan) → 1.0    Sarı (3-4) → 0.5    Yeşil (5-6) → 0
+```
+
+Erdem'in verdiği uçlar bu formülle birebir tutuyor (birim 10.000 TL):
+7 kırmızı → 70.000 TL, 1 kırmızı → 10.000 TL. Gerekçe: "sağlayacağımız
+fayda ne kadar fazlaysa o kadar ücret". Sarının yarım sayılması "daha az
+bozuksa daha az iş, daha az ücret" demek. Birim ücret ve taban admin
+panelinden değişir, kodda sabit tutulmaz.
+
+Bu, "ana sayfada fiyat gösterilmez" kararını da güçlendiriyor: fiyat artık
+teşhisten türediği için önceden söylenmesi zaten mümkün değil.
+
+**2026-09-10 — Ödeme aylık; erişim, ödenen fonksiyonlarla sınırlı.**
+Erdem'in gerekçesi: tek seferlik ödemede sürekli yeni işletme bulma
+derdine düşülür, aylık ödeme hem sadakat zinciri kurar hem müşteriye
+"para veriyorum, karşılığını almalıyım" disiplini kazandırır. 4 fonksiyon
+için ödeyen, o 4 fonksiyonun modüllerini görür; yeşil fonksiyonların
+modülleri zaten gerekmez.
+
+**2026-09-10 — İyileşen müşteri "Nabız Planı"na düşer (taban ücret).**
+Fiyat teşhisten hesaplandığı için müşteri iyileştikçe faturası düşer. Bu
+bir kayıp değil, en güçlü kanıt: "faturam düştü, demek ki işe yaradı".
+Tamamen iyileşen müşterinin sistemden çıkmaması için taban bir plan var —
+adı bilinçli olarak "bakım" değil **Nabız Planı**, çünkü parayı hak eden
+bir teslimatı olmalı: aylık kısa nabız kontrolü, skor düşünce erken
+uyarı, yıllık tam check-up, yeni modüllere erişim.
+
+**2026-09-10 — Ciro'ya göre eleme yok; fiyatın kendisi eler.**
+Check-up ciro aralığını soruyor ama düşük cirolu işletme kapıda geri
+çevrilmiyor. Gerekçe (Erdem): 45.000 TL'lik bir teklif hedef kitleyi zaten
+kendiliğinden eler, kimseyi kapıda reddetmeye gerek yok.
+
+**2026-09-10 — Abonelik ödemelerinde referans kodu kullanılmaz.**
+Ödeme ekranı yalnızca tutar + IBAN + alıcı adı gösterir. Admin, gelen
+havaleyi gönderen adına göre eşleştirip panelden onaylar; onay anında
+kullanıcının erişimi açılır ve `/hesap` altındaki "Aboneliğim"de geri
+sayım görünür. Hacim artarsa kod eklemek kolay. (Başvuru formundaki
+`DS-XXXX` kodu ayrı bir akış, ona dokunulmadı.)
+
+**2026-09-10 — Tedavi kataloğu 7 fonksiyon → alt modüller olarak kurgulandı.**
+Üst seviye her zaman 7 kutu (işletmenin tamlığını veren şey bu), modüller
+alt seviyede serbestçe büyür. Katalog tek dosyada:
+[src/data/moduller.ts](src/data/moduller.ts) — sıra = dizi sırası
+(taşımak için kes-yapıştır), yeni modül = diziye yeni nesne
+(`questions.ts` ile aynı desen). Her modül `onardigiSorular` ile check-up
+sorularına bağlı: modül bitince o sorular tekrar cevaplanır, skor
+yükselir — "gözle görülür ilerleme" ölçümü buradan çıkıyor.
+
 **2026-09-09 — Ürün dört katmana ayrıldı; ölçüt: "bunu Erdem mi yapıyor, sistem mi?"**
 Erdem "sistemden tamamen bağımsız" olmak istiyor: (1) self-servis teşhis
 [var], (2) self-servis tedavi modülleri, (3) uzmanların kayıt olup

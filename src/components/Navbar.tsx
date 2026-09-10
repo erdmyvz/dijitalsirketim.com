@@ -1,8 +1,11 @@
 import Link from "next/link";
 
+// `sayfa: true` olanlar gerçek bir rotaya gider (next/link), diğerleri
+// ana sayfadaki bölümlere kaydırır.
 const links = [
   { href: "#sorun", label: "Belirtiler" },
   { href: "#cozum", label: "Tedavi Modeli" },
+  { href: "/tedavi", label: "Modüller", sayfa: true },
   { href: "#ispat", label: "Neden Biz" },
   { href: "#teklif", label: "Check-Up Teklifi" },
   { href: "#sss", label: "SSS" },
@@ -23,16 +26,27 @@ export default function Navbar() {
         </a>
 
         <ul className="hidden items-center gap-8 text-[13px] font-medium tracking-tight text-slate-600 md:flex">
-          {links.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-slate-900"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
+          {links.map((link) =>
+            link.sayfa ? (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-slate-900"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ) : (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-slate-900"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ),
+          )}
         </ul>
 
         <div className="flex flex-none items-center gap-3">
