@@ -6,6 +6,26 @@
 
 ---
 
+**2026-09-10 — Başvuru formu, ana huniden çıkıp "özel çalışma" kanalı oldu.**
+Ana huni artık: ücretsiz check-up → hesap → tedavi planı → ödeme. Eski
+başvuru formu (ad/işletme/telefon → `basvurular`) bu huninin parçası
+değil; dört katmanlı modeldeki 4. katmanın (şirkete özel otomasyon /
+birebir danışmanlık) talep kanalı olarak konumlandırıldı. Gönderim
+sonrasındaki ödeme/IBAN/referans kodu bloğu kaldırıldı. `src/data/odeme.ts`
+böylece tamamen kullanılmaz hale geldi ve silindi — fiyat ve ödeme
+bilgileri artık `ayarlar` tablosunda.
+
+**2026-09-10 — SSS metinleri tek kaynaktan okunur.**
+Aynı sorular hem `Faq.tsx`'te hem `page.tsx`'teki FAQPage JSON-LD'sinde
+birebir kopyalanmıştı. İkisi ayrı düşerse Google'a sayfada görünmeyen bir
+cevap bildirmiş oluruz (yapılandırılmış veri ihlali). Tek kaynak:
+[src/data/sss.ts](src/data/sss.ts).
+
+**2026-09-10 — "48 saatte raporlanır" iddiası kaldırıldı.**
+Check-up self-servis sihirbaza dönüştüğünden sonuç anında çıkıyor; eski
+metin artık doğru değildi. Marka kuralı gereği doğrulanamayan/yanlış
+iddia sitede durmaz.
+
 **2026-09-10 — Check-up ücretsiz, tedavi sistemi ücretli. Fiyat teşhisten hesaplanır.**
 Model tersine döndü: eskiden check-up ücretliydi, artık **check-up herkese
 ücretsiz**, para **tedavi modüllerine erişimden** kazanılıyor. Aylık ücret

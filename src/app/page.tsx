@@ -7,6 +7,7 @@ import Offer from "@/components/Offer";
 import Faq from "@/components/Faq";
 import MissionVision from "@/components/MissionVision";
 import Footer from "@/components/Footer";
+import { SSS } from "@/data/sss";
 import { SITE_URL } from "@/lib/site";
 
 // Google'ın işletmeyi, teklifi ve SSS'yi anlaması için yapılandırılmış
@@ -38,40 +39,13 @@ const organizationJsonLd = {
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "Benim sektörüm farklı, bana uyar mı?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "4 işletme modeli var, 21 kontrol noktası hepsinde aynı çalışır.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Rapor sonrası devam etmek zorunda mıyım?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Hayır. Rapor sizindir, tedavi ayrı bir karardır.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Ne kadar sürer?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Check-up 48 saat içinde raporlanır.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Neden fiyat sitede yazmıyor?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Çünkü işletmenizi henüz görmedik. Bir doktorun muayene etmeden tedavi fiyatı söylemesi ne kadar doğruysa, biz de hangi fonksiyonun tıkalı olduğunu bilmeden fiyat vermeyi doğru bulmuyoruz. Başvuru adımında check-up ücreti ve varsa tedavi planının maliyeti size net olarak, ödeme öncesinde yazılı şekilde iletilir. Sürpriz maliyet yoktur.",
-      },
-    },
-  ],
+  // SSS metinleri tek kaynaktan (src/data/sss.ts) okunuyor — Google'a
+  // sayfada görünmeyen bir cevap bildirmemek için.
+  mainEntity: SSS.map((s) => ({
+    "@type": "Question",
+    name: s.soru,
+    acceptedAnswer: { "@type": "Answer", text: s.cevap },
+  })),
 };
 
 // Tek sayfalık satış sayfası akışı:

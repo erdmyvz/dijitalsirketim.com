@@ -165,10 +165,11 @@ export default async function AbonelikYonetimi() {
                     </p>
                   </div>
 
+                  {/* Tarihe ek getirilmiyor: "2026'ya / 2025'e" gibi ek
+                      yıla göre değişir, sabit ek yazmak hatalı olur. */}
                   {aktifAbonelik ? (
                     <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-emerald-200">
-                      Aktif · {tarihBicimle(new Date(aktifAbonelik.bitis))}
-                      &apos;e kadar
+                      Aktif · bitiş {tarihBicimle(new Date(aktifAbonelik.bitis))}
                     </span>
                   ) : (
                     <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500 ring-1 ring-slate-200">

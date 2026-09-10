@@ -7,7 +7,7 @@ const links = [
   { href: "#cozum", label: "Tedavi Modeli" },
   { href: "/tedavi", label: "Modüller", sayfa: true },
   { href: "#ispat", label: "Neden Biz" },
-  { href: "#teklif", label: "Check-Up Teklifi" },
+  { href: "#teklif", label: "Nasıl İşliyor" },
   { href: "#sss", label: "SSS" },
 ];
 

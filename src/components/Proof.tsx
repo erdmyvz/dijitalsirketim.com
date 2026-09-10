@@ -34,7 +34,7 @@ export default function Proof() {
           <p className="mt-4 text-lg leading-relaxed text-slate-600">
             Büyük danışmanlık firmaları benzer bir analizi haftalar süren
             projelerle ve kurumsal bütçelerle yapar. Dijital check-up aynı
-            mantığı dijitalleştirir: 48 saatte kök problem raporu.
+            mantığı dijitalleştirir: 21 soru, anında kök problem karnesi.
           </p>
         </Reveal>
 

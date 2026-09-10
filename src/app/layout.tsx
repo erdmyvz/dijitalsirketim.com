@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
   title: "Dijital Şirketim | Türkiye'nin Şirket Doktoru — Dijital Check-Up",
   description:
-    "Ürününüz iyi ama müşteri gelmiyor mu? Dijital Şirketim, 21 kontrol noktalı Dijital Check-Up ile işletmenizin kök problemini 48 saatte teşhis eder ve size özel bir tedavi reçetesi sunar. Kurucu: Erdem Yavuz.",
+    "Ürününüz iyi ama müşteri gelmiyor mu? Ücretsiz 21 kontrol noktalı Dijital Check-Up ile işletmenizin kök problemini dakikalar içinde teşhis edin, adım adım tedavi modülleriyle kapatın. Kurucu: Erdem Yavuz.",
   keywords: [
     "dijital pazarlama danışmanlığı",
     "işletme büyütme",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Dijital Şirketim | Türkiye'nin Şirket Doktoru",
     description:
-      "21 kontrol noktalı Dijital Check-Up ile işletmenizin kök problemini 48 saatte teşhis edip tedavi reçetesi sunuyoruz.",
+      "Ücretsiz 21 kontrol noktalı Dijital Check-Up ile kök problemi teşhis edip adım adım tedavi modülleriyle kapatıyoruz.",
     url: SITE_URL,
     siteName: "Dijital Şirketim",
     locale: "tr_TR",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Dijital Şirketim | Türkiye'nin Şirket Doktoru",
     description:
-      "21 kontrol noktalı Dijital Check-Up ile kök problemi 48 saatte teşhis ediyoruz.",
+      "Ücretsiz 21 kontrol noktalı Dijital Check-Up ile kök problemi teşhis ediyoruz.",
   },
 };
 

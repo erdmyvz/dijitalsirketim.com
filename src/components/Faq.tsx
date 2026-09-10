@@ -3,28 +3,7 @@
 import { useState } from "react";
 import Reveal from "./Reveal";
 import { IconPlus } from "./icons";
-
-const sorular = [
-  {
-    soru: "Benim sektörüm farklı, bana uyar mı?",
-    cevap:
-      "4 işletme modeli var, 21 kontrol noktası hepsinde aynı çalışır.",
-  },
-  {
-    soru: "Rapor sonrası devam etmek zorunda mıyım?",
-    cevap:
-      "Hayır. Rapor sizindir, tedavi ayrı bir karardır.",
-  },
-  {
-    soru: "Ne kadar sürer?",
-    cevap: "Check-up 48 saat içinde raporlanır.",
-  },
-  {
-    soru: "Neden fiyat sitede yazmıyor?",
-    cevap:
-      "Çünkü işletmenizi henüz görmedik. Bir doktorun muayene etmeden tedavi fiyatı söylemesi ne kadar doğruysa, biz de hangi fonksiyonun tıkalı olduğunu bilmeden fiyat vermeyi doğru bulmuyoruz. Başvuru adımında check-up ücreti ve varsa tedavi planının maliyeti size net olarak, ödeme öncesinde yazılı şekilde iletilir. Sürpriz maliyet yoktur.",
-  },
-];
+import { SSS } from "@/data/sss";
 
 export default function Faq() {
   const [acikIndex, setAcikIndex] = useState<number | null>(0);
@@ -42,7 +21,7 @@ export default function Faq() {
         </Reveal>
 
         <div className="mt-12 space-y-3">
-          {sorular.map((s, i) => {
+          {SSS.map((s, i) => {
             const acik = acikIndex === i;
             return (
               <Reveal key={s.soru} delayMs={i * 80}>

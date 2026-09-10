@@ -45,7 +45,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <a href="#teklif" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
-                    Check-Up Teklifi
+                    Nasıl İşliyor
                   </a>
                 </li>
                 <li>

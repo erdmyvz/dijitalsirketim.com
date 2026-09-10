@@ -61,11 +61,16 @@ referans/uydurma istatistik asla yazılmaz.
 
 ## Sıradaki Görev
 
-### 1. Ana sayfa teklif metninin düzeltilmesi
-Ana sayfadaki "Teklif" bölümü hâlâ **ücretli tek seferlik check-up**
-satıyor; model değişti (check-up ücretsiz, sistem ücretli). Metin üyelik
-teklifine dönüşmeli. Fiyat yine gösterilmeyecek — teşhisten hesaplandığı
-için zaten önceden söylenemez.
+### 1. Modül içerikleri (modül modül)
+Katalog, sayfa iskeleti ve kilit mekanizması hazır; içerikler boş. Sıra:
+önce **Müşteri Bulma Planı** (acil müdahale modülü). **Erdem'den
+beklenen:** bir işletme sahibi 1 hafta boyunca günde ~30 dakika ayırarak
+hangi somut adımları atarsa ilk yeni temaslarını kurmuş olur? Ham
+anlatım yeterli — şablonlu ve bitiş kontrollü modüle çevrilecek.
+Her modül: 4-7 adım, doldurulabilir şablonlar, bitiş kontrolü
+(onardığı check-up sorusunun tekrar cevaplanması). Modül `durum`u
+`"hazir"` yapılınca sayfa otomatik dinamikleşiyor ve kilit devreye
+giriyor — ek iş yok.
 
 ---
 
@@ -73,28 +78,22 @@ için zaten önceden söylenemez.
 
 Öncelik sırasına dizilidir. Üstteki biter, "Sıradaki Görev"e taşınır.
 
-### 2. Modül içerikleri (modül modül)
-Katalog ve sayfa iskeleti hazır, içerikler boş. Sıra: önce **Müşteri
-Bulma Planı** (acil müdahale modülü — içeriği Erdem ile netleştirilecek),
-sonra diğerleri. Her modül: 4-7 adım, doldurulabilir şablonlar, bitiş
-kontrolü (onardığı check-up sorusunun tekrar cevaplanması).
-
-### 3. Uzman pazar yeri
+### 2. Uzman pazar yeri
 Uzmanların kayıt olup tespit edilen sorunla eşleştirildiği katman.
 `profiles` tablosunun rol (müşteri / uzman / admin) taşıması gerekecek.
 Eşleştirme anahtarı: 7 fonksiyonluk taksonomi.
 
-### 4. Sanal POS entegrasyonu (iyzico / PayTR)
+### 3. Sanal POS entegrasyonu (iyzico / PayTR)
 Şirket kurulduktan sonra. Şu an ödeme manuel havale/EFT + admin onayı.
 
-### 5. Admin panelinden karne durumu güncelleme
+### 4. Admin panelinden karne durumu güncelleme
 "Tedavi sürecinin takibi" başlığının ikinci yarısı: `karneler.durum`
 alanı şu an yalnızca müşteri panelinde salt okunur gösteriliyor
 (varsayılan "Beklemede"). Admin panelinden bu alanı güncelleyebilme
 (ör. "İnceleniyor" / "Teklif Gönderildi" / "Tamamlandı") ayrı bir görev
 olarak bırakıldı.
 
-### 6. Kendi SMTP'ni bağla (e-posta gönderimi)
+### 5. Kendi SMTP'ni bağla (e-posta gönderimi)
 Supabase'in ücretsiz katmandaki yerleşik e-posta gönderimi saatte birkaç
 e-postayla sınırlı ve çoğu zaman spam klasörüne düşer. Kayıt onayı ve
 şifre sıfırlama e-postaları buna bağlı olduğu için, gerçek kullanıcılar
@@ -104,7 +103,7 @@ Supabase → Authentication → SMTP Settings'e bağlanmalı. Erdem'in kararı
 Abonelik bitiş hatırlatması da bu bağlandığında e-postayla gönderilebilir
 (şimdilik yalnızca uygulama içi uyarı).
 
-### 7. Sosyal medya hesapları açılınca JSON-LD'ye eklenmeli
+### 6. Sosyal medya hesapları açılınca JSON-LD'ye eklenmeli
 Şu an Instagram/LinkedIn vb. yok (2026-09-09 itibarıyla). Açılırsa
 `organizationJsonLd`'deki (`src/app/page.tsx`) `sameAs` alanına
 eklenmeli — Google'a "bu hesaplar aynı işletmeye ait" sinyali verir.
@@ -134,19 +133,14 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
         (Erdem ekran görüntüleriyle doğruladı, 2026-09-07).
 - [x] **`ayarlar` tablosu** — çalıştırıldı (2026-09-10), admin ayarlar
       ekranından yazma canlı veritabanına karşı doğrulandı.
-- [ ] **`abonelikler` tablosu çalıştırılmalı** — [supabase/schema.sql](supabase/schema.sql)'in
-      sonundaki `-- Abonelikler:` bölümü Supabase → SQL Editor'de bir kez
-      çalıştırılmalı. Çalıştırılmadan erişim onayı verilemez (site
-      çökmez, herkes "erişim yok" görünür).
+- [x] **`abonelikler` tablosu** — çalıştırıldı (2026-09-10). Uçtan uca
+      doğrulandı: kilitli modül → admin panelinden "1 ay ekle" → kilit
+      açıldı; plana dahil olmayan fonksiyonun modülü kilitli kaldı;
+      geri sayım ve son-7-gün uyarısı doğru çalıştı.
 - [ ] **Abonelik ödeme bilgileri girilmeli** — Admin → Ayarlar
       ekranından IBAN ve hesap sahibi. Girilene kadar `/hesap/odeme`
       ekranı IBAN göstermeyip WhatsApp'a yönlendiriyor (yanlış hesaba
       ödeme riskine karşı bilinçli).
-- [ ] **Eski başvuru akışındaki `src/data/odeme.ts`** — ana sayfadaki
-      başvuru formunun kullandığı ayrı, eski akış (ücret + IBAN +
-      `DS-XXXX` referans kodu). Ana sayfa teklif metni üyeliğe
-      dönüştürülünce (Sıradaki Görev #1) muhtemelen tamamen kalkacak;
-      o zamana kadar boş bırakılabilir.
 - [ ] **`www` alt alan adı** — Vercel → Domains'e eklenmeli ki SSL alsın;
       koddaki www→apex yönlendirmesi ancak o zaman devreye girer.
 - [x] **Google Search Console** — mülk doğrulandı (`layout.tsx`'e
@@ -157,6 +151,32 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 ---
 
 ## Tamamlananlar
+
+### 2026-09-10 — Ana sayfa yeni modele göre yeniden yazıldı
+Site hâlâ "ücretli tek seferlik check-up" satıyordu; model değişmişti.
+Teklif bölümü ikiye ayrıldı: **Ücretsiz / Teşhis** (check-up, karne, AI
+ön teşhis, plan hesabı) ve **Aylık Üyelik / Tedavi** (7 fonksiyon
+altında 14 modül, şablonlar, ilerleme takibi). Fiyat yine yok — teşhisten
+hesaplandığı için zaten önceden söylenemiyor; onun yerine "yalnızca bozuk
+fonksiyonlar için ödersiniz, iyileştikçe tutar düşer" anlatımı kondu.
+
+Başvuru formu, ana huniden çıkarılıp **"şirketinize özel çalışma /
+danışmanlık"** kanalına dönüştürüldü (dört katmanlı modeldeki 4. katman).
+Gönderim sonrası ekranındaki ödeme/IBAN/referans kodu bloğu kaldırıldı,
+yerine ücretsiz check-up'a yönlendirme kondu. Buton: "Görüşme Talebi
+Gönder".
+
+Yanlış hale gelen "48 saatte raporlanır" iddiası tüm sitede temizlendi
+(check-up artık anında sonuç veriyor): Proof, SSS, meta açıklaması, OG
+ve Twitter metinleri. Navbar/footer'daki "Check-Up Teklifi" bağlantısı
+"Nasıl İşliyor" oldu.
+
+İki yapısal düzeltme: (1) SSS metinleri hem bileşende hem FAQPage
+JSON-LD'sinde birebir kopyalanmıştı — ikisi ayrı düşerse Google'a
+sayfada görünmeyen cevap bildirmiş oluyorduk; tek kaynağa alındı
+([src/data/sss.ts](src/data/sss.ts)) ve içerik yeni modele göre yazıldı.
+(2) `src/data/odeme.ts` artık hiçbir yerden kullanılmıyordu (fiyat/IBAN
+`ayarlar` tablosuna taşındı), ölü dosya silindi.
 
 ### 2026-09-10 — Erişim ve ödeme sistemi
 Manuel havale + admin onayı akışı kuruldu. `abonelikler` tablosu
