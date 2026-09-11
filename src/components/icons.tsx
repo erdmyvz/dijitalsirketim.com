@@ -164,7 +164,7 @@ export function IconAlertTriangle(props: IconProps) {
 }
 
 // ---------------------------------------------------------------------
-// Piktogram ve 7 fonksiyon ikonları (2026-09-11)
+// 7 fonksiyon ikonları (2026-09-11)
 // ---------------------------------------------------------------------
 // Aşağıdaki yedi ikon, check-up'taki 7 iş fonksiyonuna birebir karşılık
 // gelir. Amaç jenerik "büyüteç / pano" ikonlarından çıkıp her fonksiyonu
@@ -173,17 +173,6 @@ export function IconAlertTriangle(props: IconProps) {
 //
 // Hepsi 20px'te okunacak şekilde sade tutuldu: ayrıntı eklemek küçük
 // boyutta ikonu tanınmaz bir lekeye çeviriyor.
-
-/** Kapanan/açık dükkân — CostOfPain piktogramı. */
-export function IconStore(props: IconProps) {
-  return (
-    <svg {...base} {...props}>
-      <path d="M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z" />
-      <path d="M3.5 9 5 4h14l1.5 5" />
-      <path d="M10 20v-5h4v5" />
-    </svg>
-  );
-}
 
 /** Müşteri Bulma — temasların süzüldüğü huni. */
 export function IconFunnel(props: IconProps) {

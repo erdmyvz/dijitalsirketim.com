@@ -1,100 +1,85 @@
 import Reveal from "./Reveal";
-import { IconStore } from "./icons";
 
-// NOT: Aşağıdaki istatistikler ve kaynak atıfları (TOBB / BLS) brief'te
-// verildiği şekilde kullanılmıştır. Yayına almadan önce güncel ve doğru
-// kaynak referanslarıyla teyit edin.
-const istatistikler = [
-  {
-    baslik: "4 işletmeden 1'i",
-    toplam: 4,
-    kapanan: 1,
-    aciklama: "Her yıl açılan işletmelerin yaklaşık dörtte biri kapanıyor.",
-    kaynak: "TOBB",
-  },
-  {
-    baslik: "2 işletmeden 1'i",
-    toplam: 2,
-    kapanan: 1,
-    aciklama: "İşletmelerin yaklaşık yarısı 5. yılını göremiyor.",
-    kaynak: "BLS",
-  },
+// Burada BİLEREK istatistik yok.
+//
+// Önceki sürümde TOBB ve BLS adına iki oran yazıyordu ("4 işletmeden
+// 1'i", "2 işletmeden 1'i") ve koddaki not bunların teyit edilmediğini
+// söylüyordu. Kaynak adı verilen doğrulanmamış bir sayı, sıradan bir
+// abartıdan daha ağır bir iddia — CLAUDE.md'nin değişmez kuralına da
+// aykırı. Erdem'in kararıyla (2026-09-11) kaldırıldı.
+//
+// Yerine geçen çerçeve doğrulama gerektirmiyor: maliyet bir oran değil,
+// işletme sahibinin zaten ödediği bedel. Okuyan kendinde tanır ya da
+// tanımaz; kimse adına bir istatistik iddia edilmiyor.
+const kalemler = [
+  { kalem: "Sahibinin zamanı", siklik: "her gün" },
+  { kalem: "Tekrarlanamayan gelir", siklik: "her ay" },
+  { kalem: "Ölçülmeyen pazarlama", siklik: "her kampanya" },
+  { kalem: "Hisle alınan kararlar", siklik: "her seferinde" },
 ];
-
-/**
- * Oranı rakamla değil piktogramla anlatıyoruz: "4 işletmeden 1'i" bir
- * cümle olarak okunup geçiliyor, dördü çizilip biri kırmızıya döndüğünde
- * göz onu saymak zorunda kalıyor. Renk tek başına anlam taşımasın diye
- * kapanan dükkân aynı zamanda soluklaştırılıp devriliyor.
- */
-function Piktogram({ toplam, kapanan }: { toplam: number; kapanan: number }) {
-  return (
-    <div aria-hidden className="flex items-end justify-center gap-2.5">
-      {Array.from({ length: toplam }, (_, i) => {
-        const kapali = i < kapanan;
-        return (
-          <span
-            key={i}
-            className={
-              kapali
-                ? "text-red-500 opacity-90 [transform:rotate(8deg)]"
-                : "text-slate-300"
-            }
-          >
-            <IconStore
-              className={kapali ? "h-11 w-11" : "h-11 w-11"}
-              strokeWidth={1.5}
-            />
-          </span>
-        );
-      })}
-    </div>
-  );
-}
 
 export default function CostOfPain() {
   return (
     <section className="bg-white">
       <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
-        {/* Ritim kırılımı: bu bölüm ortalanmış başlık yerine iki sütun —
-            solda iddia, sağda kanıt. Üstteki ve alttaki bölümlerle aynı
-            kalıba düşmesin diye. */}
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-center">
           <Reveal>
             <h2 className="text-3xl font-semibold leading-[1.1] tracking-[-0.02em] text-slate-900 sm:text-5xl">
               Bu tablo böyle devam ederse{" "}
               <span className="text-red-600">ne olur?</span>
             </h2>
-            <p className="mt-5 max-w-md text-lg leading-relaxed text-slate-600">
-              Kapanan işletmelerin çoğu kötü ürün yüzünden kapanmıyor.
-              Ürün iyi, emek yerinde — eksik olan, geliri tekrarlanabilir
-              kılan sistem.
+            <p className="mt-5 max-w-lg text-lg leading-relaxed text-slate-600">
+              Sistemsizliğin bir faturası var, ama bu fatura posta
+              kutusuna gelmiyor. Ürün iyi, emek yerinde — eksik olan,
+              geliri tekrarlanabilir kılan yapı. O yapı kurulmadığı
+              sürece bedel, işletmenin büyümemesi olarak ödenir.
             </p>
-            <p className="mt-6 inline-block rounded-2xl border-l-[3px] border-slate-900 bg-slate-50 py-3 pl-4 pr-5 text-base font-medium leading-relaxed text-slate-800">
-              Kapanan işletmelerin ürünleri kötü değildi.
+            <p className="mt-7 inline-block rounded-2xl border-l-[3px] border-slate-900 bg-slate-50 py-3 pl-4 pr-5 text-base font-medium leading-relaxed text-slate-800">
+              Ürününüz kötü olduğu için büyüyemiyor olabilirsiniz.
               <br />
-              Sistemleri yoktu.
+              Ya da bir sisteminiz olmadığı için.
+              <br />
+              <span className="text-slate-500">
+                Check-up tam olarak bunu ayırır.
+              </span>
             </p>
           </Reveal>
 
-          <div className="grid gap-5 sm:grid-cols-2">
-            {istatistikler.map((s, i) => (
-              <Reveal key={s.baslik} delayMs={i * 120}>
-                <div className="h-full rounded-[28px] border border-red-100 bg-red-50/50 p-7 text-center transition-all duration-300 ease-[var(--ease-apple)] hover:-translate-y-1 hover:shadow-xl hover:shadow-red-900/5 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
-                  <Piktogram toplam={s.toplam} kapanan={s.kapanan} />
-                  <p className="mt-5 text-2xl font-semibold tracking-[-0.02em] text-red-700 sm:text-3xl">
-                    {s.baslik}
-                  </p>
-                  <p className="mt-2.5 text-sm leading-relaxed text-slate-700">
-                    {s.aciklama}
-                  </p>
-                  <span className="mt-4 inline-block text-xs font-semibold uppercase tracking-widest text-red-400">
-                    Kaynak: {s.kaynak}
-                  </span>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          {/* Makbuz görseli: rakam yok, kaynak yok — yalnızca neyin
+              ödendiği ve ne sıklıkla ödendiği. */}
+          <Reveal delayMs={120}>
+            <div className="rounded-[28px] border border-red-100 bg-red-50/50 p-7 sm:p-8">
+              <p className="text-xs font-semibold uppercase tracking-widest text-red-500">
+                Sistemsizliğin faturası
+              </p>
+              <p className="mt-1.5 text-sm leading-relaxed text-slate-600">
+                Kalem kalem görünmez, ama her ay ödenir.
+              </p>
+
+              <dl className="mt-6 border-t border-dashed border-red-200 pt-4">
+                {kalemler.map((k) => (
+                  <div
+                    key={k.kalem}
+                    className="flex items-baseline justify-between gap-4 border-b border-dashed border-red-200/70 py-3 last:border-b-0"
+                  >
+                    <dt className="text-[15px] text-slate-800">{k.kalem}</dt>
+                    <dd className="flex-none text-xs font-medium uppercase tracking-wider text-red-400">
+                      {k.siklik}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+
+              <div className="mt-4 flex items-baseline justify-between gap-4 border-t-2 border-dashed border-red-300 pt-4">
+                <span className="text-sm font-semibold uppercase tracking-widest text-slate-500">
+                  Toplam
+                </span>
+                <span className="text-right text-lg font-semibold tracking-[-0.01em] text-red-700">
+                  İşletmenin büyümemesi
+                </span>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>

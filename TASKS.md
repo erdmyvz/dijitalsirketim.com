@@ -165,6 +165,35 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 
 ## Tamamlananlar
 
+### 2026-09-11 — Doğrulanmamış istatistikler siteden kaldırıldı
+"Acının maliyeti" bölümünde TOBB ve BLS adına iki oran duruyordu
+("4 işletmeden 1'i", "2 işletmeden 1'i") ve koddaki not bunların teyit
+edilmediğini söylüyordu. Kaynak adı verilen doğrulanmamış bir sayı,
+sıradan bir abartıdan daha ağır bir iddia — CLAUDE.md'nin değişmez
+kuralına da doğrudan aykırıydı. Erdem'in kararı: kaldır, kaynak vermeden
+genel ifadeye çek.
+
+İstatistikle birlikte onu görselleştiren piktogram da kalktı (oranın
+görsel hâliydi, iddia gidince dayanağı kalmıyordu) ve kullanılmaz hale
+gelen `IconStore` silindi.
+
+Yerine geçen çerçeve doğrulama gerektirmiyor: **maliyet bir oran değil,
+işletme sahibinin zaten ödediği bedel.** Bölüm artık bir makbuz gibi
+kurulu — "Sistemsizliğin faturası: kalem kalem görünmez, ama her ay
+ödenir": sahibinin zamanı (her gün), tekrarlanamayan gelir (her ay),
+ölçülmeyen pazarlama (her kampanya), hisle alınan kararlar (her
+seferinde) → **Toplam: işletmenin büyümemesi.** Hiçbir satır kimse
+adına bir sayı iddia etmiyor; okuyan kendinde tanır ya da tanımaz.
+
+Ana metin de iddiasını daralttı: "Ürününüz kötü olduğu için
+büyüyemiyor olabilirsiniz. Ya da bir sisteminiz olmadığı için. Check-up
+tam olarak bunu ayırır." — eski hâli ("kapanan işletmelerin ürünleri
+kötü değildi") bütün kapanan işletmeler adına konuşuyordu.
+
+Canlı sayfada doğrulandı: "TOBB", "BLS", "Kaynak", "4 işletmeden" ve
+"2 işletmeden" ifadelerinin hiçbiri artık sayfada geçmiyor. Mobil ve
+masaüstü kontrol edildi.
+
 ### 2026-09-11 — UI/UX: ürünü göstermek, ritmi kırmak
 Erdem'in tespiti: "site tamamen yazılardan oluşuyor." İnceleme sonucu
 sorunun "az ikon" olmadığı görüldü — asıl sorun iki taneydi:

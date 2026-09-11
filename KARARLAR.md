@@ -6,6 +6,19 @@
 
 ---
 
+**2026-09-11 — Kaynaklı ama doğrulanmamış istatistik yazılmaz; sayı yerine tanınabilirlik.**
+Sitede TOBB/BLS atıflı iki oran vardı ve teyit edilmemişti. Kaynak adı
+vermek iddiayı hafifletmez, ağırlaştırır: okuyucu o kurumun verisine
+güvenerek karar verir. Kaldırıldı. Genel kural: bir sayıyı ancak
+kaynağını, yılını ve kapsamını yazabiliyorsak kullanırız; yazamıyorsak
+sayıyı hiç kullanmayız — "yaklaşık", "sektör geneli" gibi yumuşatmalar
+da çözüm değil, aynı iddianın bulanık hâli.
+
+Bunun yerine ikna, okuyucunun kendinde tanıyacağı bedeller üzerinden
+kuruluyor (sahibinin zamanı, tekrarlanamayan gelir, ölçülmeyen
+pazarlama, hisle alınan kararlar). Bu ifadeler kimse adına bir ölçüm
+iddia etmiyor, dolayısıyla doğrulanacak bir şey de yok.
+
 **2026-09-11 — Ana sayfadaki görseller ürünün gerçek çıktısıdır, taklit değil.**
 Hero'daki karne kartı elle yazılmış sahte bir tabloydu; ürün değişince
 onunla birlikte güncellenmiyordu. Artık `skorHesapla` motorundan geçen
