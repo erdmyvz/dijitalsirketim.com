@@ -2,7 +2,12 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { adminMi } from "@/lib/admin/yetki";
-import { ayarlariOku, odemeBilgileriHazirMi } from "@/lib/tedavi/ayarlar";
+import {
+  ayarlariOku,
+  ibanBicimle,
+  ibanGecerliMi,
+  odemeBilgileriHazirMi,
+} from "@/lib/tedavi/ayarlar";
 import { tutarBicimle } from "@/lib/tedavi/fiyat";
 import { ayarlariKaydet } from "./actions";
 
@@ -14,7 +19,37 @@ export const metadata = {
 const alanClass =
   "w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition-all duration-200 ease-[var(--ease-apple)] focus:border-teal-600 focus:ring-4 focus:ring-teal-600/10";
 
-export default async function AyarlarSayfasi() {
+/** Server Action'dan dönen sonuç şeridi. Bkz. actions.ts'teki açıklama. */
+const GERI_BILDIRIM: Record<string, { tur: "hata" | "basari"; mesaj: string }> = {
+  iban: {
+    tur: "hata",
+    mesaj:
+      "IBAN kaydedilmedi: geçerli bir Türk IBAN'ı değil. TR ile başlar ve " +
+      "toplam 26 karakterdir (TR + 24 rakam); sağlama hanesi de kontrol " +
+      "edilir, yani tek hane yanlışsa kabul edilmez. Boşluklu yazabilirsin. " +
+      "Hesabı henüz girmeyeceksen alanı tamamen boş bırak.",
+  },
+  sayi: {
+    tur: "hata",
+    mesaj: "Kaydedilmedi: birim ücret ve Nabız tabanı 0 veya daha büyük bir sayı olmalı.",
+  },
+  kayit: {
+    tur: "hata",
+    mesaj: "Kaydedilemedi — veritabanına yazılamadı. Tekrar dene; sürerse sunucu günlüğüne bak.",
+  },
+  ok: { tur: "basari", mesaj: "Ayarlar kaydedildi." },
+};
+
+export default async function AyarlarSayfasi({
+  searchParams,
+}: {
+  searchParams: Promise<{ hata?: string; kayit?: string }>;
+}) {
+  const sorgu = await searchParams;
+  const geriBildirim =
+    GERI_BILDIRIM[sorgu.hata ?? ""] ??
+    (sorgu.kayit === "ok" ? GERI_BILDIRIM.ok : undefined);
+
   const supabase = await createClient();
   const {
     data: { user },
@@ -60,6 +95,19 @@ export default async function AyarlarSayfasi() {
       </header>
 
       <main className="mx-auto max-w-2xl px-6 py-10">
+        {geriBildirim && (
+          <div
+            role="status"
+            className={`mb-6 rounded-[20px] border p-4 text-sm leading-relaxed ${
+              geriBildirim.tur === "hata"
+                ? "border-red-200 bg-red-50 text-red-800"
+                : "border-emerald-200 bg-emerald-50 text-emerald-800"
+            }`}
+          >
+            {geriBildirim.mesaj}
+          </div>
+        )}
+
         <form action={ayarlariKaydet} className="space-y-8">
           <section className="rounded-[24px] border border-slate-200 bg-white p-6">
             <h2 className="text-lg font-semibold tracking-[-0.01em] text-slate-900">
@@ -129,14 +177,18 @@ export default async function AyarlarSayfasi() {
               Ödeme bilgileri
             </h2>
             <p className="mt-1 text-sm leading-relaxed text-slate-500">
-              İkisi de dolu değilse ödeme ekranında IBAN gösterilmez,
-              müşteri WhatsApp&apos;a yönlendirilir — yanlış hesaba ödeme
-              riskine karşı.
+              IBAN geçerli değilse ya da hesap sahibi boşsa ödeme
+              ekranında hesap gösterilmez, müşteri WhatsApp&apos;a
+              yönlendirilir — yanlış hesaba ödeme riskine karşı. IBAN
+              kaydedilirken sağlama hanesi de kontrol edilir; yarım ya da
+              yer tutucu bir numara kaydedilemez.
             </p>
 
             {!hazir && (
               <p className="mt-4 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">
-                Şu an eksik: ödeme ekranı IBAN göstermiyor.
+                {ayarlar.iban.trim().length > 0 && !ibanGecerliMi(ayarlar.iban)
+                  ? "Kayıtlı IBAN geçerli değil — ödeme ekranı hesap göstermiyor, müşteri WhatsApp'a düşüyor."
+                  : "Şu an eksik: ödeme ekranı IBAN göstermiyor."}
               </p>
             )}
 
@@ -169,7 +221,9 @@ export default async function AyarlarSayfasi() {
                   id="iban"
                   name="iban"
                   type="text"
-                  defaultValue={ayarlar.iban}
+                  defaultValue={
+                    ayarlar.iban ? ibanBicimle(ayarlar.iban) : ""
+                  }
                   placeholder="TR00 0000 0000 0000 0000 0000 00"
                   className={`${alanClass} font-mono`}
                 />

@@ -6,6 +6,33 @@
 
 ---
 
+**2026-09-11 — IBAN "dolu mu" değil "geçerli mi" diye kontrol edilir.**
+Ödeme ekranındaki koruma ("IBAN yoksa hesap gösterme, WhatsApp'a
+yönlendir") boş-değil kontrolüne dayanıyordu; canlıdaki `TR0000` yer
+tutucusu bu kontrolü geçip müşteriye ödeme talimatı olarak
+gösterilebiliyordu. Artık ISO 13616 mod-97 sağlaması yapılıyor: yarım,
+uydurma ya da tek hanesi yanlış yazılmış bir IBAN ne kaydedilebiliyor ne
+gösteriliyor. Paranın yanlış hesaba gitmesi geri alınamaz bir hata
+olduğu için buradaki doğru varsayılan "göstermemek".
+
+**2026-09-11 — Server Action'da kullanıcı girdisi hatası `throw` edilmez.**
+Fırlatılan hata yöneticiye "A server error occurred" diyen ham bir sayfa
+olarak çıkıyor; yazdığımız açıklama hiç görünmüyor. Girdi hatası
+(geçersiz IBAN, negatif ücret) çökme değil, sıradan bir kullanıcı
+hatasıdır — sayfaya hata koduyla dönülüp mesaj gösterilir. `throw`
+yalnızca gerçekten beklenmedik durumlar için: yetkisiz çağrı,
+yapılandırma eksikliği.
+
+**2026-09-11 — schema.sql, `profiles` tablosu bizden önce varsa da çalışır.**
+Dosya `column "is_admin" of relation "profiles" does not exist` hatası
+verdi: o veritabanında `profiles` başka bir kaynaktan oluşmuştu
+(Supabase'in "User Management Starter" şablonu `is_admin` içermeyen bir
+`profiles` yaratır) ve `create table if not exists` hiçbir şey yapmadan
+geçti. Kolonlar artık `add column if not exists` ile tamamlanıyor —
+`basvurular.referans_kodu` için zaten kullanılan desen. Genel kural: bu
+dosya her zaman idempotent ve kısmen kurulmuş bir veritabanında da
+çalışır olmalı, çünkü kurtarma yolu olarak da kullanılıyor.
+
 **2026-09-11 — Ana sayfa "4 Adımlı Tedavi Modeli": iskelet kaldı, fail değişti.**
 Bölüm ürün değişiminden sonra düzeltilmemişti; ADIM 03 hâlâ "reklam
 yönetimi, CRM kurulumu, WhatsApp/Instagram otomasyonları" sayıyordu.

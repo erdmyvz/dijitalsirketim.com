@@ -146,10 +146,10 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
       doğrulandı: kilitli modül → admin panelinden "1 ay ekle" → kilit
       açıldı; plana dahil olmayan fonksiyonun modülü kilitli kaldı;
       geri sayım ve son-7-gün uyarısı doğru çalıştı.
-- [ ] **`modul_ilerleme` tablosu çalıştırılmalı** — [supabase/schema.sql](supabase/schema.sql)'in
-      sonundaki `-- Modül ilerlemesi:` bölümü Supabase → SQL Editor'de bir
-      kez çalıştırılmalı. Olmadan kullanıcı adımları işaretleyemez /
-      şablon dolduramaz (sayfa çökmez, adımlar okunur ama kaydedilmez).
+- [x] **`modul_ilerleme` tablosu** — oluşturuldu (2026-09-11). Uçtan uca
+      doğrulandı: adım işaretleme ve şablon metni sayfa yenilense de
+      kalıyor, tüm adımlar bitince bitiş kontrolü yeni karne üretiyor ve
+      aylık tutar düşüyor.
 - [ ] **Abonelik ödeme bilgileri girilmeli** — Admin → Ayarlar
       ekranından IBAN ve hesap sahibi. Girilene kadar `/hesap/odeme`
       ekranı IBAN göstermeyip WhatsApp'a yönlendiriyor (yanlış hesaba
@@ -164,6 +164,53 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 ---
 
 ## Tamamlananlar
+
+### 2026-09-11 — Modül motoru uçtan uca doğrulandı + IBAN koruması gerçekten çalışıyor
+`modul_ilerleme` tablosu oluştu; motorun test edilmemiş son iki parçası
+canlı veritabanına karşı doğrulandı. Senaryo: 2 kırmızı + 1 sarı
+fonksiyonlu bir test karnesi (plan **30.000 TL/ay**), `musteri-bulma`
+kapsamında abonelik, modüle geçici iki adım. Sonuç: adım işareti ve
+şablon metni (Türkçe karakterlerle birlikte) tam sayfa yenilemeden sonra
+da yerinde; iki adım da bitince "Modül bitti" kartı çıkıyor; bitiş
+kontrolü iki soruyu tekrar soruyor ve **yeni bir karne** üretiyor — eski
+karne geçmişte kalıyor, diğer **19 cevap değişmeden taşınıyor**,
+`ai_teshis` bilinçli olarak boş. Plan **30.000 → 20.000 TL/ay** düştü,
+Müşteri Bulma plandan çıktı. Ödenen dönemin kapsamı donduğu için modül
+abonelik bitene kadar açık kalmaya devam ediyor — doğru davranış.
+
+Yol boyunca canlıda iki gerçek sorun bulundu ve düzeltildi:
+
+**(1) Ödeme ekranı yer tutucu IBAN gösteriyordu.** `ayarlar` tablosunda
+`iban = "TR0000"` duruyordu ve "IBAN girilmediyse hesap gösterme"
+koruması yalnızca *boş mu* diye baktığı için bunu geçiriyordu. Yani bir
+müşteri bugün ödeme ekranını açsa havale yapması gereken hesap olarak
+`TR0000` görecekti — korumanın önlemek için yazıldığı durumun ta
+kendisi. Artık kontrol ISO 13616 mod-97 sağlaması yapıyor (TR + 24
+rakam + sağlama hanesi), yani tek hanesi yanlış yazılmış bir IBAN da
+kabul edilmiyor. 10 vakalık doğrulama yazıldı ve geçti. Yer tutucu
+değer canlı veritabanından temizlendi.
+
+**(2) Yönetici hata mesajını hiç görmüyordu.** Ayarlar formu geçersiz
+girdide `throw` ediyordu; Server Action'da fırlatılan hata yöneticiye
+"A server error occurred" diyen ham bir sayfa olarak çıkıyor — yazılan
+açıklama ekrana ulaşmıyor. IBAN'da bir hane yanlış yazmak sıradan bir
+kullanıcı hatası, çökme değil. Artık sayfaya bir hata koduyla dönülüyor
+ve ne olduğu açıkça yazıyor. `throw` yalnızca beklenmedik durumlar
+(yetkisiz çağrı, yapılandırma eksikliği) için kaldı.
+
+Ayrıca `schema.sql` sağlamlaştırıldı: Erdem dosyayı çalıştırdığında
+`column "is_admin" of relation "profiles" does not exist` hatası aldı.
+Sebep, o veritabanında `profiles` tablosunun bizden önce başka bir
+kaynaktan oluşmuş olması (Supabase'in "User Management Starter" şablonu
+`is_admin` içermeyen bir `profiles` yaratır) — bu durumda
+`create table if not exists` hiçbir şey yapmadan geçiyor. Artık eksik
+kolonlar `add column if not exists` ile tamamlanıyor; `basvurular` için
+zaten kullanılan desen. Not: **production veritabanı etkilenmedi**,
+`is_admin` orada baştan beri duruyordu ve hatalı çalıştırma geri alındı.
+
+Test hesapları ve test verisi silindi; tablolar başlangıç durumuna
+döndü (2 gerçek hesap, diğer tablolar 0 satır). Mobil (375px)
+kontrol edildi.
 
 ### 2026-09-11 — Ana sayfadaki "4 Adımlı Tedavi Modeli" yeni modele çekildi
 Bölüm hâlâ eski "biz sizin yerinize yaparız" hizmetini anlatıyordu ve
@@ -211,8 +258,7 @@ dizisi bilinçli olarak boş. İçerik geldiğinde tek yapılacak iş
 
 Geçici iki test adımıyla ekran doğrulandı, sonra geri alındı. Tablo
 yokken sayfanın çökmediği, adımların okunabilir kaldığı da görüldü.
-**Henüz test edilmedi:** ilerleme kaydı ve bitiş kontrolü —
-`modul_ilerleme` tablosu oluşturulduktan sonra uçtan uca doğrulanacak.
+**2026-09-11'de uçtan uca doğrulandı** — aşağıdaki kayda bakınız.
 
 ### 2026-09-10 — /tedavi giriş arkasına alındı
 Erdem'in kararı: modül içerikleri tamamlanmadan ana sayfada

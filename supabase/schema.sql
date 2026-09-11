@@ -43,6 +43,17 @@ create table if not exists public.profiles (
   created_at timestamptz not null default now()
 );
 
+-- Şemayı daha önce çalıştırdıysanız ya da bu veritabanında "profiles"
+-- tablosu BAŞKA bir kaynaktan oluştuysa (ör. Supabase'in "User Management
+-- Starter" şablonu böyle bir tablo yaratır ama içinde is_admin yoktur),
+-- yukarıdaki "create table if not exists" hiçbir şey yapmadan geçer ve
+-- aşağıdaki admin INSERT'i "column is_admin does not exist" hatası verir.
+-- Eksik kolonları burada tamamlıyoruz. (2026-09-11'de canlıda görüldü.)
+alter table public.profiles
+  add column if not exists is_admin boolean not null default false;
+alter table public.profiles
+  add column if not exists created_at timestamptz not null default now();
+
 alter table public.profiles enable row level security;
 
 -- Herkes yalnızca kendi profilini okuyabilir.

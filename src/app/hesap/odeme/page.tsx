@@ -2,7 +2,11 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { sonKarneSonucu } from "@/lib/tedavi/sonKarne";
-import { ayarlariOku, odemeBilgileriHazirMi } from "@/lib/tedavi/ayarlar";
+import {
+  ayarlariOku,
+  ibanBicimle,
+  odemeBilgileriHazirMi,
+} from "@/lib/tedavi/ayarlar";
 import { tedaviPlaniHesapla, tutarBicimle } from "@/lib/tedavi/fiyat";
 import { IconCheck } from "@/components/icons";
 
@@ -82,7 +86,7 @@ export default async function OdemeSayfasi() {
                     IBAN
                   </dt>
                   <dd className="mt-1 font-mono text-sm font-medium tracking-wide text-slate-900">
-                    {ayarlar.iban}
+                    {ibanBicimle(ayarlar.iban)}
                   </dd>
                 </div>
                 <div>

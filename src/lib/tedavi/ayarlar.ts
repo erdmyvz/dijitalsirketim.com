@@ -18,9 +18,52 @@ export const VARSAYILAN_AYARLAR: Ayarlar = {
   hesapSahibi: "",
 };
 
-/** IBAN ve hesap sahibi doluysa ödeme talimatı gösterilebilir. */
+/** Boşlukları ve ayraçları atıp büyük harfe çevirir: "tr33 0006" → "TR330006". */
+export function ibanNormalle(ham: string): string {
+  return ham.replace(/[^0-9A-Za-z]/g, "").toUpperCase();
+}
+
+/**
+ * Türk IBAN'ı geçerli mi? TR + 24 rakam VE ISO 13616 mod-97 sağlaması.
+ *
+ * Sağlama şart: tek hane yanlış yazılmış bir IBAN ekranda gayet normal
+ * görünür ama para gitmez. Boş-değil kontrolü yeterli değildi —
+ * canlıda "TR0000" yer tutucusu müşteriye ödeme talimatı olarak
+ * gösterilebiliyordu (2026-09-11'de fark edildi).
+ */
+export function ibanGecerliMi(ham: string): boolean {
+  const iban = ibanNormalle(ham);
+  if (!/^TR\d{24}$/.test(iban)) return false;
+
+  // Mod-97: ilk 4 karakter sona alınır, harfler A=10..Z=35 ile sayıya
+  // çevrilir, kalan 1 olmalı. Sayı 2^53'ü aştığı için parça parça.
+  const yeniden = iban.slice(4) + iban.slice(0, 4);
+  let kalan = 0;
+  for (const karakter of yeniden) {
+    const basamak = /\d/.test(karakter)
+      ? karakter
+      : String(karakter.charCodeAt(0) - 55);
+    kalan = Number(String(kalan) + basamak) % 97;
+  }
+  return kalan === 1;
+}
+
+/** Okunabilir hâle getirir: "TR330006…" → "TR33 0006 …". */
+export function ibanBicimle(ham: string): string {
+  return ibanNormalle(ham).replace(/(.{4})/g, "$1 ").trim();
+}
+
+/**
+ * Ödeme talimatı gösterilebilir mi?
+ *
+ * IBAN'ın yalnızca dolu olması yetmez, GEÇERLİ olması gerekir — yer
+ * tutucu ya da yarım girilmiş bir hesap numarası müşteriye asla ödeme
+ * talimatı olarak gösterilmemeli. Geçersizse ekran WhatsApp'a düşer.
+ */
 export function odemeBilgileriHazirMi(ayarlar: OdemeBilgileri): boolean {
-  return ayarlar.iban.trim().length > 0 && ayarlar.hesapSahibi.trim().length > 0;
+  return (
+    ibanGecerliMi(ayarlar.iban) && ayarlar.hesapSahibi.trim().length > 0
+  );
 }
 
 const ANAHTARLAR = ["birim_ucret", "nabiz_tabani", "iban", "hesap_sahibi"];
