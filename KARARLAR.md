@@ -6,6 +6,18 @@
 
 ---
 
+**2026-09-11 — Ana sayfa "4 Adımlı Tedavi Modeli": iskelet kaldı, fail değişti.**
+Bölüm ürün değişiminden sonra düzeltilmemişti; ADIM 03 hâlâ "reklam
+yönetimi, CRM kurulumu, WhatsApp/Instagram otomasyonları" sayıyordu.
+Yanlış beklenti riski somut: müşteri "benim yerime yapacaklar" diye üye
+olup modül ekranıyla karşılaşıyordu. Dört adımlı yapı (teşhis → reçete →
+tedavi → takip) doğru olduğu için korundu; değişen tek şey her adımı
+KİMİN yaptığı oldu. ADIM 04 artık bitiş kontrolü → yeni karne → **aylık
+tutarın düşmesi** döngüsünü anlatıyor: faturanın düşmesi sistemin işe
+yaradığının kanıtı olduğundan bu, en güçlü satış argümanı. Doktor
+metaforu bu dönüşümü kaldırıyor — doktor teşhis koyar ve reçete yazar,
+ilacı hasta içer.
+
 **2026-09-10 — Admin yetkisi e-postaya sabitlendi.**
 `schema.sql`'deki eski kural "profiles satırı olmayan HERKESİ admin
 yapar" idi (ilk kurulumda tek kullanıcı admin olduğu için pratikti).

@@ -165,6 +165,29 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 
 ## Tamamlananlar
 
+### 2026-09-11 — Ana sayfadaki "4 Adımlı Tedavi Modeli" yeni modele çekildi
+Bölüm hâlâ eski "biz sizin yerinize yaparız" hizmetini anlatıyordu ve
+ürün değiştiği için doğrudan yanlış beklenti üretiyordu: ADIM 03
+"Reklam yönetimi, CRM kurulumu, WhatsApp/Instagram otomasyonları"
+sayıyor, ADIM 04 "aylık raporla birlikte izliyoruz" diyordu. Check-up'ı
+yapan biri bunları okuyup "reklamlarımı yönetecekler" beklentisiyle üye
+oluyor, sonra modül ekranıyla karşılaşıyordu.
+
+Dört adımlı iskelet doğruydu, yanlış olan kimin yaptığıydı — iskelet
+korundu, fail değişti: ADIM 03 self-servis modüller (adımlar, şablonlar,
+bitiş kriteri; uygulayan işletmenin kendisi), ADIM 04 bitiş kontrolü →
+yeni karne → **aylık tutarın düşmesi** döngüsü. Faturanın düşmesi
+sistemin işe yaradığının kanıtı olduğu için satış argümanı da güçlendi.
+Üst paragraf da "sistem teşhisi koyar ve reçeteyi yazar; uygulama sizde
+kalır" diye netleştirildi. Doktor metaforu bozulmadı: doktor teşhis
+koyar ve reçete yazar, ilacı hasta içer.
+
+Yeni vaat eklenmedi — yalnızca hâlihazırda çalışan mekanizma doğru
+anlatıldı. Mobil (375px) ve masaüstü (1280px) kontrol edildi, konsol
+temiz. Sitede başka "biz yapıyoruz" ifadesi kalmadığı tarandı;
+`Offer.tsx`'teki otomasyon/danışmanlık kanalı bilinçli olarak duruyor
+(dört katmanlı modelin 4. katmanı, gerçekten Erdem'in yaptığı iş).
+
 ### 2026-09-10 — Modül motoru (içerik olmadan altyapı)
 Modüllerin içeriğini taşıyacak mekanizma kuruldu; 14 modülün `adimlar`
 dizisi bilinçli olarak boş. İçerik geldiğinde tek yapılacak iş

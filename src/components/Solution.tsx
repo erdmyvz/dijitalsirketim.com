@@ -11,29 +11,29 @@ const adimlar = [
     no: "01",
     Icon: IconSearch,
     title: "Teşhis",
-    subtitle: "Önce anlıyoruz",
-    text: "21 kontrol noktalı dijital check-up: 7 iş fonksiyonunu 3 katmanda (strateji, uygulama, ölçüm) tarıyoruz. Sorunun kaynağını net olarak ortaya koyuyoruz.",
+    subtitle: "Önce ölçülür",
+    text: "21 kontrol noktalı dijital check-up: 7 iş fonksiyonu 3 katmanda (strateji, uygulama, ölçüm) taranır. Sonuç anında çıkar — hangi fonksiyonun bozuk olduğu tahminle değil puanla ortaya konur.",
   },
   {
     no: "02",
     Icon: IconClipboard,
     title: "Reçete",
-    subtitle: "Sonra kök nedeni buluyoruz",
-    text: "5 Neden analiziyle belirtinin arkasındaki kök problemi ayırıyoruz: Yetkinlik mi, Kültür mü, Netlik mi? Genel geçer paket değil, size özel reçete.",
+    subtitle: "Sonra kök neden ayrışır",
+    text: "Belirti ile kök problem ayrılır: Yetkinlik mi, Kültür mü, Netlik mi? Karnenizdeki her kırmızı fonksiyon, onu onaran modüllerle eşleşir. Genel geçer paket değil, sizin karnenizden çıkan liste.",
   },
   {
     no: "03",
     Icon: IconPill,
     title: "Tedavi",
-    subtitle: "Sonra uyguluyoruz",
-    text: "Reklam yönetimi, CRM kurulumu, WhatsApp/Instagram yapay zekâ otomasyonları ve satış huninizin (funnel) yeniden kurulması. Reçetedeki her adım uygulamaya geçer.",
+    subtitle: "Uygulayan sizsiniz",
+    text: "Planınızın açtığı modüller adım adım ilerler: her adımda ne yapılacağı, doldurabileceğiniz şablonlar ve net bir bitiş kriteri vardır. Sıra kimsede beklemez — sıradaki adım hep ekrandadır.",
   },
   {
     no: "04",
     Icon: IconTrendingUp,
     title: "Takip",
-    subtitle: "Ve ölçerek iyileştiriyoruz",
-    text: "KPI tabloları ve aylık raporla sonuçları birlikte izliyoruz. Ölçemediğin performansı geliştiremezsin — dijital sağlığınız sürekli kontrol altında kalır.",
+    subtitle: "Ve tekrar ölçülür",
+    text: "Modül bitince onardığı check-up soruları yeniden sorulur, yeni bir karne oluşur. Fonksiyon iyileştikçe aylık tutarınız düşer — ödediğiniz rakam, sistemin işe yarayıp yaramadığının ölçüsüdür.",
   },
 ];
 
@@ -52,9 +52,9 @@ export default function Solution() {
             </span>
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-slate-300">
-            Rastgele &ldquo;biraz reklam verelim&rdquo; yaklaşımı değil;
-            sebep-sonuç ilişkisini kuran, dört aşamalı ve ölçülebilir bir
-            yöntem.
+            Rastgele &ldquo;biraz reklam verelim&rdquo; yaklaşımı değil.
+            Sistem teşhisi koyar ve reçeteyi yazar; uygulama adım adım
+            sizde kalır — ve her adımın bir bitiş kriteri vardır.
           </p>
         </Reveal>
 
