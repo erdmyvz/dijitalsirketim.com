@@ -6,6 +6,34 @@
 
 ---
 
+**2026-09-11 — Ana sayfadaki görseller ürünün gerçek çıktısıdır, taklit değil.**
+Hero'daki karne kartı elle yazılmış sahte bir tabloydu; ürün değişince
+onunla birlikte güncellenmiyordu. Artık `skorHesapla` motorundan geçen
+örnek bir karneden besleniyor — eşikler ya da soru bankası değişirse
+görsel de değişir. Genel kural: ürünü anlatan her görsel, ürünün kendi
+kodundan beslenmeli. Sabit yazılmış "örnek ekran" görselleri zamanla
+yalan söylemeye başlıyor.
+
+**2026-09-11 — Görsel ilgi sahte sosyal kanıtla üretilmez.**
+Bir satış sayfasını canlandırmanın kolay yolu müşteri logoları, "500+
+işletme" rozetleri ve yorum kartlarıdır. Gerçek ücretli müşteri ve
+ölçülmüş sonuç oluşana kadar bunların hiçbiri yazılmayacak (CLAUDE.md
+değişmez kuralı). Görsel ilgi bunun yerine ürünün kendi çıktısından
+çıkarılıyor: karne, skor halkası, organ haritası, piktogram.
+
+**2026-09-11 — Bölüm ritmi tek başına bir tasarım meselesidir.**
+"Site yazı gibi duruyor" geri bildiriminin sebebi görsel azlığı değil,
+beş bölümün de aynı kalıpta olmasıydı (ortalanmış başlık → paragraf →
+kart sırası). Yeni bölüm eklerken kural: bir önceki bölümle aynı
+iskelete sahip olmasın — hizalama, zemin ya da içerik biçimi
+değişsin.
+
+**2026-09-11 — Renk asla tek başına anlam taşımaz.**
+Karne çubuklarında, organ haritasında ve piktogramda renk her zaman
+ikinci bir işaretle birlikte: puan ("1/6"), eğim ya da opaklık. Renk
+körlüğü olan ziyaretçi yalnızca dolguya bakarak kırmızıyı yeşilden
+ayıramaz.
+
 **2026-09-11 — IBAN "dolu mu" değil "geçerli mi" diye kontrol edilir.**
 Ödeme ekranındaki koruma ("IBAN yoksa hesap gösterme, WhatsApp'a
 yönlendir") boş-değil kontrolüne dayanıyordu; canlıdaki `TR0000` yer

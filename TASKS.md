@@ -165,6 +165,56 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 
 ## Tamamlananlar
 
+### 2026-09-11 — UI/UX: ürünü göstermek, ritmi kırmak
+Erdem'in tespiti: "site tamamen yazılardan oluşuyor." İnceleme sonucu
+sorunun "az ikon" olmadığı görüldü — asıl sorun iki taneydi:
+**(a)** beş bölüm de aynı kalıptaydı (ortalanmış başlık → paragraf →
+kart sırası), göz ritim değişikliği görmediği için her şeyi yazı duvarı
+olarak algılıyordu; **(b)** renk kodlu bir karne satan site, o karneyi
+ziyaretçiye hiç göstermiyor, hepsini kelimeyle anlatıyordu.
+
+**Karne görseli ([KarneGorseli.tsx](src/components/KarneGorseli.tsx)).**
+Hero'daki elle yazılmış taklit kart kaldırıldı; yerine skor halkası +
+7 fonksiyon çubuğu geldi. Dekoratif bir çizim değil: veriyi
+[ornekKarne.ts](src/data/ornekKarne.ts)'den alıp **gerçek `skorHesapla`
+motorundan** geçiriyor — soru bankası ya da eşikler değişirse görsel de
+kendiliğinden güncellenir. Görünür alana girince halka dolar, çubuklar
+uzar, skor 0'dan sayar. Başlıkta "Örnek" ibaresi kalıcı: gerçek bir
+müşteri verisi değil, öyleymiş gibi de sunulmuyor.
+
+**Organ haritası ([OrganHaritasi.tsx](src/components/OrganHaritasi.tsx)).**
+Doktor metaforu bugüne kadar yalnızca cümlelerde yaşıyordu. 7 fonksiyon
+artık kendi ikonu ve kendi puanıyla tek bakışta görülüyor ("Bir işletme
+7 organdan oluşur"), altında renk eşiği açıklaması var. `sonuc`
+verilmezse nötr gri harita çıkıyor — check-up yapmamış ziyaretçiye
+uydurma renk gösterilmiyor.
+
+**İkonlar.** Jenerik büyüteç/pano/hap yerine her fonksiyona ait ikon
+eklendi (huni, etiket, dişli, katman, banknot, çatal yol, ekip) + dükkân
+piktogramı. İlk çizimde satış ve para yönetimi 20px'te okunmuyordu,
+yeniden çizildi.
+
+**Ritim.** `CostOfPain` ortalanmış başlıktan iki sütuna geçti ve oran
+artık piktogramla anlatılıyor — "4 işletmeden 1'i" cümlesi okunup
+geçiliyordu, dördü çizilip biri kırmızıya dönünce göz saymak zorunda
+kalıyor. `Proof` sola sabitlenen iddia + sağda akan güvenceler oldu.
+`MissionVision` — sayfayı kapatan bölüm, dördüncü kez aynı kalıptaydı —
+koyu banda alınıp numaralı editoryal diziye çevrildi, footer'a doğal
+geçiş kuruyor ve kapanışta bir CTA kazandı.
+
+**Hareket.** 4 adımlı modelin bağlayıcı çizgisi
+([AdimCizgisi.tsx](src/components/AdimCizgisi.tsx)) bölüm görününce
+soldan sağa çiziliyor ve daire merkezlerinden geçiyor. Kaydırma
+konumuna bağlı sürekli hesap bilinçli olarak yapılmadı — her karede
+ölçüm mobilde takılmaya yol açıyor. Tüm hareketler
+`prefers-reduced-motion` ile kapanıyor (globals.css'teki genel kapatma
++ bileşenlerde ayrı kontrol).
+
+Sahte sosyal kanıt (müşteri logosu, uydurma sayı, yorum kartı)
+eklenmedi — görsel ilgi ürünün kendi çıktısından çıkarıldı.
+Mobil (375px) ve masaüstü (1280px) kontrol edildi, yatay taşma yok,
+`lint` + `build` temiz.
+
 ### 2026-09-11 — Modül motoru uçtan uca doğrulandı + IBAN koruması gerçekten çalışıyor
 `modul_ilerleme` tablosu oluştu; motorun test edilmemiş son iki parçası
 canlı veritabanına karşı doğrulandı. Senaryo: 2 kırmızı + 1 sarı

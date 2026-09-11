@@ -1,6 +1,9 @@
 import Link from "next/link";
 import Reveal from "./Reveal";
-import { IconStethoscope, IconX } from "./icons";
+import KarneGorseli from "./KarneGorseli";
+import { ORNEK_KARNE } from "@/data/ornekKarne";
+import { skorHesapla } from "@/lib/checkup/scoring";
+import { IconX } from "./icons";
 
 const semptomlar = [
   "Her ay ciroya sıfırdan başlıyorsunuz",
@@ -76,53 +79,13 @@ export default function Hero() {
           </Reveal>
         </div>
 
-        {/* "Reçete kağıdı" görsel bloğu */}
+        {/* Ürünün gerçek çıktısı — elle yazılmış bir taklit değil,
+            aynı puanlama motorundan geçen örnek bir karne. */}
         <Reveal delayMs={150} className="md:justify-self-end">
-          <div className="relative mx-auto w-full max-w-sm rotate-1 rounded-[28px] border border-slate-200 bg-white p-6 shadow-2xl shadow-slate-900/10 transition-transform duration-500 ease-[var(--ease-apple)] hover:rotate-0 motion-reduce:transition-none">
-            <div className="flex items-center gap-2 border-b border-dashed border-slate-200 pb-4">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-teal-50 text-teal-600">
-                <IconStethoscope className="h-5 w-5" />
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-slate-900">
-                  Dijital Sağlık Karnesi
-                </p>
-                <p className="text-xs text-slate-400">
-                  dijitalşirketim.com.tr Kliniği
-                </p>
-              </div>
-            </div>
-
-            <dl className="mt-4 space-y-3 text-sm">
-              {[
-                ["Gelir Sistemi", "Riskli", "bg-red-100 text-red-700"],
-                ["Müşteri Akışı", "Zayıf", "bg-amber-100 text-amber-700"],
-                [
-                  "Ölçeklenme Kapasitesi",
-                  "Düzensiz",
-                  "bg-amber-100 text-amber-700",
-                ],
-                ["Dijital Görünürlük", "Riskli", "bg-red-100 text-red-700"],
-              ].map(([label, value, cls]) => (
-                <div
-                  key={label}
-                  className="flex items-center justify-between"
-                >
-                  <dt className="text-slate-500">{label}</dt>
-                  <dd
-                    className={`rounded-full px-2.5 py-1 text-xs font-semibold ${cls}`}
-                  >
-                    {value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-
-            <p className="mt-5 rounded-2xl bg-teal-50 p-3 text-xs leading-relaxed text-teal-800">
-              Sonuç: Erken müdahale ile tamamen tedavi edilebilir. Kök
-              problemi görmek için Dijital Check-Up başvurusu yapın.
-            </p>
-          </div>
+          <KarneGorseli
+            sonuc={skorHesapla(ORNEK_KARNE)}
+            className="mx-auto w-full max-w-sm"
+          />
         </Reveal>
       </div>
     </section>

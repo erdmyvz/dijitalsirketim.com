@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import AdimCizgisi from "./AdimCizgisi";
 import {
   IconClipboard,
   IconPill,
@@ -59,12 +60,13 @@ export default function Solution() {
         </Reveal>
 
         <div className="relative mt-16 grid gap-8 md:grid-cols-4">
-          {/* bağlayıcı çizgi */}
-          <div className="absolute left-0 right-0 top-14 hidden h-px bg-slate-700 md:block" />
+          {/* Bağlayıcı çizgi: bölüm görünür olunca soldan sağa çizilir —
+              tedavi yolunun izlendiği hissi. */}
+          <AdimCizgisi className="absolute left-7 right-7 top-7 hidden h-px md:block" />
 
           {adimlar.map((a, i) => (
             <Reveal key={a.no} delayMs={i * 100} className="group relative">
-              <div className="relative z-10 mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-teal-300 backdrop-blur-xl transition-all duration-300 ease-[var(--ease-apple)] group-hover:scale-110 group-hover:border-teal-400/40 group-hover:bg-white/10 motion-reduce:transition-none motion-reduce:group-hover:scale-100 md:mx-0">
+              <div className="relative z-10 mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-slate-900 text-teal-300 shadow-[0_0_0_6px_rgb(15,23,42)] transition-all duration-300 ease-[var(--ease-apple)] group-hover:scale-110 group-hover:border-teal-400/50 group-hover:bg-teal-500/10 group-hover:text-teal-200 motion-reduce:transition-none motion-reduce:group-hover:scale-100 md:mx-0">
                 <a.Icon className="h-6 w-6" strokeWidth={1.5} />
               </div>
               <div className="mt-5">

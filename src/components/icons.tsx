@@ -162,3 +162,101 @@ export function IconAlertTriangle(props: IconProps) {
     </svg>
   );
 }
+
+// ---------------------------------------------------------------------
+// Piktogram ve 7 fonksiyon ikonları (2026-09-11)
+// ---------------------------------------------------------------------
+// Aşağıdaki yedi ikon, check-up'taki 7 iş fonksiyonuna birebir karşılık
+// gelir. Amaç jenerik "büyüteç / pano" ikonlarından çıkıp her fonksiyonu
+// kendi görselinden tanınır yapmak — "işletmenin organları" fikri ancak
+// organlar birbirinden ayırt edilebilirse çalışır.
+//
+// Hepsi 20px'te okunacak şekilde sade tutuldu: ayrıntı eklemek küçük
+// boyutta ikonu tanınmaz bir lekeye çeviriyor.
+
+/** Kapanan/açık dükkân — CostOfPain piktogramı. */
+export function IconStore(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M4 9h16v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9Z" />
+      <path d="M3.5 9 5 4h14l1.5 5" />
+      <path d="M10 20v-5h4v5" />
+    </svg>
+  );
+}
+
+/** Müşteri Bulma — temasların süzüldüğü huni. */
+export function IconFunnel(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z" />
+    </svg>
+  );
+}
+
+/** Satış — fiyat etiketi (teklif). */
+export function IconTag(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M11.6 3H20a1 1 0 0 1 1 1v8.4a1 1 0 0 1-.3.7l-7.6 7.6a1 1 0 0 1-1.4 0l-8.4-8.4a1 1 0 0 1 0-1.4l7.6-7.6a1 1 0 0 1 .7-.3Z" />
+      <circle cx="16.4" cy="7.6" r="1.3" />
+    </svg>
+  );
+}
+
+/** Operasyon — dönen dişli. */
+export function IconGear(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="12" r="3.2" />
+      <path d="M12 2.6v2.6M12 18.8v2.6M2.6 12h2.6M18.8 12h2.6M5.3 5.3l1.9 1.9M16.8 16.8l1.9 1.9M18.7 5.3l-1.9 1.9M7.2 16.8l-1.9 1.9" />
+    </svg>
+  );
+}
+
+/** Ürün Geliştirme — katmanlar. */
+export function IconLayers(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="m12 3 9 5-9 5-9-5 9-5Z" />
+      <path d="m3 13 9 5 9-5" />
+      <path d="m3 17 9 5 9-5" />
+    </svg>
+  );
+}
+
+/** Para Yönetimi — banknot. */
+export function IconBanknote(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="2.5" y="6" width="19" height="12" rx="2" />
+      <circle cx="12" cy="12" r="2.6" />
+      <path d="M6 9.6v4.8M18 9.6v4.8" />
+    </svg>
+  );
+}
+
+/** Karar Alma — ikiye ayrılan yol. */
+export function IconFork(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 21v-6.5" />
+      <path d="M12 14.5 6 8.5v-4" />
+      <path d="m12 14.5 6-6v-4" />
+      <path d="m4 6.5 2-2 2 2" />
+      <path d="m16 6.5 2-2 2 2" />
+    </svg>
+  );
+}
+
+/** Ekip Kurma — iki kişi. */
+export function IconTeam(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="9" cy="8" r="3.2" />
+      <path d="M2.8 20a6.2 6.2 0 0 1 12.4 0" />
+      <circle cx="17.6" cy="9.6" r="2.2" />
+      <path d="M17.2 14.3a4.9 4.9 0 0 1 4 4.5" />
+    </svg>
+  );
+}
