@@ -401,16 +401,106 @@ export const TEDAVI_FONKSIYONLARI: TedaviFonksiyonu[] = [
         adimlar: [],
       },
       {
+        // id DEĞİŞMEDİ (URL ve ilerleme kayıtları buna bağlı); yalnızca
+        // başlık Erdem'in kendi adlandırmasına çekildi.
         id: "devretme-sensiz-yuruyen-isletme",
-        baslik: "Devretme: Sensiz Yürüyen İşletme",
+        baslik: "Nasıl Değil, Kim veya Ne?",
         vaat:
           "Bir hafta ortada olmasan da işletme aksamadan yürüsün.",
         sure: "2 hafta · günde ~30 dk",
-        durum: "yakinda",
+        durum: "hazir",
         katmanlar: ["yapi"],
-        kokVida: ["Kültür"],
+        // "Her şeyi ben yapıyorum"un kökü genelde neyin kritik olduğunun
+        // belli olmaması (Netlik) ve devredecek araç/kişi bilgisinin
+        // eksikliği (Yetkinlik).
+        kokVida: ["Netlik", "Yetkinlik"],
         onardigiSorular: ["operasyon.yapi", "ekip_kurma.yapi"],
-        adimlar: [],
+        adimlar: [
+          {
+            id: "is-envanteri",
+            baslik: "Bütün işleri tek listeye dök",
+            aciklama:
+              "Girişimciler genellikle \"bu iş nasıl yapılır?\" sorusuna takılır. Doğru soru bu değil: \"bu işi kim ya da ne yapar?\" Bu soruyu sorabilmek için önce elindeki bütün işleri görmen gerekiyor. Bir haftalık normal işini düşün ve aklına geleni tek tek yaz — web sitesi, logo, sosyal medya gönderileri, reklam metni, teklif hazırlama, fatura kesme, müşteri araması, hepsi. Ayıklama yapma, bu adımda sadece dökülüyor.",
+            sablon: {
+              etiket: "Bir haftalık iş envanterim",
+              ipucu:
+                "Her satıra bir iş yaz. Yanına o işe haftada kaç saat gittiğini ekle.\n\nÖrnek:\nSosyal medya gönderisi hazırlamak — 4 saat\nTeklif yazmak — 3 saat",
+              satir: 10,
+            },
+            bitisKriteri:
+              "Listede en az 10 iş var ve her birinin yanında haftalık süresi yazılı.",
+          },
+          {
+            id: "eleme",
+            baslik: "Ele: bu iş hiç yapılmasa ne olur?",
+            aciklama:
+              "\"Yaptığımız her şey önemli\" demek, önemli çukuruna düşmektir. Listendeki her işe tek tek sor: bunu bir ay hiç yapmasam ne olur? Cevabı \"pek bir şey olmaz\" olan her iş listeden çıkar. Mükemmeliyetçilik burada tuzak: bir işi en mükemmel sen yaparsın, ama o süre boyunca başka bir fırsatı kaçırırsın — buna fırsat maliyeti deniyor. Logo iyi bir örnek: yeni bir markanın logosuna ayrılacak süre en fazla bir gündür, çünkü para kazanmaya başladıktan sonra zaten değişecek. Büyük markaların logoları da defalarca değişti.",
+            sablon: {
+              etiket: "Elenen ve süresi kısaltılan işler",
+              ipucu:
+                "Tamamen eleyeceklerim:\n\nYapacağım ama süresini sınırlayacaklarım (iş — ayrılacak en fazla süre):",
+              satir: 8,
+            },
+            bitisKriteri:
+              "En az bir iş tamamen elendi ya da bir işe üst süre sınırı konuldu.",
+          },
+          {
+            id: "otomatiklestirme",
+            baslik: "Otomatikleştir: bunu bir araç yapabilir mi?",
+            aciklama:
+              "Traktör çıkana kadar tarlalar öküzle sürülüyordu. Traktör gelince öküzler emekli oldu ama çiftçiler iş yaptırmaya devam etti — üstelik daha çok iş yapıp daha çok kazanarak. Yapay zekâ araçları da aynı yerde duruyor: düşünen, üreten, karar veren kişinin yerini almıyor; tekrar eden işi devralıyor. Listendeki kalan işlere bu gözle bak. Metin yazmak, görsel hazırlamak, özet çıkarmak, veri düzenlemek, taslak üretmek — bunların çoğu bugün bir araçla yapılabiliyor. Adapte olmayan geride kalır.",
+            sablon: {
+              etiket: "Araca devredilecek işler",
+              ipucu:
+                "İş — hangi araçla — ilk denemeyi ne zaman yapacağım\n\nÖrnek:\nReklam metni taslağı — yapay zekâ aracı — Salı",
+              satir: 8,
+            },
+            bitisKriteri:
+              "En az bir iş bir araca eşlendi ve ilk denemesi için bir gün yazıldı.",
+          },
+          {
+            id: "delegasyon",
+            baslik: "Delege et: %70-80 yeterli mi?",
+            aciklama:
+              "Ölçü şu: sen yaparsan %100 olur, ekibin ya da dışarıdan biri yaparsa %70-80 olur. İş kritik değilse %70-80 yeterlidir ve o işi devretmelisin — aradaki %20'yi kovalarken kaçırdığın fırsat, kazandığın kaliteden pahalıdır. Eskiden işe alım gerektiren birçok iş bugün bir araçla ya da serbest çalışan biriyle yapılabiliyor; ekip ihtiyacı yok olmuyor, küçülüyor ve kalan ekip daha değerli işlere kayıyor. Akıllı insan kendi hatalarından ders alır, vizyoner insan başkalarının hatalarından da — hepsini kendin yapacak kadar uzun bir ömrün yok.",
+            sablon: {
+              etiket: "Devredilecek işler",
+              ipucu:
+                "İş — kime (ekipten biri / serbest çalışan / ajans) — nereden bulacağım — ne zaman devredeceğim\n\nBu işte %70-80 benim için neden yeterli:",
+              satir: 8,
+            },
+            bitisKriteri:
+              "En az bir iş bir kişiye devredildi ve devir için bir tarih yazıldı.",
+          },
+          {
+            id: "kritik-isler",
+            baslik: "Kritik işleri ayır ve takvime koy",
+            aciklama:
+              "Lider kritik işleri kendisi yapar, önemli işleri ekibine yaptırır. Kritik işler azdır: strateji üretmek, hedef kitleyi analiz etmek, teklif ve servis kurgusunu oluşturmak, KPI belirlemek ve performansı takip etmek, karar vermek. Bunları kimse senin yerine yapamaz. Öğrenmen gereken şey Google reklam panelinin nasıl kullanıldığı değil; düşünmek, öngörmek, empati kurmak, iletişim ve liderlik. Reklam panelini bilmeyen birinin çok kazanması tam da bundan: pazarlamaya ve insan ilişkisine odaklanmış. Sen ne kadar iyi reklam bilirsen bil, kimsenin haberi yoksa bir anlamı yok.",
+            sablon: {
+              etiket: "Yalnızca benim yapacağım işler",
+              ipucu:
+                "Kritik iş — haftada kaç saat — hangi gün ve saatte yapacağım\n\nÖrnek:\nTeklif kurgusunu gözden geçirmek — 2 saat — Pazartesi 09:00",
+              satir: 8,
+            },
+            bitisKriteri:
+              "Kritik iş listesi 5 maddeyi geçmiyor ve her birinin takvimde belirli bir günü ve saati var.",
+          },
+          {
+            id: "kpi",
+            baslik: "Devrettiğin işi nasıl ölçeceksin?",
+            aciklama:
+              "Devretmek, bırakmak değildir. Devrettiğin her iş için ne göreceğini önceden yazmazsan iş geri sana döner. KPI, bir işin başarısını ölçen sayısal göstergedir. Örnek: sosyal medyayı devrettin — raporda ne göreceksin? Haftada kaç gönderi, kaç kişiye ulaşıldı, kaç yeni takipçi, kaç ilgilenen kişi (lead), etkileşim oranı ne. Sayı yoksa takip yok, takip yoksa devir de yok.",
+            sablon: {
+              etiket: "Devrettiğim işlerin göstergeleri",
+              ipucu:
+                "İş — hangi sayıya bakacağım — hedef değer — ne sıklıkla bakacağım\n\nÖrnek:\nSosyal medya — haftalık yeni ilgilenen kişi — en az 5 — her Pazartesi",
+              satir: 8,
+            },
+            bitisKriteri:
+              "Devrettiğin her iş için en az bir sayı, bir hedef değer ve bir kontrol sıklığı yazılı.",
+          },
+        ],
       },
     ],
   },

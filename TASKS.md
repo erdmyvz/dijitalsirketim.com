@@ -61,8 +61,9 @@ referans/uydurma istatistik asla yazılmaz.
 
 ## Sıradaki Görev
 
-### 1. Modül içerikleri (modül modül) — 1 / 14 hazır
-**Yönetici Kafa Yapısı** tamamlandı (2026-09-13). Kalan 13 modül
+### 1. Modül içerikleri (modül modül) — 2 / 14 hazır
+**Yönetici Kafa Yapısı** ve **Nasıl Değil, Kim veya Ne?** tamamlandı
+(2026-09-13). Kalan 12 modül
 Erdem'in ham anlatımını bekliyor; her biri geldiğinde aynı kalıba
 dönüştürülecek: 4-7 adım, doldurulabilir şablon, bitiş kriteri ve
 onardığı check-up sorusunun tekrar sorulması. Modül `durum`u `"hazir"`
@@ -167,6 +168,44 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 ---
 
 ## Tamamlananlar
+
+### 2026-09-13 — İkinci modül içeriği: Nasıl Değil, Kim veya Ne?
+Devretme/otomasyon modülü (`ekip_kurma / devretme-sensiz-yuruyen-isletme`)
+Erdem'in ham anlatımından 6 adıma çevrildi. İskelet zaten metnindeki yol
+haritasıydı: iş envanteri → eleme → otomatikleştirme → delegasyon →
+kritik işler → KPI. Son adım metinde listede yoktu ama ağırlıkla
+vurgulanmıştı; "devretmek bırakmak değildir" mantığıyla eklendi.
+
+Traktör–öküz benzetmesi otomatikleştirme adımında, logo/mükemmeliyetçilik
+ve fırsat maliyeti eleme adımında, "reklam panelini bilmeyen reklamcılar"
+kritik işler adımında açıklama olarak duruyor.
+
+**Başlık değişti:** "Devretme: Sensiz Yürüyen İşletme" → **"Nasıl Değil,
+Kim veya Ne?"** (Erdem'in kendi adlandırması; ilkenin kendisi olduğu için
+daha akılda kalıcı). `id` DEĞİŞMEDİ — URL ve ilerleme kayıtları ona bağlı.
+Vaat cümlesi sonucu taşımaya devam ediyor.
+
+**Kök vida düzeltildi:** `["Kültür"]` → `["Netlik", "Yetkinlik"]`.
+"Her şeyi ben yapıyorum"un kökü, neyin kritik olduğunun belli olmaması
+ve devredecek araç/kişi bilgisinin eksikliği.
+
+**Bir cümle yumuşatıldı.** Ham metindeki "artık bir ekibe ihtiyacınız
+yok, bu işleri yapay zekâya yaptırabilirsiniz" hem kesin bir vaatti hem
+de metnin kendisiyle çelişiyordu (iki paragraf sonra ekibe %70-80'lik
+işler veriliyor). Yeni hâli: "Eskiden işe alım gerektiren birçok iş
+bugün bir araçla yapılabiliyor; ekip ihtiyacı yok olmuyor, küçülüyor."
+
+`onardigiSorular` olduğu gibi kaldı — `operasyon.yapi` ("bir hafta ortada
+olmasanız operasyon yürür mü?") ve `ekip_kurma.yapi` ("görev tanımları
+yazılı mı? / tek kişiyseniz hangi işi ne zaman yaptığınız planlı mı?")
+modülün ürettiği çıktıyla birebir örtüşüyor.
+
+Uçtan uca doğrulandı: operasyon ve ekip kurma kırmızı (2/6) bir test
+hesabında plan **25.000 TL/ay**; 6 adım işaretlendi, bitiş kontrolü
+**iki soruyu** birden sordu (ilk modülde tek soruluk yol test edilmişti),
+yeni karne oluştu (19 cevap taşındı, `operasyon.yapi` ve `ekip_kurma.yapi`
+0→2, `ai_teshis` boş), iki fonksiyon da sarıya döndü ve plan
+**15.000 TL/ay**'a indi. Mobil kontrol edildi, test hesabı silindi.
 
 ### 2026-09-13 — İlk modül içeriği: Yönetici Kafa Yapısı
 Erdem'in ham anlatımı 6 adımlı, şablonlu ve bitiş kontrollü bir modüle

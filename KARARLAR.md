@@ -6,6 +6,22 @@
 
 ---
 
+**2026-09-13 — Modül başlığı değişebilir, `id` değişemez.**
+"Devretme: Sensiz Yürüyen İşletme" başlığı Erdem'in kendi adlandırması
+olan "Nasıl Değil, Kim veya Ne?" ile değiştirildi. Başlık serbesttir;
+`id` ise hem URL'nin hem de `modul_ilerleme` satırlarının anahtarı
+olduğu için yayına çıktıktan sonra DEĞİŞTİRİLMEZ — değişirse
+kullanıcının o modüldeki tüm ilerlemesi sahipsiz kalır. Aynı kural adım
+`id`'leri için de geçerli.
+
+**2026-09-13 — Ham içerikteki kesin vaatler yumuşatılır.**
+"Artık bir ekibe ihtiyacınız yok" gibi mutlak ifadeler, tutmadığında
+bize döner ve marka dilindeki "abartısız" kuralına aykırıdır. Ayrıca bu
+örnekte ifade metnin kendisiyle de çelişiyordu. Kural: modül içeriği
+yazarken kesin sonuç vaatleri, okuyanın zarar görebileceği mutlak
+tavsiyeler ve doğrulanmamış sayılar aynı gözle taranır — fikir korunur,
+iddia savunulabilir seviyeye çekilir.
+
 **2026-09-13 — Modüller varsayılan olarak yapay zekâsız çalışır.**
 Erdem'in talimatı: "mümkün olduğunca yapay zekâyı işin içine dahil etme,
 spesifik işler için yapay zeka işin içine girsin." Modül adımları,
