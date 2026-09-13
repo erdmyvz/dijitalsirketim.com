@@ -272,11 +272,100 @@ export const TEDAVI_FONKSIYONLARI: TedaviFonksiyonu[] = [
         baslik: "Yönetici Kafa Yapısı",
         vaat: "İşin içinde çalışmaktan, işin üzerinde çalışmaya geç.",
         sure: "2 hafta · günde ~20 dk",
-        durum: "yakinda",
+        durum: "hazir",
         katmanlar: ["yapi"],
         kokVida: ["Kültür", "Yetkinlik"],
-        onardigiSorular: ["karar_alma.yapi"],
-        adimlar: [],
+        // Not: önceden "karar_alma.yapi" (yetki devri) idi; modülün
+        // konusu o değil. Kararların anlık mı yoksa düşünülerek mi
+        // alındığı sorusu, bu modüldeki "tepkisel hedef / ilham veren
+        // hedef" ayrımının birebir karşılığı.
+        onardigiSorular: ["karar_alma.surec"],
+        adimlar: [
+          {
+            id: "ilham-veren-hedef",
+            baslik: "İlham veren hedefini yaz",
+            aciklama:
+              "İzmir'den İstanbul'a uçakla da gidilir, bisikletle de. Maliyet ve konfor değişir ama varılan yer aynıdır. Araç değişebilir, amaç değişmez — bu yüzden önce amacı sabitliyoruz. İki tür hedef vardır: tepkisel hedef, dışarıdan gelen bir uyarana verilen ham reflekstir (rakip indirim yaptı, sen de yaptın). İlham veren hedef ise seninle arasına giren tüm engellerden daha büyük, kişisel bir amaçtır. Ayırt etmenin yolu şu: hedefinle duygusal bir bağın yoksa, ilk ciddi engelde bırakırsın.",
+            sablon: {
+              etiket: "İlham veren hedefim",
+              ipucu:
+                "1) Hedefim ne?  2) Bu hedefe ulaşırsam hayatımda somut olarak ne değişir?  3) Ulaşamazsam ne kaybederim? Üçüncü soruyu boş bırakma — duygusal bağ orada kuruluyor.",
+              satir: 6,
+            },
+            bitisKriteri:
+              "Hedefin yazılı ve seni tanımayan biri okuduğunda ne demek istediğini anlıyor.",
+          },
+          {
+            id: "smart-hedef",
+            baslik: "Hedefi ölçülebilir hâle getir (S-M-A-R-T)",
+            aciklama:
+              "Birçok insanın hayali vardır, çok azının hedefi. Farkı yaratan beş şey: Spesifik (açık ve net, nereden başlayacağını söylüyor), Ölçülebilir (takip edilebiliyor, bittiğini anlayabiliyorsun), Ulaşılabilir (bugün aksiyon alabiliyorsun, kontrol sende), Gerçekçi (gereksiz stres ve hayal kırıklığı üretmiyor), Zamana dayalı (bir tarihi var). Bir önceki adımda yazdığın hedefi şimdi bu beş filtreden geçir.",
+            sablon: {
+              etiket: "Hedefimin S-M-A-R-T hâli",
+              ipucu:
+                "Spesifik:\nÖlçülebilir:\nUlaşılabilir:\nGerçekçi:\nZamana dayalı:",
+              satir: 7,
+            },
+            bitisKriteri:
+              "Hedefinde en az bir sayı ve bir tarih var; ikisi de yoksa hedef değil, niyet.",
+          },
+          {
+            id: "problem-analizi",
+            baslik: "Dört başlıkta problem analizi yap",
+            aciklama:
+              "Hedefi belirledikten sonra önündeki engelleri tek tek adlandırmak gerekir. Hepsini tek torbaya koymak işe yaramaz; dört ayrı başlıkta düşün: Bütçesel problemler (para nerede tıkanıyor), Lider problemleri (senin kendi eksiklerin — bu başlığı atlama, en zoru bu), Ekip problemleri (kim yok, kim yanlış yerde), Teknolojik problemler (hangi iş hâlâ elle yapılıyor). Her başlığa dürüstçe bakmadan bir sonraki adıma geçme.",
+            sablon: {
+              etiket: "Hedefimin önündeki engeller",
+              ipucu:
+                "Bütçesel:\nLider (ben):\nEkip:\nTeknolojik:",
+              satir: 8,
+            },
+            bitisKriteri:
+              "Dört başlığın her birinde en az bir madde yazılı — \"burada sorun yok\" yazdıysan bir kez daha düşün.",
+          },
+          {
+            id: "kok-neden",
+            baslik: "Kök nedene in (5 kez \"neden?\")",
+            aciklama:
+              "Bir önceki adımda yazdığın en can yakıcı problemi seç ve beş kez üst üste \"neden?\" diye sor. Her cevabı bir öncekinin üzerine koy. Şaşırtıcı olan şu: bütün yollar üç kök nedenden birine çıkar. NETLİK (ne yapılacağı yazılı ve belli değil), KÜLTÜR (iletişim ve alışkanlıklar taşımıyor), YETKİNLİK (donanım ya da kabiliyet eksik). Belirtiyi tedavi etmek zaman kaybıdır; bu üçünden hangisi olduğunu bulduğunda neyi onaracağını da bulmuş olursun.",
+            sablon: {
+              etiket: "Beş neden zinciri",
+              ipucu:
+                "Problem:\n1. Neden?\n2. Neden?\n3. Neden?\n4. Neden?\n5. Neden?\n\nKök neden hangisi: Netlik / Kültür / Yetkinlik",
+              satir: 10,
+            },
+            bitisKriteri:
+              "En az bir problemin kökü Netlik, Kültür veya Yetkinlik'ten birine bağlanmış durumda.",
+          },
+          {
+            id: "karakter-envanteri",
+            baslik: "Mevcut karakterinle hedefteki karakterini karşılaştır",
+            aciklama:
+              "Kimse hayallerine ulaşamaz; herkes standartlarını yaşar. Karakter farkında olmadan oluşur — kültür, çevre ve alışkanlıklarla. İrade ise bilinçli inşa edilir: yeni kararlar, disiplin, eğitim. Mevcut karakterinle hedefine ulaşamıyorsan, mesele hedefin büyüklüğü değil karakterin ayarıdır. Bu adımda iki sütun yazacaksın: bugünkü hâlin ve hedefe ulaşmış hâlin. Somut yaz — günü nasıl geçiriyor, kimlerle vakit geçiriyor, neye hayır diyor, hangi işi kendi yapıyor hangisini yapmıyor. Soyut sıfatlar (\"daha disiplinli\") işe yaramaz.",
+            sablon: {
+              etiket: "Mevcut Ben → Yeni Ben",
+              ipucu:
+                "Bugün: sabahları ...           → Hedefte: sabahları ...\nBugün: vaktimin çoğu ...      → Hedefte: vaktimin çoğu ...\nBugün: şu işi kendim yapıyorum → Hedefte: bu iş ...\nBugün: hayır diyemediğim şey ... → Hedefte: ...\nBugün: birlikte vakit geçirdiğim insanlar ... → Hedefte: ...",
+              satir: 10,
+            },
+            bitisKriteri:
+              "En az 5 karşılaştırma satırı var ve hepsi davranış tarif ediyor, sıfat değil.",
+          },
+          {
+            id: "buyume-dongusu",
+            baslik: "Büyüme döngünü sına",
+            aciklama:
+              "Çoğu işletmenin döngüsü şudur: müşteriye ilgi gösterirsin, müşteri sonuç alır, tatmin olur, yeni müşteri getirir — ama müşteri sayısı arttıkça harcadığın zaman artar, zaman artınca ilgi azalır ve döngü kendi kendini bozar. Bu döngüde para kazanılır, servet kazanılmaz. Girişimcilerin büyük çoğunluğu tam burada takılır. Çıkış yolu daha çok müşteri değil, daha nitelikli müşteridir: küçük bir işe harcadığın saatle büyük bir işe harcadığın saat aynıdır. Bu adımda kendi döngünü çiz ve nerede kırıldığını bul.",
+            sablon: {
+              etiket: "Büyüme döngüm",
+              ipucu:
+                "Bugünkü döngüm (adım adım):\n\nDöngü nerede kırılıyor:\n\nEn kârlı 3 müşterimin ortak özelliği:\n\nBundan sonra hangi müşteriyi almayacağım:",
+              satir: 10,
+            },
+            bitisKriteri:
+              "Döngünün kırıldığı nokta yazılı ve bundan sonra hangi işi almayacağına dair bir cümle var.",
+          },
+        ],
       },
     ],
   },

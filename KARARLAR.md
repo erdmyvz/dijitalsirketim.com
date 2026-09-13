@@ -6,6 +6,26 @@
 
 ---
 
+**2026-09-13 — Modüller varsayılan olarak yapay zekâsız çalışır.**
+Erdem'in talimatı: "mümkün olduğunca yapay zekâyı işin içine dahil etme,
+spesifik işler için yapay zeka işin içine girsin." Modül adımları,
+şablonlar ve bitiş kriterleri sabit içeriktir; kullanıcıyı yönlendiren
+şey metnin kendisi ve ölçülebilir bitiş eşiğidir. Yapay zekâ ancak
+tanımlı, sınırlı bir iş için çağrılır — bugün tek örneği `/api/teshis`
+(karne yorumu). Gerekçe: her adımı modele bırakmak hem maliyeti
+öngörülemez kılar, hem de modülün tekrarlanabilirliğini bozar — aynı
+soruya farklı kullanıcı farklı yönlendirme alır. Sabit içerik, sistemin
+kurucudan bağımsız çalışması hedefine de daha uygun.
+
+**2026-09-13 — Modülün `onardigiSorular` alanı içerikle birebir örtüşmeli.**
+Yönetici Kafa Yapısı modülü `karar_alma.yapi`'ye (yetki devri) bağlıydı
+ama içeriği hedef belirleme ve karakter inşasıydı. Bitiş kontrolü
+modülün onardığı soruyu tekrar sorduğu için bu uyumsuzluk doğrudan
+YANLIŞ KARNE üretir: kullanıcı alakasız bir soruyu cevaplar, skoru ona
+göre değişir. Yeni modül içeriği yazarken ilk kontrol bu olmalı —
+"bu modülü bitiren biri, bağlı olduğu soruya gerçekten farklı cevap
+verir mi?" Vermiyorsa bağ yanlıştır.
+
 **2026-09-11 — Kaynaklı ama doğrulanmamış istatistik yazılmaz; sayı yerine tanınabilirlik.**
 Sitede TOBB/BLS atıflı iki oran vardı ve teyit edilmemişti. Kaynak adı
 vermek iddiayı hafifletmez, ağırlaştırır: okuyucu o kurumun verisine

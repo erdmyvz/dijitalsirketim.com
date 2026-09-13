@@ -61,16 +61,19 @@ referans/uydurma istatistik asla yazılmaz.
 
 ## Sıradaki Görev
 
-### 1. Modül içerikleri (modül modül)
-Katalog, sayfa iskeleti ve kilit mekanizması hazır; içerikler boş. Sıra:
-önce **Müşteri Bulma Planı** (acil müdahale modülü). **Erdem'den
-beklenen:** bir işletme sahibi 1 hafta boyunca günde ~30 dakika ayırarak
-hangi somut adımları atarsa ilk yeni temaslarını kurmuş olur? Ham
-anlatım yeterli — şablonlu ve bitiş kontrollü modüle çevrilecek.
-Her modül: 4-7 adım, doldurulabilir şablonlar, bitiş kontrolü
-(onardığı check-up sorusunun tekrar cevaplanması). Modül `durum`u
-`"hazir"` yapılınca sayfa otomatik dinamikleşiyor ve kilit devreye
-giriyor — ek iş yok.
+### 1. Modül içerikleri (modül modül) — 1 / 14 hazır
+**Yönetici Kafa Yapısı** tamamlandı (2026-09-13). Kalan 13 modül
+Erdem'in ham anlatımını bekliyor; her biri geldiğinde aynı kalıba
+dönüştürülecek: 4-7 adım, doldurulabilir şablon, bitiş kriteri ve
+onardığı check-up sorusunun tekrar sorulması. Modül `durum`u `"hazir"`
+yapılınca sayfa otomatik dinamikleşiyor, kilit devreye giriyor — ek iş
+yok.
+
+**İçerik yazarken uygulanan kalıp** (Yönetici Kafa Yapısı'ndan çıktı):
+her adımın açıklaması "ne yapılacak + neden" diyor, şablonun ipucu
+alanı doldurulacak satırları hazır veriyor, bitiş kriteri ölçülebilir
+bir eşik koyuyor ("en az 5 satır", "bir sayı ve bir tarih"). Doğrulanmamış
+istatistikler içerikten çıkarılıyor (bkz. KARARLAR.md 2026-09-11).
 
 ---
 
@@ -164,6 +167,44 @@ Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
 ---
 
 ## Tamamlananlar
+
+### 2026-09-13 — İlk modül içeriği: Yönetici Kafa Yapısı
+Erdem'in ham anlatımı 6 adımlı, şablonlu ve bitiş kontrollü bir modüle
+çevrildi (`karar_alma / yonetici-kafa-yapisi`, `durum: "hazir"`).
+Adımlar: ilham veren hedef → S-M-A-R-T → dört başlıkta problem analizi →
+5 kez "neden" ile kök neden → Mevcut Ben/Yeni Ben karakter envanteri →
+büyüme döngüsünün sınanması. Her adımda doldurulabilir şablon ve
+ölçülebilir bir bitiş kriteri var ("en az bir sayı ve bir tarih", "en az
+5 karşılaştırma satırı, sıfat değil davranış").
+
+**Check-up bağı düzeltildi.** Modül `karar_alma.yapi`'ye ("hangi kararı
+kim verebilir") bağlıydı — bu bir yetki devri sorusu, modülün konusu
+değil. Bu hâliyle kullanıcı modülü bitirince alakasız bir soru sorulacak
+ve yanlış bir karne üretilecekti. `karar_alma.surec`'e çekildi
+("kararlar düzenli mi alınıyor, anlık mı?") — içerikteki "tepkisel hedef
+/ ilham veren hedef" ayrımının birebir karşılığı.
+
+**Bir istatistik çıkarıldı.** Ham metindeki "girişimcilerin %95'i
+başarısız olur" ifadesi, iki gün önce siteden TOBB/BLS rakamlarını
+kaldırırken konan kurala aykırıydı. Fikir korundu, sayı gitti:
+"girişimcilerin büyük çoğunluğu tam burada takılır".
+
+Güzel bir örtüşme: Erdem'in kök neden çerçevesi (Netlik / Kültür /
+Yetkinlik) koddaki `kokVida` alanıyla birebir aynı. 14 modülün hepsi
+zaten bu üçlüye göre etiketli olduğu için modül, kendi anlattığı şeyin
+canlı örneği oluyor.
+
+Uçtan uca doğrulandı: karar alma fonksiyonu kırmızı (1/6) bir test
+hesabıyla plan **15.000 TL/ay** çıktı; 6 adım işaretlendi, bitiş
+kontrolü tek soruyu sordu, yeni karne oluştu (20 cevap değişmeden
+taşındı, yalnızca `karar_alma.surec` 0→2, `ai_teshis` boş), fonksiyon
+sarıya döndü ve plan **10.000 TL/ay**'a indi. Mobil (375px) kontrol
+edildi, yatay taşma yok. Test hesabı silindi.
+
+**Not:** Bu temizlik sırasında `karneler` tablosunda 1 satır kaldığı
+görüldü — test artığı değil, **sistemdeki ilk gerçek karne**
+(yavuz@enerjimall.com, 11 Eylül 11:20, "Technicall / Mühendislik
+Hizmetleri"). Dokunulmadı.
 
 ### 2026-09-11 — Doğrulanmamış istatistikler siteden kaldırıldı
 "Acının maliyeti" bölümünde TOBB ve BLS adına iki oran duruyordu
