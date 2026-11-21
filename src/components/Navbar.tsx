@@ -1,61 +1,65 @@
-import Link from "next/link";
+"use client";
 
-// Hepsi ana sayfadaki bölümlere kaydıran çapa bağlantıları.
-//
-// NOT: "Modüller" (/tedavi) bilinçli olarak burada YOK. Modül içerikleri
-// tamamlanana kadar ana sayfada tanıtılmıyor; hesap açan müşteriler
-// panelinden erişiyor. Hepsi hazır olduğunda buraya bir <Link> olarak
-// geri eklenecek (çapa değil, gerçek rota olduğu için).
-const links = [
-  { href: "#sorun", label: "Belirtiler" },
-  { href: "#cozum", label: "Tedavi Modeli" },
-  { href: "#ispat", label: "Neden Biz" },
-  { href: "#teklif", label: "Nasıl İşliyor" },
-  { href: "#sss", label: "SSS" },
+import { useEffect, useState } from "react";
+
+const BAGLANTILAR = [
+  { href: "#ajanlar", etiket: "Ajanlar" },
+  { href: "#moduller", etiket: "Modüller" },
+  { href: "#program", etiket: "Program" },
+  { href: "#sss", etiket: "SSS" },
 ];
 
+/**
+ * Üst çubuk. Sayfa kaydırıldığında zemini koyulaşıp altına ince bir
+ * çizgi gelir — yoksa koyu tema üzerinde yüzen metin gibi duruyor.
+ */
 export default function Navbar() {
+  const [kaydi, setKaydi] = useState(false);
+
+  useEffect(() => {
+    const olcum = () => setKaydi(window.scrollY > 12);
+    olcum();
+    window.addEventListener("scroll", olcum, { passive: true });
+    return () => window.removeEventListener("scroll", olcum);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-black/5 bg-white/70 backdrop-blur-xl backdrop-saturate-150">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
-        <a href="#" className="flex flex-none items-center gap-2">
-          <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-teal-600 text-base text-white">
-            🩺
+    <header
+      className={`sticky z-50 transition-colors duration-300 ${
+        kaydi
+          ? "border-b border-cizgi bg-zemin/85 backdrop-blur-xl"
+          : "border-b border-transparent"
+      }`}
+      style={{ top: "env(safe-area-inset-top, 0px)" }}
+    >
+      <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3.5 sm:px-8">
+        <a href="#ust" className="flex items-center gap-2.5">
+          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500 text-[13px] font-bold text-white">
+            D
           </span>
-          <span className="text-base font-semibold tracking-tight text-slate-900 sm:text-[17px]">
-            dijital<span className="text-teal-600">şirketim</span>
-            <span className="hidden text-slate-400 sm:inline">.com.tr</span>
+          <span className="text-[15px] font-semibold tracking-[-0.01em]">
+            Dijital Şirketim
           </span>
         </a>
 
-        <ul className="hidden items-center gap-8 text-[13px] font-medium tracking-tight text-slate-600 md:flex">
-          {links.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-slate-900"
-              >
-                {link.label}
-              </a>
-            </li>
+        <div className="hidden items-center gap-7 md:flex">
+          {BAGLANTILAR.map((b) => (
+            <a
+              key={b.href}
+              href={b.href}
+              className="text-sm text-zinc-400 transition-colors hover:text-zinc-100"
+            >
+              {b.etiket}
+            </a>
           ))}
-        </ul>
-
-        <div className="flex flex-none items-center gap-3">
-          <Link
-            href="/hesap"
-            className="hidden whitespace-nowrap text-[13px] font-medium text-slate-500 transition-colors duration-200 ease-[var(--ease-apple)] hover:text-slate-900 sm:inline"
-          >
-            Hesabım
-          </Link>
-          <Link
-            href="/check-up"
-            className="flex-none whitespace-nowrap rounded-full bg-teal-600 px-3.5 py-2 text-[13px] font-semibold text-white shadow-sm shadow-teal-600/20 transition-transform duration-300 ease-[var(--ease-apple)] hover:scale-[1.03] active:scale-[0.97] motion-reduce:transition-none motion-reduce:hover:scale-100 sm:px-4 sm:text-sm"
-          >
-            <span className="sm:hidden">Check-Up</span>
-            <span className="hidden sm:inline">Ücretsiz Check-Up&apos;a Başla</span>
-          </Link>
         </div>
+
+        <a
+          href="#gorusme"
+          className="flex-none rounded-full bg-indigo-500 px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-indigo-400 sm:px-5 sm:text-sm"
+        >
+          Görüşme ayarla
+        </a>
       </nav>
     </header>
   );

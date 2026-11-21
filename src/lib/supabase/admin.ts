@@ -1,15 +1,22 @@
-import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-// Service-role istemcisi — YALNIZCA sunucuda (API route) kullanılır.
-// RLS'i baypas eder; bu sayede "basvurular" tablosuna INSERT policy'si
-// açmadan kayıt ekleyebiliyoruz.
-export function createAdminClient() {
+/**
+ * Servis rolü anahtarıyla çalışan sunucu istemcisi. RLS'i atlar, bu
+ * yüzden YALNIZCA sunucu tarafında kullanılır — anahtar tarayıcıya asla
+ * gönderilmez.
+ *
+ * Ortam değişkenleri tanımlı değilse (yerel geliştirme, Supabase projesi
+ * henüz açılmamış) `null` döner ve çağıran taraf nazikçe yedek yola
+ * düşer. Böylece yapılandırma eksikliği ziyaretçiye hata olarak
+ * yansımaz.
+ */
+export function createAdminClient(): SupabaseClient | null {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!url || !serviceRoleKey) return null; // Supabase henüz yapılandırılmadı
+  if (!url || !key || !/^https?:\/\//i.test(url)) return null;
 
-  return createSupabaseClient(url, serviceRoleKey, {
+  return createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 }

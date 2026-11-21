@@ -1,111 +1,115 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import LegalSayfa, { Bolum, Liste, Metin } from "@/components/legal/LegalSayfa";
+import LegalSayfa, {
+  Baglanti,
+  Bolum,
+  Liste,
+  Metin,
+} from "@/components/legal/LegalSayfa";
 
 export const metadata: Metadata = {
-  title: "Gizlilik Politikası ve Çerezler | Dijital Şirketim",
+  title: "Gizlilik ve Çerez Politikası | Dijital Şirketim",
   description:
-    "dijitalşirketim.com.tr hangi verileri neden topluyor, verileriniz nerede saklanıyor, hangi çerezler kullanılıyor — sade bir dille anlatıyoruz.",
+    "dijitalşirketim.com.tr hangi verileri topluyor, nerede saklıyor, kimlerle paylaşıyor ve çerez kullanıyor mu — sade bir anlatım.",
   alternates: { canonical: "/gizlilik" },
 };
 
+/**
+ * KVKK metni hukuki çerçeveyi anlatır; bu sayfa aynı şeyi gündelik
+ * dille söyler. İkisi de 21 Kasım 2026'da, site baştan yazıldığında
+ * güncellendi: artık hesap açma, karne kaydı ve yapay zekâ teşhisi yok.
+ */
 export default function GizlilikSayfasi() {
   return (
-    <LegalSayfa baslik="Gizlilik Politikası" guncellemeTarihi="8 Eylül 2026">
+    <LegalSayfa
+      baslik="Gizlilik ve Çerez Politikası"
+      guncellemeTarihi="21 Kasım 2026"
+    >
       <Metin>
-        Bu sayfa, dijitalşirketim.com.tr&apos;nin verilerinizle ne yaptığını
-        hukuki dilden çok, sade bir dille anlatır. Resmî metin için{" "}
-        <Link href="/kvkk" className="text-teal-700 underline hover:text-teal-800">
-          KVKK Aydınlatma Metni
-        </Link>
-        &apos;ne bakabilirsiniz.
+        Kısa cevap: Site&apos;de üyelik yok, çerez yok, takip yok. Tek veri
+        kaynağı, kendi isteğinizle doldurduğunuz görüşme formu.
       </Metin>
 
-      <Bolum>Ne topluyoruz, neden?</Bolum>
+      <Bolum>Ne topluyoruz?</Bolum>
       <Metin>
-        Kısaca: yalnızca hizmeti çalıştırmak için gereken veriyi topluyoruz.
-        Reklam ağlarına veri satmıyoruz, ziyaretçi davranışını izleyen
-        analiz/reklam aracı (Google Analytics, Facebook Pixel vb.)
-        kullanmıyoruz — Site&apos;de böyle bir üçüncü taraf takip kodu
-        yok.
+        <strong>Formu doldurursanız:</strong> ad soyadınız ve telefonunuz
+        (zorunlu); verirseniz e-postanız, işletme adınız, hangi gruba ait
+        olduğunuz ve yazdığınız not. Bunlar size dönüş yapabilmek içindir.
       </Metin>
+      <Metin>
+        <strong>Formu doldurmazsanız:</strong> hiçbir kişisel veriniz
+        kaydedilmez. Sayfayı gezmeniz bir kayıt oluşturmaz.
+      </Metin>
+      <Metin>
+        Bunların dışında, siteyi barındıran Vercel&apos;in otomatik sunucu
+        günlükleri vardır (IP, zaman, istenen adres). Bunları biz
+        oluşturmuyoruz; her web sunucusunda bulunur ve güvenlik için
+        tutulur.
+      </Metin>
+
+      <Bolum>Çerez kullanıyor muyuz?</Bolum>
+      <Metin>
+        <strong>Hayır.</strong> Site hiçbir çerez yazmıyor: ne reklam, ne
+        analiz, ne oturum çerezi. Google Analytics, Meta Pixel ya da benzeri
+        bir takip aracı da yok. Bu yüzden sayfada çerez onay şeridi de
+        görmüyorsunuz — onaylanacak bir şey yok.
+      </Metin>
+      <Metin>
+        İleride bir ölçümleme aracı eklenirse bu sayfa güncellenir ve
+        gerekli onay ekranı eklenir.
+      </Metin>
+
+      <Bolum>Nerede saklanıyor?</Bolum>
       <Liste>
         <li>
-          <strong>Başvuru formunu doldurursanız:</strong> ad soyad,
-          telefon, varsa işletme adı/sektör — size dönüş yapabilmek için.
+          <strong>Vercel</strong> — sitenin kendisi ve sunucu günlükleri.
         </li>
         <li>
-          <strong>Check-Up&apos;ı yaparsanız:</strong> verdiğiniz cevaplar
-          — Dijital Sağlık Karnenizi ve yapay zekâ ön teşhisini
-          üretebilmek için. Hesap açmadan yaparsanız bu veriler yalnızca
-          sizin tarayıcınızda kalır, bize hiç ulaşmaz.
-        </li>
-        <li>
-          <strong>Hesap açarsanız:</strong> e-posta ve şifreniz — giriş
-          yapabilmeniz ve karnelerinizi saklayabilmeniz için. Şifrenizi
-          biz de göremeyiz, Supabase (altyapı sağlayıcımız) tarafından
-          geri döndürülemez şekilde saklanır.
-        </li>
-      </Liste>
-
-      <Bolum>Yapay zekâ ön teşhisi ve Google Gemini</Bolum>
-      <Metin>
-        Check-Up sonucunuzdaki &quot;Yapay Zekâ Ön Teşhisi&quot; kartı
-        Google&apos;ın Gemini modelini kullanır. Bunun için sektörünüz, iş
-        modeliniz, ölçeğiniz, 21 sorunun cevapları ve yazdığınız problem
-        tanımı Google&apos;a gönderilir.
-      </Metin>
-      <Metin>
-        <strong>İşletmenizin adını bu isteğe bilinçli olarak dahil
-        etmiyoruz.</strong> Sebebi şu: Gemini&apos;nin ücretsiz katmanında
-        gönderilen içerik Google tarafından ürün geliştirme amacıyla
-        kullanılabiliyor (ücretli katmanda kullanılmıyor). İşletme adınızı
-        çıkararak, teşhis kalitesinden ödün vermeden veriyi
-        kimliksizleştiriyoruz — model zaten isimden teşhise katkı
-        sağlayacak bir şey çıkarmıyor.
-      </Metin>
-
-      <Bolum>Verileriniz nerede saklanıyor?</Bolum>
-      <Metin>
-        Başvurularınız, hesabınız ve kaydettiğiniz karneler{" "}
-        <strong>Supabase</strong> üzerinde saklanır — veritabanı ve
-        kimlik doğrulama altyapımız. Tabloya erişim, satır düzeyi güvenlik
-        kurallarıyla korunur: kendi karnelerinizi yalnızca siz
-        görebilirsiniz, başka bir kullanıcı hesabı bunları göremez.
-      </Metin>
-
-      <Bolum>Çerezler</Bolum>
-      <Metin>
-        Site&apos;de yalnızca <strong>zorunlu/işlevsel çerezler</strong>{" "}
-        kullanılır — reklam, analiz veya çapraz-site takip çerezi yoktur:
-      </Metin>
-      <Liste>
-        <li>
-          <strong>Oturum çerezleri</strong> (Supabase Auth) — yalnızca
-          giriş yaptıysanız oluşur, oturumunuzun açık kalmasını sağlar.
-          Bunlar olmadan hesabınıza giriş yapılı kalamaz.
+          <strong>Supabase</strong> — görüşme taleplerinin tutulduğu
+          veritabanı. Tabloya satır bazlı güvenlik uygulanır; kayıtlara
+          tarayıcıdan erişilemez, yalnızca sunucu yazabilir.
         </li>
       </Liste>
       <Metin>
-        Ayrıca Check-Up sihirbazındaki ilerlemeniz, çerez değil{" "}
-        <strong>tarayıcı deposunda (localStorage)</strong> tutulur — bu da
-        yalnızca sizin cihazınızda kalır, bize hiç gönderilmez; sekmeyi
-        kapatıp geri dönseniz bile kaldığınız yerden devam edebilmeniz
-        içindir.
+        Her iki sağlayıcının sunucuları da yurt dışındadır.
+      </Metin>
+
+      <Bolum>Kimlerle paylaşıyoruz?</Bolum>
+      <Metin>
+        Hiç kimseyle. Verileriniz satılmaz, pazarlama listelerine eklenmez,
+        üçüncü kişilere aktarılmaz. Yalnızca yukarıdaki iki sağlayıcıda,
+        hizmetin çalışması için barındırılır.
+      </Metin>
+
+      <Bolum>Ne kadar süre saklanıyor?</Bolum>
+      <Metin>
+        Görüşme talepleri en fazla iki yıl. Daha erken silinmesini isterseniz{" "}
+        <Baglanti href="mailto:erdem.yvz@hotmail.com">
+          erdem.yvz@hotmail.com
+        </Baglanti>{" "}
+        adresine yazmanız yeterli; kaydınız silinir ve size bilgi verilir.
+      </Metin>
+
+      <Bolum>Sitedeki ekran görüntüleri gerçek mi?</Bolum>
+      <Metin>
+        Hayır, hepsi örnektir ve her birinin köşesinde &quot;Örnek
+        ekran&quot; yazar. Sayfadaki rakamlar, işletme adları ve mesajlar
+        gerçek müşterilere ait değildir; sistemin nasıl görüneceğini
+        göstermek için hazırlanmıştır. Gerçek sonuçlar ancak gerçek
+        işletmelerle çalışıldıktan ve ölçüldükten sonra paylaşılacaktır.
       </Metin>
 
       <Bolum>Haklarınız</Bolum>
       <Metin>
-        Verilerinizin bir kopyasını isteyebilir, düzeltilmesini veya
-        silinmesini talep edebilirsiniz. Detaylı liste için{" "}
-        <Link href="/kvkk" className="text-teal-700 underline hover:text-teal-800">
+        Verinizin işlenip işlenmediğini öğrenme, düzeltme ve silme
+        haklarınızın tamamı için{" "}
+        <Link
+          href="/kvkk"
+          className="text-indigo-400 underline underline-offset-2 hover:text-indigo-300"
+        >
           KVKK Aydınlatma Metni
         </Link>
-        &apos;ne bakın; taleplerinizi{" "}
-        <a href="mailto:erdem.yvz@hotmail.com" className="text-teal-700 underline hover:text-teal-800">
-          erdem.yvz@hotmail.com
-        </a>{" "}
-        adresine iletebilirsiniz.
+        .
       </Metin>
     </LegalSayfa>
   );

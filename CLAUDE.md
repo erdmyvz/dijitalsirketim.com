@@ -31,17 +31,24 @@
 
 ## Ton ve marka dili
 
-Şirket doktorluğu metaforu; güven veren, net, **abartısız**. Doktor dili
-dozunda kullanılır — her cümleye sıkıştırılmaz. Vaat şişirilmez, kesin
-sonuç garantisi verilmez.
+Net, sade, **abartısız**. Vaat şişirilmez, kesin sonuç garantisi
+verilmez. Henüz çalışmayan bir şey çalışıyormuş gibi anlatılmaz —
+sitedeki "Durum" bölümü hangi fazda olduğumuzu açıkça söyler.
+
+Ürünün tezi Erdem'in kendi ilkesi: **"Amerika'yı yeniden keşfetmeye
+gerek yok."** Çalıştığı kanıtlanmış işi bul, markana uyarla, uygula.
+Birebir kopyalama değil — uyarlama.
 
 ---
 
-# Proje Yol Haritası — dijitalşirketim.com.tr
+# Proje — dijitalşirketim.com.tr
 
-Türkiye'nin Şirket Doktoru konsepti üzerine kurulu, doktor metaforlu bir
-dijital pazarlama danışmanlığı sitesi. Next.js 16 (App Router) +
-TypeScript + Tailwind CSS v4, Vercel'de yayında.
+Dijital pazarlama işini kurmak ve işletmek için bir ürün. Next.js 16
+(App Router) + TypeScript + Tailwind CSS v4, Vercel'de yayında.
+
+**2026-11-21'de ürün tamamen değişti.** Eski "şirket doktoru /
+check-up / tedavi" kurgusu söküldü. Geçmişi `arsiv/` ve `icerik/ham/`
+altında duruyor; gerekçeler [KARARLAR.md](KARARLAR.md)'de.
 
 Güncel görev listesi: [TASKS.md](TASKS.md) · Verilmiş kararlar: [KARARLAR.md](KARARLAR.md)
 
@@ -49,35 +56,52 @@ Güncel görev listesi: [TASKS.md](TASKS.md) · Verilmiş kararlar: [KARARLAR.md
 
 | Rota | Ne işe yarar |
 |---|---|
-| `/` | Tek sayfalık satış sitesi: Sorun → Acının Maliyeti → Tedavi Modeli → Neden Biz → Teklif (ücretli Dijital Check-Up paketi + başvuru formu) → SSS → Biz Kimiz (Amaç/Misyon/Vizyon) |
-| `/check-up` | Ücretsiz, çok adımlı "Dijital Check-Up" sihirbazı — profil + 21 soru → Dijital Sağlık Karnesi + AI ön teşhisi. Landing'deki ana CTA'lar buraya bağlı. |
-| `/admin` (+ `/admin/giris`, `/admin/cikis`) | Supabase Auth ile korunan yönetim paneli — `/`'deki başvuru formunun (Bölüm "Teklif") kayıtlarını listeler |
-| `/api/basvuru` | `/` sayfasındaki başvuru formunu Supabase `basvurular` tablosuna yazar |
-| `/api/teshis` | `/check-up` sonuç ekranındaki AI ön teşhis kartını besler (Google Gemini, yapılandırılmış JSON çıktı) |
+| `/` | Tek sayfa: Hero → İki kitle → 4 Ajan → 5 Modül → 6 Başlıklı Program → Durum (yol haritası) → Görüşme formu → SSS |
+| `/api/gorusme` | Görüşme formunu Supabase `gorusme_talepleri` tablosuna yazar |
+| `/kvkk`, `/gizlilik` | Yasal metinler |
 
-## Check-Up sihirbazı — mimari notları
+## Mimari notları
 
-- **Soru bankası ve tüm metin içerikleri**: [src/data/questions.ts](src/data/questions.ts) — kod bilmeden düzenlenebilir tek dosya (7 fonksiyon × 3 katman = 21 soru, iş modeli kartları, çalışan/ciro seçenekleri).
-- **Puanlama**: [src/lib/checkup/scoring.ts](src/lib/checkup/scoring.ts) — saf fonksiyonlar, VAR=2/BELİRSİZ=1/YOK=0, fonksiyon eşikleri 0-2 kırmızı / 3-4 sarı / 5-6 yeşil.
-- **State**: veritabanı yok (bilinçli MVP kararı) — sihirbazın tüm state'i `localStorage`'da tutulur ([useCheckupState.ts](src/components/checkup/useCheckupState.ts)). Sihirbaz `next/dynamic({ ssr: false })` ile yükleniyor ([CheckupWizardClient.tsx](src/components/checkup/CheckupWizardClient.tsx)) — bu sayede localStorage'a bağlı state hiç sunucuda render edilmiyor, hidrasyon uyuşmazlığı riski yok.
-- **AI ön teşhis**: [src/lib/checkup/prompt.ts](src/lib/checkup/prompt.ts) sistem promptu + kullanıcı mesajını üretir; [/api/teshis/route.ts](src/app/api/teshis/route.ts) `gemini-3.8-flash` modelini yapılandırılmış çıktı (responseJsonSchema) ile JSON şemaya zorlar. Kırmızı bölge sunucuda deterministik hesaplanır, model yalnızca yorumlar. `GEMINI_API_KEY` tanımsızsa nazikçe 503 döner, kart WhatsApp fallback'ine düşer — sayfa asla boş kalmaz.
+- **Bütün site metni tek dosyada**: [src/data/icerik.ts](src/data/icerik.ts).
+  Ajanlar, modüller, program başlıkları, fazlar, SSS — hepsi burada.
+  Kod bilmeden düzenlenebilen tek dosya; bir başlığı değiştirmek için
+  bileşenlere dokunmak gerekmez.
+- **Modül ekranları kodla çiziliyor**
+  ([src/components/moduller/Ekranlar.tsx](src/components/moduller/Ekranlar.tsx)),
+  ekran görüntüsü yapıştırılmıyor: dar ekranda bozulmuyor, metin
+  seçilebiliyor. **Hepsinde "Örnek ekran" rozeti var** — rakamlar ve
+  isimler uydurmadır, gerçek müşteriye ait değildir.
+- **`Reveal` içeriği asla gizleyemez**
+  ([src/components/Reveal.tsx](src/components/Reveal.tsx)): görünür
+  render edilir, gizleme sonradan ve yalnızca ekran altındaki bloklara
+  uygulanır. Ölçüm 250 ms geciktirilir (çapa bağlantısı sorunu) ve ortak
+  bir kaydırma süpürücüsü gözlemcinin kaçırdıklarını yakalar. Bu dosyayı
+  "sadeleştirmeden" önce KARARLAR.md'deki 2026-11-21 maddesini okuyun.
+- **Form asla kırılmaz**: Supabase yapılandırılmamışsa talep sunucu
+  günlüğüne yazılır ve yine başarı döner. Yazma hatası olursa ziyaretçi
+  WhatsApp'a yönlendirilir, kayıt yine günlüğe düşer.
+- **Çerez yok.** Oturum, analiz, takip — hiçbiri. Bu yüzden onay şeridi
+  de yok. Ölçümleme eklenirse `/gizlilik` güncellenip şerit geri gelmeli.
 
-## Sürüm rozeti (geçici)
+## Arşiv
 
-Sayfanın üstündeki sarı taslak rozeti, yayın numarasını
-[version.json](version.json)'dan okur ([next.config.ts](next.config.ts) build
-zamanında gömer). **Her commit'te `version.json` içindeki `version` değerini
-bir artırın.** (Daha önce bu sayı git commit sayısından hesaplanıyordu; Vercel
-build ortamı depoyu sığ klonladığı için hep yanlış çıkıyordu — bu yüzden
-dış bağımlılığı olmayan basit bir sayaç dosyasına geçildi.)
+- [arsiv/isletme-teshisi/](arsiv/isletme-teshisi/) — 21 soruluk banka,
+  puanlama motoru, 14 modüllük katalog. `src/` dışında, derlemeye
+  girmiyor (tsconfig `exclude`). "İşletme teşhisi" olarak başka bir
+  yerde kullanılacak.
+- [icerik/ham/](icerik/ham/) — Erdem'in kendi kaleminden iki modül
+  metni, hiç düzenlenmeden.
 
 ## Ortam değişkenleri
 
-Şablon: [.env.local.example](.env.local.example) (yerelde `.env.local` olarak kopyalayın; Vercel'de Project Settings → Environment Variables). `.env*` `.gitignore`'da — gerçek anahtarlar hiçbir zaman commit edilmez, yalnızca `.example` dosyası izleniyor.
+Şablon: [.env.local.example](.env.local.example). `.env*` `.gitignore`'da.
 
-- `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` — admin paneli + başvuru kayıtları
-- `GEMINI_API_KEY` — `/check-up` AI ön teşhis kartı (Google Gemini)
+- `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` — görüşme
+  taleplerinin yazıldığı veritabanı. **İkisi de boşsa site yine
+  çalışır**; talep günlüğe yazılır.
 
-## Şu an bekleyenler
+## Sürüm sayacı
 
-Güncel liste tek yerde: [TASKS.md](TASKS.md) → "Dış Bağımlılıklar".
+[version.json](version.json) her commit'te bir artırılır. Sayfadaki
+taslak rozeti 21 Kasım 2026'da kaldırıldı, sayaç sürüm takibi için
+duruyor.

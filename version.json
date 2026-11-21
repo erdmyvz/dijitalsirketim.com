@@ -1,4 +1,4 @@
 {
-  "version": 58,
-  "not": "Taslak sürüm rozetinde gösterilen yayın numarası. Her commit'te bir artırılır. Site yayına çıkıp DraftVersionBanner kaldırıldığında bu dosya da silinebilir."
+  "version": 59,
+  "not": "Yayın numarası. Her commit'te bir artırılır. Taslak rozeti 21 Kasım 2026'da kaldırıldı; bu sayaç yine de sürüm takibi için duruyor."
 }

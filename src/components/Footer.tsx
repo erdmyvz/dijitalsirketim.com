@@ -1,105 +1,67 @@
 import Link from "next/link";
+import { WHATSAPP_NUMARASI } from "@/data/icerik";
+import { IconWhatsapp } from "./icons";
 
 export default function Footer() {
+  const yil = new Date().getFullYear();
+
   return (
-    <footer className="bg-slate-950 text-slate-400">
-      <div className="mx-auto max-w-6xl px-6 py-12">
-        <div className="flex flex-col items-start justify-between gap-8 md:flex-row">
+    <footer className="mt-auto border-t border-cizgi">
+      <div className="mx-auto max-w-6xl px-5 py-12 sm:px-8">
+        <div className="flex flex-wrap items-start justify-between gap-8">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-teal-600 text-lg text-white">
-                🩺
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500 text-[13px] font-bold text-white">
+                D
               </span>
-              <span className="text-lg font-semibold text-white">
-                dijital<span className="text-teal-400">şirketim</span>
-                <span className="text-slate-500">.com.tr</span>
+              <span className="text-[15px] font-semibold tracking-[-0.01em]">
+                Dijital Şirketim
               </span>
             </div>
-            <p className="mt-3 text-sm font-medium text-slate-300">
-              Türkiye&apos;nin Şirket Doktoru
+            <p className="mt-3 max-w-xs text-sm leading-relaxed text-zinc-500">
+              Çalıştığı kanıtlanmış pazarlamayı bul, markana uyarla, uygula.
             </p>
-            <p className="mt-1 max-w-sm text-sm leading-relaxed">
-              İşletmenizin dijital sağlığını teşhis eder, reçete yazar,
-              tedavi eder ve sonucu takip ederiz.
-            </p>
+            <p className="mt-3 text-sm text-zinc-600">Erdem Yavuz</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-8 text-sm sm:grid-cols-4">
-            <div>
-              <p className="font-semibold text-white">Sayfa</p>
-              <ul className="mt-3 space-y-2">
-                <li>
-                  <a href="#sorun" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
-                    Belirtiler
-                  </a>
-                </li>
-                <li>
-                  <a href="#cozum" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
-                    Tedavi Modeli
-                  </a>
-                </li>
-                <li>
-                  <a href="#ispat" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
-                    Neden Biz
-                  </a>
-                </li>
-                <li>
-                  <a href="#teklif" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
-                    Nasıl İşliyor
-                  </a>
-                </li>
-                <li>
-                  <a href="#sss" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
-                    SSS
-                  </a>
-                </li>
-                <li>
-                  <a href="#misyon" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
-                    Biz Kimiz
-                  </a>
-                </li>
-              </ul>
-            </div>
+          <nav className="flex flex-col gap-2.5 text-sm">
+            <a href="#ajanlar" className="text-zinc-400 transition-colors hover:text-zinc-100">
+              Ajanlar
+            </a>
+            <a href="#moduller" className="text-zinc-400 transition-colors hover:text-zinc-100">
+              Modüller
+            </a>
+            <a href="#program" className="text-zinc-400 transition-colors hover:text-zinc-100">
+              Program
+            </a>
+            <a href="#durum" className="text-zinc-400 transition-colors hover:text-zinc-100">
+              Durum
+            </a>
+          </nav>
 
-            <div>
-              <p className="font-semibold text-white">İletişim</p>
-              <ul className="mt-3 space-y-2">
-                <li>Kurucu: Erdem Yavuz</li>
-                <li>
-                  <a href="tel:+905319956930" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
-                    +90 531 995 69 30
-                  </a>
-                </li>
-                <li>
-                  <a href="mailto:erdem.yvz@hotmail.com" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
-                    erdem.yvz@hotmail.com
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <p className="font-semibold text-white">Yasal</p>
-              <ul className="mt-3 space-y-2">
-                <li>
-                  <Link href="/kvkk" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
-                    KVKK Aydınlatma Metni
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/gizlilik" className="transition-colors duration-200 ease-[var(--ease-apple)] hover:text-white">
-                    Gizlilik Politikası
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <nav className="flex flex-col gap-2.5 text-sm">
+            <Link href="/kvkk" className="text-zinc-400 transition-colors hover:text-zinc-100">
+              KVKK Aydınlatma Metni
+            </Link>
+            <Link href="/gizlilik" className="text-zinc-400 transition-colors hover:text-zinc-100">
+              Gizlilik ve Çerez Politikası
+            </Link>
+            <a
+              href={`https://wa.me/${WHATSAPP_NUMARASI}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-zinc-400 transition-colors hover:text-zinc-100"
+            >
+              <IconWhatsapp />
+              WhatsApp
+            </a>
+          </nav>
         </div>
 
-        <div className="mt-10 border-t border-slate-800 pt-6 text-xs text-slate-500">
-          © {new Date().getFullYear()} dijitalşirketim.com.tr — Tüm hakları
-          saklıdır.
-        </div>
+        <p className="mt-10 border-t border-cizgi pt-6 text-xs text-zinc-600">
+          © {yil} Dijital Şirketim. Sitedeki ekran görselleri örnektir ve
+          gerçek bir müşteriye ait değildir.
+        </p>
       </div>
     </footer>
   );

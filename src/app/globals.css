@@ -1,98 +1,73 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Dijital Şirketim — koyu tema.
+   Renk dili görsellerden geliyor: siyaha yakın zemin, ajan ve modül
+   etiketlerinde indigo, metin yazarı / müşteri temsilcisi ve vurgulu
+   sayılarda altın sarısı. Gövde metni serif, başlıklar geometrik sans. */
 
-  /* Apple'ın sistem yazı tipi yığını: Apple cihazlarında doğrudan San
-     Francisco'yu kullanır, diğer platformlarda en yakın sistem fontuna
-     düşer. */
-  --font-sans-stack:
-    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
-    "Helvetica Neue", "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+@theme {
+  /* Zemin ve yüzeyler */
+  --color-zemin: #08080a;
+  --color-yuzey: #0e0e11;
+  --color-yuzey-2: #141418;
+  --color-cizgi: #26262b;
 
-  /* Apple'ın arayüzlerinde kullandığı "ease-out" yaylanma eğrisi:
-     hızlı başlar, yumuşak ve kontrollü şekilde yavaşlayarak biter. */
+  /* Vurgu: indigo (ürün) ve altın (insan/ajan tarafı) */
+  --color-altin: #e8a33d;
+  --color-altin-soguk: #c98a2c;
+
+  /* Apple'ın ease-out eğrisi — hızlı başlar, yumuşak biter. */
   --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* next/font değişkenlerini Tailwind'in font yardımcılarına bağlar. */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans-stack);
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-serif: var(--font-newsreader), ui-serif, Georgia, "Times New Roman",
+    serif;
+}
+
+html {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--color-zemin);
+  color: #f4f4f5;
 }
 
-/* Apple'ın arayüzlerindeki yumuşak "belirme" hareketi: hafifçe
-   büyüyerek ve saydamlıktan çıkarak beliriyor. */
-@keyframes apple-in {
-  from {
-    opacity: 0;
-    transform: scale(0.96) translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+/* Bölüm etiketlerinin (REKLAM PERFORMANSI gibi) ortak biçimi. */
+.etiket {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
-.animate-apple-in {
-  animation: apple-in 0.5s var(--ease-apple) both;
+/* Kaydırınca belirme (bkz. Reveal.tsx).
+   `.reveal` her zaman görünür; yalnızca ekranın altında kalan bloklara
+   JavaScript `.reveal-gizli` ekler ve görünür alana girince kaldırır.
+   JavaScript çalışmazsa içerik olduğu gibi okunur. */
+.reveal {
+  transition:
+    opacity 0.7s var(--ease-apple),
+    transform 0.7s var(--ease-apple);
 }
 
+.reveal-gizli {
+  opacity: 0;
+  transform: translateY(1.5rem);
+}
+
+/* Hareket azaltma tercihi için genel emniyet kapısı. */
 @media (prefers-reduced-motion: reduce) {
-  .animate-apple-in {
-    animation: none;
-  }
-}
-
-/* AI teşhisi hazırlanırken gösterilen nabız/kalp atışı hareketi. */
-@keyframes heartbeat {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  15% {
-    transform: scale(1.18);
-  }
-  30% {
-    transform: scale(1);
-  }
-  45% {
-    transform: scale(1.12);
-  }
-  60% {
-    transform: scale(1);
-  }
-}
-
-.animate-heartbeat {
-  animation: heartbeat 1.8s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-heartbeat {
-    animation: none;
-  }
-}
-
-/* Hareketten rahatsız olan kullanıcılar için tüm geçiş/animasyonları
-   ve yumuşak kaydırmayı kısaltıyoruz. */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
+    animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
 }

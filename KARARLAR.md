@@ -6,6 +6,52 @@
 
 ---
 
+**2026-11-21 — Ürün değişti: şirket doktoru söküldü.**
+Check-up / karne / tedavi modülleri kurgusu tamamen kaldırıldı. Yerine
+dijital pazarlama işini kurmak (6 başlıklı program) ve işletmek (4 ajan,
+5 modül) üzerine kurulu yeni bir site geçti. Marka adı ve domain aynı.
+İki hedef kitle: dijital pazarlama işi yapanlar ve kendi işletmesi için
+pazarlama yapanlar.
+
+**2026-11-21 — Silmeden önce arşivlenir.**
+Teşhis motoru (21 soruluk banka + puanlama) ve Erdem'in kendi kaleminden
+yazdığı iki ham modül metni, site sökülmeden ÖNCE ayrı bir commit'le
+`arsiv/` ve `icerik/ham/` altına alındı. Motor çalışıyor ve iki kez uçtan
+uca doğrulanmıştı; yeniden yazmak taşımaktan pahalı. "İşletme teşhisi"
+olarak başka bir yerde kullanılacak.
+
+**2026-11-21 — Sitede fiyat yok, ödeme yok.**
+Erdem'in şirketi yok ve açmayı düşünmüyor; doğrudan ödeme alınamıyor.
+Tek çağrı görüşme formu. Fiyat, kapsam görüşmede netleştikten sonra
+sözlü veriliyor.
+
+**2026-11-21 — Yol haritası sitede açıkça yazıyor.**
+"Durum" bölümü hangi fazda olduğumuzu söylüyor: ekranlar tasarım, Meta
+bağlantıları henüz kurulmadı. Gizlemek daha satışçı olurdu ama görüşmede
+ortaya çıkınca güveni baştan kırardı — sitenin amacı zaten görüşmeden
+önce tanınmak.
+
+**2026-11-21 — Örnek ekranların hepsi "Örnek ekran" rozeti taşır.**
+Modül kartlarındaki rakamlar, işletme adları ve mesajlar uydurmadır.
+Uydurma veriyi gerçek sonuç gibi göstermemek için her mock ekranın
+köşesinde rozet var, footer'da ve gizlilik metninde de yazıyor. Gerçek
+sonuçlar ancak gerçek işletmelerle çalışıldıktan sonra paylaşılacak.
+
+**2026-11-21 — Belirme animasyonu içeriği asla gizleyemez.**
+`Reveal` bileşeni artık görünür render ediliyor; gizleme JavaScript ile
+sonradan ve yalnızca ekranın altındaki bloklara uygulanıyor. Önceki
+"opacity-0 başla, gözlemciyi bekle" kurgusu iki ayrı yolla içeriği
+kalıcı olarak görünmez bırakıyordu: (1) gözlemci bağlanmadan bölümün
+üstünden geçilirse, (2) çapa bağlantısıyla sayfa ortasına atlanırsa
+(kesişim oranı 0'dan 0'a gittiği için gözlemci hiç tetiklenmiyor).
+Ölçüm 250 ms geciktirildi ve ortak bir kaydırma süpürücüsü eklendi.
+
+**2026-11-21 — Çerez şeridi kaldırıldı.**
+Site artık hiçbir çerez yazmıyor (oturum yok, analiz yok, takip yok).
+Yalnızca kendini gizlemek için bir bayrak saklayan onay şeridi anlamsız
+kalıyordu. `/gizlilik` açıkça "çerez kullanılmıyor" diyor. Ölçümleme
+aracı eklenirse şerit geri gelecek.
+
 **2026-09-13 — Modül başlığı değişebilir, `id` değişemez.**
 "Devretme: Sensiz Yürüyen İşletme" başlığı Erdem'in kendi adlandırması
 olan "Nasıl Değil, Kim veya Ne?" ile değiştirildi. Başlık serbesttir;

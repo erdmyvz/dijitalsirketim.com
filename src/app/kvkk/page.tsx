@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import LegalSayfa, { Bolum, Liste, Metin } from "@/components/legal/LegalSayfa";
+import LegalSayfa, {
+  Baglanti,
+  Bolum,
+  Liste,
+  Metin,
+} from "@/components/legal/LegalSayfa";
 
 export const metadata: Metadata = {
   title: "KVKK Aydınlatma Metni | Dijital Şirketim",
@@ -9,9 +14,15 @@ export const metadata: Metadata = {
   alternates: { canonical: "/kvkk" },
 };
 
+/**
+ * Metin, sitenin BUGÜN gerçekten topladığı veriyi anlatır: yalnızca
+ * görüşme formu. Hesap açma, check-up kaydı ve yapay zekâ teşhisi
+ * kaldırıldığı için (21 Kasım 2026) o bölümler de metinden çıkarıldı —
+ * toplanmayan veriyi anlatan bir aydınlatma metni yanıltıcı olur.
+ */
 export default function KvkkSayfasi() {
   return (
-    <LegalSayfa baslik="KVKK Aydınlatma Metni" guncellemeTarihi="8 Eylül 2026">
+    <LegalSayfa baslik="KVKK Aydınlatma Metni" guncellemeTarihi="21 Kasım 2026">
       <Metin>
         Bu metin, 6698 sayılı Kişisel Verilerin Korunması Kanunu
         (&quot;KVKK&quot;) uyarınca, dijitalşirketim.com.tr (&quot;Site&quot;)
@@ -22,123 +33,104 @@ export default function KvkkSayfasi() {
       <Bolum>1. Veri Sorumlusu</Bolum>
       <Metin>
         Veri sorumlusu, Site&apos;nin işletmecisi <strong>Erdem Yavuz</strong>
-        &apos;dur. Site şu an bir tüzel kişilik (şirket) üzerinden değil,
-        şahıs olarak işletilmektedir; bir şirket kurulduğunda bu bölüm
-        şirketin unvanı ile güncellenecektir.
+        &apos;dur. Site bir tüzel kişilik (şirket) üzerinden değil, şahıs
+        olarak işletilmektedir; bir şirket kurulduğunda bu bölüm şirketin
+        unvanıyla güncellenecektir.
       </Metin>
       <Metin>
         İletişim:{" "}
-        <a href="mailto:erdem.yvz@hotmail.com" className="text-teal-700 underline hover:text-teal-800">
+        <Baglanti href="mailto:erdem.yvz@hotmail.com">
           erdem.yvz@hotmail.com
-        </a>{" "}
-        ·{" "}
-        <a href="tel:+905319956930" className="text-teal-700 underline hover:text-teal-800">
-          +90 531 995 69 30
-        </a>
+        </Baglanti>{" "}
+        · <Baglanti href="tel:+905319956930">+90 531 995 69 30</Baglanti>
       </Metin>
 
       <Bolum>2. İşlenen Kişisel Veriler ve Toplanma Yöntemi</Bolum>
-      <Metin>Site üzerinde, kullandığınız bölüme göre şu veriler işlenir:</Metin>
-      <Liste>
-        <li>
-          <strong>Başvuru formu</strong> (ana sayfa, &quot;Teklif&quot;
-          bölümü): ad soyad, telefon, varsa işletme adı ve sektör.
-        </li>
-        <li>
-          <strong>Dijital Check-Up sihirbazı</strong>: işletme adı, sektör,
-          iş modeli, çalışan sayısı, ciro aralığı, işletmenizle ilgili
-          serbestçe yazdığınız problem tanımı ve 21 soruya verdiğiniz
-          cevaplar. Hesap açmadığınız sürece bu veriler yalnızca kendi
-          tarayıcınızda tutulur, bize gönderilmez.
-        </li>
-        <li>
-          <strong>Hesap oluşturma</strong> (&quot;Hesabım&quot;): e-posta
-          adresiniz, şifreniz (şifreniz bizim tarafımızdan görülemeyecek
-          şekilde saklanır) ve isteğe bağlı olarak ad soyadınız.
-        </li>
-        <li>
-          <strong>Kaydedilen karneler</strong>: hesap açtıktan sonra
-          Check-Up sonucunuzu kaydetmeyi seçerseniz, yukarıdaki Check-Up
-          verileriniz ve yapay zekâ ön teşhis metni hesabınıza bağlı
-          olarak saklanır.
-        </li>
-      </Liste>
-
-      <Bolum>3. İşlenme Amaçları ve Hukuki Sebep</Bolum>
-      <Metin>Kişisel verileriniz şu amaçlarla işlenir:</Metin>
-      <Liste>
-        <li>Talebinizi değerlendirmek ve sizinle iletişime geçmek,</li>
-        <li>Dijital Check-Up sonucunuzu ve ön teşhisi üretmek,</li>
-        <li>Hesabınızla ilgili işlemleri (giriş, karne geçmişi) yürütmek,</li>
-        <li>Yasal yükümlülüklerin yerine getirilmesi.</li>
-      </Liste>
       <Metin>
-        Bu işlemenin hukuki sebebi, KVKK m.5/2 kapsamında bir sözleşmenin
-        kurulması veya ifasıyla doğrudan ilgili olması ve açık rızanızın
-        alınmasıdır (başvuru formundaki onay kutusu, hesap kaydı sırasındaki
-        onay).
-      </Metin>
-
-      <Bolum>4. Verilerin Aktarıldığı Taraflar</Bolum>
-      <Metin>
-        Verileriniz, Site&apos;nin altyapısını sağlayan aşağıdaki hizmet
-        sağlayıcılarla, yalnızca hizmetin çalışması için gerektiği ölçüde
-        paylaşılır:
+        Site&apos;de üyelik yoktur; veri yalnızca sizin doldurduğunuz görüşme
+        formu üzerinden toplanır. Form göndermezseniz Site hiçbir kişisel
+        verinizi kaydetmez.
       </Metin>
       <Liste>
         <li>
-          <strong>Supabase</strong> — veritabanı ve hesap/giriş
-          altyapısı sağlayıcısı. Başvurularınız, hesabınız ve
-          kaydettiğiniz karneler burada saklanır.
+          <strong>Görüşme talebi formu</strong>: ad soyad, telefon (zorunlu);
+          e-posta, işletme/ajans adı, hangi gruba ait olduğunuz ve yazdığınız
+          serbest metin (isteğe bağlı).
         </li>
         <li>
-          <strong>Google (Gemini API)</strong> — yapay zekâ ön teşhisi
-          üretmek için Check-Up cevaplarınız (sektör, iş modeli, ölçek,
-          21 cevap, problem tanımınız) gönderilir.{" "}
-          <strong>İşletme adınız bu istekten bilinçli olarak
-          çıkarılır</strong> — detay için{" "}
-          <Link href="/gizlilik" className="text-teal-700 underline hover:text-teal-800">
-            Gizlilik Politikası
-          </Link>
-          &apos;na bakın.
+          <strong>Teknik kayıtlar</strong>: barındırma sağlayıcısının (Vercel)
+          tuttuğu standart sunucu günlükleri — IP adresi, tarih/saat, istek
+          yapılan adres. Bunlar güvenlik ve hata takibi amacıyla otomatik
+          oluşur.
         </li>
       </Liste>
-      <Metin>
-        Verileriniz, yukarıdakiler dışında, yasal bir zorunluluk olmadıkça
-        üçüncü kişilerle paylaşılmaz, satılmaz veya pazarlama amacıyla
-        kiralanmaz.
-      </Metin>
 
-      <Bolum>5. Saklama Süresi</Bolum>
-      <Metin>
-        Verileriniz, işlenme amacının gerektirdiği süre boyunca ve ilgili
-        mevzuatta öngörülen zamanaşımı süreleri saklı kalmak kaydıyla
-        saklanır. Hesabınızı ve kayıtlı karnelerinizi silmek isterseniz
-        aşağıdaki iletişim adresinden talepte bulunabilirsiniz.
-      </Metin>
-
-      <Bolum>6. KVKK m.11 Kapsamındaki Haklarınız</Bolum>
-      <Metin>KVKK&apos;nın 11. maddesi uyarınca şu haklara sahipsiniz:</Metin>
+      <Bolum>3. İşleme Amaçları</Bolum>
       <Liste>
-        <li>Kişisel verinizin işlenip işlenmediğini öğrenme,</li>
-        <li>İşlenmişse buna ilişkin bilgi talep etme,</li>
-        <li>İşlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme,</li>
-        <li>Yurt içinde/dışında aktarıldığı üçüncü kişileri bilme,</li>
-        <li>Eksik/yanlış işlenmişse düzeltilmesini isteme,</li>
-        <li>Silinmesini veya yok edilmesini isteme,</li>
-        <li>Bu işlemlerin, verinin aktarıldığı üçüncü kişilere bildirilmesini isteme,</li>
-        <li>
-          İşlenen verinin münhasıran otomatik sistemlerle analiz edilmesi
-          yoluyla aleyhinize bir sonucun ortaya çıkmasına itiraz etme,
-        </li>
-        <li>Zarara uğramanız hâlinde zararın giderilmesini talep etme.</li>
+        <li>Görüşme talebinize dönüş yapmak ve randevu planlamak,</li>
+        <li>Talebin kapsamına uygun bir teklif hazırlamak,</li>
+        <li>Site&apos;nin güvenliğini ve çalışır kalmasını sağlamak.</li>
       </Liste>
       <Metin>
-        Bu haklarınızı kullanmak için{" "}
-        <a href="mailto:erdem.yvz@hotmail.com" className="text-teal-700 underline hover:text-teal-800">
-          erdem.yvz@hotmail.com
-        </a>{" "}
-        adresinden bize ulaşabilirsiniz.
+        Verileriniz pazarlama listesine eklenmez, size izinsiz toplu ileti
+        gönderilmez.
+      </Metin>
+
+      <Bolum>4. Hukuki Sebep</Bolum>
+      <Metin>
+        Form verileri, KVKK m.5/2-(c) uyarınca{" "}
+        <em>sözleşmenin kurulması veya ifasıyla doğrudan ilgili olması</em>;
+        teknik kayıtlar ise m.5/2-(f) uyarınca{" "}
+        <em>meşru menfaat</em> hukuki sebebine dayanılarak işlenir.
+      </Metin>
+
+      <Bolum>5. Aktarım</Bolum>
+      <Metin>
+        Verileriniz satılmaz ve pazarlama amacıyla üçüncü kişilerle
+        paylaşılmaz. Yalnızca hizmetin çalışması için kullanılan
+        sağlayıcılarda barındırılır:
+      </Metin>
+      <Liste>
+        <li>
+          <strong>Vercel</strong> — Site&apos;nin barındırılması ve sunucu
+          günlükleri (yurt dışı).
+        </li>
+        <li>
+          <strong>Supabase</strong> — görüşme taleplerinin saklandığı
+          veritabanı (yurt dışı).
+        </li>
+      </Liste>
+      <Metin>
+        Yurt dışına aktarım, KVKK m.9 çerçevesinde ve yalnızca hizmetin
+        sunulabilmesi için gerekli ölçüde yapılır.
+      </Metin>
+
+      <Bolum>6. Saklama Süresi</Bolum>
+      <Metin>
+        Görüşme talepleri, görüşme tamamlandıktan sonra en fazla{" "}
+        <strong>2 yıl</strong> saklanır; bu sürenin sonunda silinir. Daha
+        erken silinmesini isterseniz yukarıdaki adresten yazmanız yeterlidir.
+      </Metin>
+
+      <Bolum>7. Haklarınız</Bolum>
+      <Metin>
+        KVKK m.11 uyarınca; kişisel verinizin işlenip işlenmediğini öğrenme,
+        buna ilişkin bilgi talep etme, düzeltilmesini veya silinmesini isteme
+        ve işlemenin kanuna aykırı olduğunu düşünüyorsanız itiraz etme
+        haklarına sahipsiniz. Talebinizi yukarıdaki e-posta adresine
+        iletebilirsiniz; en geç 30 gün içinde yanıtlanır.
+      </Metin>
+
+      <Bolum>8. Çerezler</Bolum>
+      <Metin>
+        Site&apos;de reklam veya takip çerezi kullanılmaz. Ayrıntı için{" "}
+        <Link
+          href="/gizlilik"
+          className="text-indigo-400 underline underline-offset-2 hover:text-indigo-300"
+        >
+          Gizlilik ve Çerez Politikası
+        </Link>
+        .
       </Metin>
     </LegalSayfa>
   );

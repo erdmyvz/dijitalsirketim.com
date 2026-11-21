@@ -7,167 +7,94 @@
 
 ## Uzun Vadeli Vizyon
 
-**2026-09-08, Erdem'in kendi ifadesiyle:** "Bu site birisine bağlı
-kalmadan işletmelerin ihtiyaçlarını karşılayan bir para basma makinesine
-dönüşmeli. Tüm işletmeler gözle görülür bir şekilde gelirlerini
-arttırmalı ve bu sisteme dahil olup sadakat zincirine dönüşmeli. Eski
-işletmelerin başarıları ile yeni işletmeler sisteme dahil olarak bu
-sistemin başarısı kanıtlanmalıdır."
+**2026-11-21'de ürün değişti.** Eski "şirket doktoru / check-up / tedavi"
+kurgusu söküldü (bkz. KARARLAR.md). Marka adı ve domain aynı kaldı.
 
-Kendi kendini besleyen döngü: müşteri → ölçülebilir gelir artışı →
-sisteme sadakat → o başarı yeni müşteri getirir.
+**Yeni ürün iki yarımdan oluşuyor:**
 
-**2026-09-09'da netleşen ürün modeli (Erdem'in kendi ifadesiyle):**
-"Ben sistemden tamamen bağımsız olmak istiyorum. Sadece özel müşteriler
-bana gelip benden danışmanlık alabilirler. Diğer tüm işletme sahipleri bu
-site ile şirket içerisindeki sorunları tespit edip gelirlerini arttırma
-konusunda ilerleyecektir. (…) Alanında uzman kişilerde bu sisteme kayıt
-olabilecek ve şirketlerin tespit edilen sorunlarına doğru kişiyi
-eşleştirerek çözüm sağlayacak."
+1. **Program — işi nasıl kuracağın.** Altı başlık: kafa yapısı ve
+   düşünce sistemi · konumlandırma ve kişisel marka · en doğru sektör
+   seçimi · karşı konulamaz teklif oluşturma · 4A satış stratejileri ·
+   uygulamalı dijital pazarlama ve sözleşme.
+2. **Sistem — kurduğun işi nasıl işleteceğin.** Dört ajan (reklam
+   yöneticisi, içerik yöneticisi, metin yazarı, müşteri temsilcisi) ve
+   beş modül (reklam performansı, müşteri çalışma alanları, ortak gelen
+   kutusu, rakip reklamları, rakip video araştırması).
 
-Buradan çıkan **dört katmanlı ürün**:
+**İki hedef kitle:** dijital pazarlama işi yapanlar; kendi işletmesi
+için pazarlama yapanlar.
 
-1. **Self-servis teşhis** — bugün var: `/check-up` → Dijital Sağlık
-   Karnesi + AI ön teşhis.
-2. **Self-servis tedavi modülleri** — asıl eksik parça. Teşhisteki
-   kırmızı bölgeye göre açılan, adım adım uygulanabilir modüller: ör.
-   "Müşteri Bulma Modülü"; netlik sorunu olanlar için temel görev
-   tanımları. Erdem'in hiç dahil olmadığı, ölçeklenen kısım.
-3. **Uzman pazar yeri** — uzmanlar sisteme kayıt olur, tespit edilen
-   soruna göre doğru uzmanla eşleştirilir. Not: mevcut 7 fonksiyonluk
-   model (Müşteri Bulma / Satış / Operasyon / Ürün Geliştirme / Para
-   Yönetimi / Karar Alma / Ekip Kurma) eşleştirme için hazır bir
-   taksonomi — uzman hangi fonksiyonlarda uzman olduğunu seçer,
-   check-up'ın "kırmızı bölge"si zaten o fonksiyonları adlandırıyor.
-   `profiles` tablosunun tek bir `is_admin` bayrağının ötesinde rol
-   (müşteri / uzman / admin) taşımasını gerektirecek.
-4. **Şirkete özel otomasyon satışı** — ileriki versiyon. Tekrar eden
-   manuel işlerin (ör. elle teklif hazırlama) otomasyonu; görüşmeyle
-   satılan, yüksek dokunuşlu iş. Danışmanlık da yalnızca bu "özel
-   müşteri" katmanında.
+**Erdem'in dört basamağı:**
 
-**Karar filtresi:** Yeni bir özellik önerirken sor — "bunu Erdem mi
-yapıyor, sistem mi?" Müşterinin Erdem'e ihtiyaç duyduğu her manuel adım
-(elle şifre sıfırlama, elle durum güncelleme, elle içerik teslimi)
-vizyona aykırı.
+| Faz | Ne | Durum |
+|---|---|---|
+| 1 | Görüşmeden önce tanıtan site | **şimdi** |
+| 2 | Gerçekten çalışan arka plan | sıradaki |
+| 3 | Birkaç şirketle çalışıp referans biriktirmek | sonra |
+| 4 | Ekip kurup büyümek | sonra |
 
-Bu bölümdeki hiçbir madde henüz onaylanmış bir görev DEĞİL — somut bir
-adıma dönüştürmeden önce her zaman plan sunulup onay beklenecek (bkz.
-CLAUDE.md). Ayrıca: gerçek sonuç/vaka çalışmaları ancak gerçek ücretli
-müşteriler ve ölçülmüş sonuçlar oluştuktan sonra yazılabilir — sahte
-referans/uydurma istatistik asla yazılmaz.
+**Çalışma ilkesi — Erdem'in kendi ifadesiyle:** "Amerikayı yeniden
+keşfetmemize gerek yok. Bizimle daha önce aynı düşünmüş insanların
+yaptığı projeleri gün yüzüne çıkartmalıyız. Bazen bu projeyi daha da
+geliştirmeli, farklı kitleler üzerinden denemeliyiz." Birebir kopyalama
+değil; çalıştığı kanıtlanmış işe benzerini üretip geliştirmek. Sitenin
+giriş cümlesi de bu.
+
+**Sabit kısıt:** Şirket yok ve açılmayacak — sitede fiyat gösterilmez,
+doğrudan ödeme alınmaz. Tek çağrı görüşme formu.
 
 ---
 
 ## Sıradaki Görev
 
-### 1. Modül içerikleri (modül modül) — 2 / 14 hazır
-**Yönetici Kafa Yapısı** ve **Nasıl Değil, Kim veya Ne?** tamamlandı
-(2026-09-13). Kalan 12 modül
-Erdem'in ham anlatımını bekliyor; her biri geldiğinde aynı kalıba
-dönüştürülecek: 4-7 adım, doldurulabilir şablon, bitiş kriteri ve
-onardığı check-up sorusunun tekrar sorulması. Modül `durum`u `"hazir"`
-yapılınca sayfa otomatik dinamikleşiyor, kilit devreye giriyor — ek iş
-yok.
+### 1. Erdem'in yapması gerekenler (kod değil)
 
-**İçerik yazarken uygulanan kalıp** (Yönetici Kafa Yapısı'ndan çıktı):
-her adımın açıklaması "ne yapılacak + neden" diyor, şablonun ipucu
-alanı doldurulacak satırları hazır veriyor, bitiş kriteri ölçülebilir
-bir eşik koyuyor ("en az 5 satır", "bir sayı ve bir tarih"). Doğrulanmamış
-istatistikler içerikten çıkarılıyor (bkz. KARARLAR.md 2026-09-11).
+Bunlar yapılmadan faz 1 tamamlanmış sayılmaz:
 
----
+- **Yeni Supabase projesi aç.** Eski proje (`ejdhmujiadarywlslpbv`) 20
+  Eylül'den beri duruyor; 90 günlük geri yükleme penceresi **19 Aralık
+  2026** civarı doluyor. İçindeki veri silinecek, yeni proje açılacak.
+  `supabase/schema.sql` tek tabloluk yeni şemayı içeriyor.
+- **Vercel ortam değişkenlerini güncelle.** Yeni proje hazır olana
+  kadar `NEXT_PUBLIC_SUPABASE_URL` ve `SUPABASE_SERVICE_ROLE_KEY`
+  **silinmeli**: eski (ölü) değerler dururken form 500 veriyor,
+  silinince "talebin ulaştı" deyip kaydı sunucu günlüğüne yazıyor.
+- **Eski Supabase anahtarlarını yenile.** 3 Eylül'de sohbete
+  yapıştırılmıştı (publishable + secret + anon).
+- **`www` alt alan adını Vercel'e ekle.**
 
-## Bekleyen Görevler
+### 2. Kalan beş başlığın alt içerikleri
 
-Öncelik sırasına dizilidir. Üstteki biter, "Sıradaki Görev"e taşınır.
+6 başlıktan yalnızca **Kafa Yapısı ve Düşünce Sistemi** yazıldı
+(`icerik/ham/01-kafa-yapisi-insasi.md`). Diğer beşi Erdem'den gelecek;
+geldiğinde `src/data/icerik.ts` içindeki `PROGRAM` dizisine eklenecek.
+İçeriği olmayan başlık sitede "hazırlanıyor" diyor.
 
-### 2. Modüller bitince /tedavi'yi herkese aç
-Tüm modül içerikleri tamamlandığında (Sıradaki Görev #1) yapılacaklar:
-`proxy.ts` matcher'ından `/tedavi` çıkarılacak, üç sayfadaki
-`robots: { index: false }` kaldırılacak, 15 sayfa `sitemap.ts`'e geri
-eklenecek, Navbar'a "Modüller" bağlantısı `<Link>` olarak konacak ve ana
-sayfaya "hangi modüller var, ne işe yarıyorlar" bölümü eklenecek
-(Erdem'in isteği, 2026-09-10). Hepsi ~15 dakikalık iş — tek engel
-içeriklerin hazır olması.
+### 3. Faz 2 — çalışan arka plan
 
-### 3. Uzman pazar yeri
-Uzmanların kayıt olup tespit edilen sorunla eşleştirildiği katman.
-`profiles` tablosunun rol (müşteri / uzman / admin) taşıması gerekecek.
-Eşleştirme anahtarı: 7 fonksiyonluk taksonomi.
+Sırayla, Meta'ya bağımlı olmayandan başlayarak:
 
-### 4. Sanal POS entegrasyonu (iyzico / PayTR)
-Şirket kurulduktan sonra. Şu an ödeme manuel havale/EFT + admin onayı.
-
-### 5. Admin panelinden karne durumu güncelleme
-"Tedavi sürecinin takibi" başlığının ikinci yarısı: `karneler.durum`
-alanı şu an yalnızca müşteri panelinde salt okunur gösteriliyor
-(varsayılan "Beklemede"). Admin panelinden bu alanı güncelleyebilme
-(ör. "İnceleniyor" / "Teklif Gönderildi" / "Tamamlandı") ayrı bir görev
-olarak bırakıldı.
-
-### 6. Kendi SMTP'ni bağla (e-posta gönderimi)
-Supabase'in ücretsiz katmandaki yerleşik e-posta gönderimi saatte birkaç
-e-postayla sınırlı ve çoğu zaman spam klasörüne düşer. Kayıt onayı ve
-şifre sıfırlama e-postaları buna bağlı olduğu için, gerçek kullanıcılar
-gelmeye başlayınca kendi SMTP'si (ör. Resend / Brevo ücretsiz katman)
-Supabase → Authentication → SMTP Settings'e bağlanmalı. Erdem'in kararı
-(2026-09-09): müşteriler gelene kadar ücretsiz katmanda kalınacak.
-Abonelik bitiş hatırlatması da bu bağlandığında e-postayla gönderilebilir
-(şimdilik yalnızca uygulama içi uyarı).
-
-### 7. Sosyal medya hesapları açılınca JSON-LD'ye eklenmeli
-Şu an Instagram/LinkedIn vb. yok (2026-09-09 itibarıyla). Açılırsa
-`organizationJsonLd`'deki (`src/app/page.tsx`) `sameAs` alanına
-eklenmeli — Google'a "bu hesaplar aynı işletmeye ait" sinyali verir.
-
----
-
-## Dış Bağımlılıklar (Erdem'in yapması gerekenler)
-
-Bunlar tamamlanmadan ilgili özellikler canlıda çalışmaz:
-
-- [x] **Gemini API anahtarı** — `.env.local`'e ve Vercel → Environment
-      Variables'a girildi, canlıda `/api/teshis` uçtan uca test edildi
-      (200, gerçek teşhis JSON'u döndü). Yol boyunca iki canlı hata
-      bulunup düzeltildi: model aşırı yüklenmesi (503 → gemini-2.5-flash'a
-      otomatik geçiş) ve 2.5-flash'ın "thinking" modunun JSON çıktısını
-      yarıda kesmesi (`thinkingBudget: 0` ile çözüldü). Detay: KARARLAR.md.
-- [x] **Supabase projesi** — oluşturuldu, [supabase/schema.sql](supabase/schema.sql)
-      çalıştırıldı, 3 anahtar `.env.local`'e girildi ve canlı API'ye karşı
-      doğrulandı. RLS testi yapıldı: `service_role` okuyup yazabiliyor,
-      `anon` anahtarı hem okumayı hem yazmayı doğru şekilde reddediyor.
-      `/api/basvuru` gerçek bir kaydı Supabase'e yazdığı doğrulandı
-      (test kaydı silindi). **Kalan:**
-      - [x] Admin kullanıcısı eklendi: **erdem.yvz@hotmail.com**
-        (`profiles.is_admin = true`, e-posta onaylı — 2026-09-10'da
-        doğrulandı).
-      - [x] 3 anahtar Vercel → Environment Variables'a da girildi
-        (Erdem ekran görüntüleriyle doğruladı, 2026-09-07).
-- [x] **`ayarlar` tablosu** — çalıştırıldı (2026-09-10), admin ayarlar
-      ekranından yazma canlı veritabanına karşı doğrulandı.
-- [x] **`abonelikler` tablosu** — çalıştırıldı (2026-09-10). Uçtan uca
-      doğrulandı: kilitli modül → admin panelinden "1 ay ekle" → kilit
-      açıldı; plana dahil olmayan fonksiyonun modülü kilitli kaldı;
-      geri sayım ve son-7-gün uyarısı doğru çalıştı.
-- [x] **`modul_ilerleme` tablosu** — oluşturuldu (2026-09-11). Uçtan uca
-      doğrulandı: adım işaretleme ve şablon metni sayfa yenilense de
-      kalıyor, tüm adımlar bitince bitiş kontrolü yeni karne üretiyor ve
-      aylık tutar düşüyor.
-- [ ] **Abonelik ödeme bilgileri girilmeli** — Admin → Ayarlar
-      ekranından IBAN ve hesap sahibi. Girilene kadar `/hesap/odeme`
-      ekranı IBAN göstermeyip WhatsApp'a yönlendiriyor (yanlış hesaba
-      ödeme riskine karşı bilinçli).
-- [ ] **`www` alt alan adı** — Vercel → Domains'e eklenmeli ki SSL alsın;
-      koddaki www→apex yönlendirmesi ancak o zaman devreye girer.
-- [x] **Google Search Console** — mülk doğrulandı (`layout.tsx`'e
-      eklenen `google-site-verification` etiketiyle), sitemap.xml
-      gönderildi, ana sayfa için dizine eklenme talep edildi
-      (2026-09-09, Erdem tarafından).
+- **Rakip video araştırması** — Meta onayı gerektirmeyen tek modül,
+  bu yüzden ilk sırada.
+- **Müşteri çalışma alanları** — veri modeli ve çoklu müşteri yapısı.
+- **Reklam performansı** — Meta Marketing API; Business doğrulaması ve
+  uygulama incelemesi gerekiyor (haftalar sürebilir).
+- **Rakip reklamları** — Meta Ad Library API.
+- **Ortak gelen kutusu** — Instagram Messaging API; en ağır izin seti.
 
 ---
 
 ## Tamamlananlar
+
+### 2026-11-21 — Site baştan yazıldı
+Eski şirket doktoru sitesi tamamen söküldü; yerine ajanlar + modüller +
+program + görüşme formu üzerine kurulu yeni tek sayfa geldi. Silmeden
+önce teşhis motoru `arsiv/`, Erdem'in iki ham metni `icerik/ham/`
+altına ayrı bir commit'le alındı. Koyu tema, Plus Jakarta Sans +
+Newsreader. Modül ekranları kod ile çiziliyor, hepsinde "Örnek ekran"
+rozeti var. `Reveal` animasyonu içeriği artık hiçbir koşulda gizli
+bırakamıyor. KVKK ve gizlilik metinleri yeni gerçeğe göre yazıldı,
+çerez şeridi kaldırıldı (artık hiç çerez yok).
 
 ### 2026-09-13 — İkinci modül içeriği: Nasıl Değil, Kim veya Ne?
 Devretme/otomasyon modülü (`ekip_kurma / devretme-sensiz-yuruyen-isletme`)

@@ -1,92 +1,58 @@
-import Link from "next/link";
-import Reveal from "./Reveal";
-import KarneGorseli from "./KarneGorseli";
-import { ORNEK_KARNE } from "@/data/ornekKarne";
-import { skorHesapla } from "@/lib/checkup/scoring";
-import { IconX } from "./icons";
+import { IconOk } from "./icons";
 
-const semptomlar = [
-  "Her ay ciroya sıfırdan başlıyorsunuz",
-  "Siz olmadan iş duruyor",
-  "Reklam veriyorsunuz ama dönüşüm yok",
-  "Tek müşteri kaynağınız tavsiye",
-  "Sosyal medyada görünmüyorsunuz",
-];
-
+/**
+ * Açılış. Başlık, Erdem'in kendi çalışma ilkesi — aynı zamanda ürünün
+ * tezi: rakip reklamları ve rakip video modülleri tam olarak bunu
+ * yapıyor, çalıştığı kanıtlanmış olanı bulup uyarlıyor.
+ */
 export default function Hero() {
   return (
-    <section id="sorun" className="relative overflow-hidden bg-slate-50">
-      {/* Arka planda hafif, hareketsiz derinlik — sade ve dikkat dağıtmaz */}
+    <section id="ust" className="relative overflow-hidden">
+      {/* Üstten inen çok hafif indigo ışık — düz siyahı kırmak için. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 overflow-hidden"
-      >
-        <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-teal-200/40 blur-3xl" />
-        <div className="absolute -right-24 top-40 h-80 w-80 rounded-full bg-red-100/40 blur-3xl" />
-      </div>
+        className="pointer-events-none absolute inset-x-0 -top-40 h-[520px] opacity-60 [background:radial-gradient(60%_60%_at_50%_0%,rgba(99,102,241,0.22),transparent_70%)]"
+      />
 
-      <div className="relative mx-auto grid max-w-6xl gap-12 px-6 py-20 md:grid-cols-2 md:items-center md:py-32">
-        <div>
-          <Reveal>
-            <span className="inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-700 ring-1 ring-red-200">
-              TÜRKİYE&apos;NİN ŞİRKET DOKTORU
-            </span>
-          </Reveal>
+      <div className="relative mx-auto max-w-6xl px-5 pb-20 pt-16 sm:px-8 sm:pb-28 sm:pt-24">
+        <p className="etiket text-indigo-400">Dijital Şirketim</p>
 
-          <Reveal delayMs={80}>
-            <h1 className="mt-5 text-[2.75rem] font-semibold leading-[1.05] tracking-[-0.02em] text-slate-900 sm:text-6xl">
-              Ürününüz iyi, emeğiniz büyük. Peki{" "}
-              <span className="text-teal-600">müşteri neden gelmiyor?</span>
-            </h1>
-          </Reveal>
+        <h1 className="mt-5 max-w-[16ch] text-[2.5rem] font-bold leading-[1.03] tracking-[-0.035em] text-balance sm:text-6xl lg:text-[4.25rem]">
+          Amerika&apos;yı yeniden keşfetmeye gerek yok.
+        </h1>
 
-          <Reveal delayMs={150}>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600 sm:text-xl">
-              Türkiye&apos;de 2,8 milyon işletmenin ortak hastalığı aynı: gelir
-              sistemi yok, müşteri akışı yok, ölçeklenme yok. Dijital
-              Şirketim bu hastalığı teşhis eder ve tedavi eder.
-            </p>
-          </Reveal>
+        <p className="mt-7 max-w-2xl font-serif text-lg leading-relaxed text-zinc-400 sm:text-xl">
+          Senin sektöründe çalıştığı çoktan kanıtlanmış reklamlar, videolar ve
+          teklifler var. <span className="text-zinc-200">Dijital Şirketim</span>{" "}
+          onları bulur, markana uyarlar ve uygulamanı sağlar — dört ajan ve beş
+          modülle.
+        </p>
 
-          <Reveal delayMs={220}>
-            <ul className="mt-8 space-y-3">
-              {semptomlar.map((s) => (
-                <li key={s} className="flex items-start gap-3 text-slate-700">
-                  <span className="mt-0.5 flex h-5 w-5 flex-none items-center justify-center rounded-full bg-red-100 text-red-600">
-                    <IconX className="h-3 w-3" strokeWidth={2.25} />
-                  </span>
-                  <span>{s}</span>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-
-          <Reveal delayMs={300}>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/check-up"
-                className="inline-flex items-center justify-center rounded-full bg-teal-600 px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-teal-600/25 transition-transform duration-300 ease-[var(--ease-apple)] hover:scale-[1.02] active:scale-[0.98] motion-reduce:transition-none motion-reduce:hover:scale-100"
-              >
-                Ücretsiz Dijital Check-Up&apos;a Başla
-              </Link>
-              <a
-                href="#cozum"
-                className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3.5 text-base font-semibold text-slate-700 transition-all duration-300 ease-[var(--ease-apple)] hover:scale-[1.02] hover:border-teal-600 hover:text-teal-700 active:scale-[0.98] motion-reduce:transition-none motion-reduce:hover:scale-100"
-              >
-                Tedavi Modelini Gör
-              </a>
-            </div>
-          </Reveal>
+        <div className="mt-9 flex flex-wrap items-center gap-3">
+          <a
+            href="#gorusme"
+            className="inline-flex items-center gap-2 rounded-full bg-indigo-500 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 ease-[var(--ease-apple)] hover:bg-indigo-400"
+          >
+            Görüşme ayarla
+            <IconOk className="h-4 w-4" strokeWidth={2} />
+          </a>
+          <a
+            href="#moduller"
+            className="inline-flex items-center rounded-full border border-cizgi px-6 py-3.5 text-sm font-semibold text-zinc-300 transition-colors hover:border-zinc-600 hover:text-white"
+          >
+            Nasıl çalıştığını gör
+          </a>
         </div>
 
-        {/* Ürünün gerçek çıktısı — elle yazılmış bir taklit değil,
-            aynı puanlama motorundan geçen örnek bir karne. */}
-        <Reveal delayMs={150} className="md:justify-self-end">
-          <KarneGorseli
-            sonuc={skorHesapla(ORNEK_KARNE)}
-            className="mx-auto w-full max-w-sm"
-          />
-        </Reveal>
+        {/* Dürüstlük notu: aşağıdaki ekranlar örnek. Ziyaretçi ne
+            gördüğünü bilsin diye ilk ekranda söyleniyor. */}
+        <p className="mt-8 max-w-xl text-sm leading-relaxed text-zinc-500">
+          Sistem kuruluyor. Aşağıdaki ekranlar tasarımı örnek verilerle
+          gösteriyor — gerçek bir müşteriye ait değil.{" "}
+          <a href="#durum" className="text-zinc-400 underline underline-offset-4 hover:text-zinc-200">
+            Hangi aşamadayız?
+          </a>
+        </p>
       </div>
     </section>
   );
