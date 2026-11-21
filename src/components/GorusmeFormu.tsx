@@ -6,6 +6,36 @@ import { IconTik, IconWhatsapp } from "./icons";
 
 type Durum = "hazir" | "gonderiliyor" | "basarili" | "hata";
 
+type Govde = {
+  adSoyad: string;
+  telefon: string;
+  eposta: string;
+  kim: string;
+  isletme: string;
+  not: string;
+};
+
+/**
+ * WhatsApp mesajının gövdesi. Talep kaydedilemediyse ziyaretçinin
+ * yazdıkları mesaja hazır geçirilir: formu doldurup hata alan biri her
+ * şeyi baştan yazmak zorunda kalırsa yazmaz — talep orada kaybolur.
+ */
+function whatsappMetni(g: Govde | null): string {
+  const giris = "Merhaba, Dijital Şirketim için görüşme ayarlamak istiyorum.";
+  if (!g) return giris;
+
+  const satirlar = [giris, "", `Ad Soyad: ${g.adSoyad}`, `Telefon: ${g.telefon}`];
+  if (g.eposta) satirlar.push(`E-posta: ${g.eposta}`);
+  if (g.isletme) satirlar.push(`İşletme: ${g.isletme}`);
+  const etiket = KIM_SECENEKLERI.find((s) => s.id === g.kim)?.etiket;
+  if (etiket) satirlar.push(`Hangisi: ${etiket}`);
+  if (g.not) satirlar.push("", g.not);
+  return satirlar.join("\n");
+}
+
+const whatsappBaglantisi = (g: Govde | null) =>
+  `https://wa.me/${WHATSAPP_NUMARASI}?text=${encodeURIComponent(whatsappMetni(g))}`;
+
 const ALAN =
   "w-full rounded-xl border border-cizgi bg-zemin px-4 py-3 text-[15px] text-zinc-100 placeholder:text-zinc-600 outline-none transition-colors focus:border-indigo-500 focus-visible:ring-2 focus-visible:ring-indigo-500/30";
 
@@ -23,6 +53,7 @@ export default function GorusmeFormu() {
   const [durum, setDurum] = useState<Durum>("hazir");
   const [referans, setReferans] = useState("");
   const [hata, setHata] = useState("");
+  const [kacanTalep, setKacanTalep] = useState<Govde | null>(null);
 
   async function gonder(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -31,7 +62,7 @@ export default function GorusmeFormu() {
 
     const form = e.currentTarget;
     const fd = new FormData(form);
-    const govde = {
+    const govde: Govde = {
       adSoyad: String(fd.get("adSoyad") ?? ""),
       telefon: String(fd.get("telefon") ?? ""),
       eposta: String(fd.get("eposta") ?? ""),
@@ -54,15 +85,17 @@ export default function GorusmeFormu() {
       form.reset();
     } catch (err) {
       setDurum("hata");
+      setKacanTalep(govde);
       setHata(
         err instanceof Error ? err.message : "Bir şeyler ters gitti.",
       );
     }
   }
 
-  const whatsapp = `https://wa.me/${WHATSAPP_NUMARASI}?text=${encodeURIComponent(
-    "Merhaba, Dijital Şirketim için görüşme ayarlamak istiyorum.",
-  )}`;
+  // Sayfadaki sabit WhatsApp butonları boş mesajla, hata kutusundaki
+  // bağlantı ziyaretçinin doldurduğu alanlarla açılıyor.
+  const whatsapp = whatsappBaglantisi(null);
+  const whatsappDolu = whatsappBaglantisi(kacanTalep);
 
   if (durum === "basarili") {
     return (
@@ -181,7 +214,7 @@ export default function GorusmeFormu() {
         <div className="mt-5 rounded-xl border border-red-500/40 bg-red-500/10 p-4">
           <p className="text-sm text-red-300">{hata}</p>
           <a
-            href={whatsapp}
+            href={whatsappDolu}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-red-200 underline underline-offset-4"
@@ -189,6 +222,9 @@ export default function GorusmeFormu() {
             <IconWhatsapp />
             WhatsApp&apos;tan doğrudan yaz
           </a>
+          <p className="mt-2 text-xs text-red-300/70">
+            Yazdıkların mesaja hazır eklendi; yeniden doldurman gerekmiyor.
+          </p>
         </div>
       )}
 

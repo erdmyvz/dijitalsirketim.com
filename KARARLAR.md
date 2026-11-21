@@ -6,6 +6,15 @@
 
 ---
 
+**2026-11-21 — Kaydedilemeyen talep ziyaretçinin elinden çıkmaz.**
+Form bir veritabanı hatası aldığında ziyaretçiye sahte bir "ulaştı"
+denmiyor; hata gösteriliyor ve WhatsApp bağlantısı **doldurduğu alanları
+mesaja hazır geçirerek** açılıyor. Yeniden yazmak zorunda kalan kimse
+yazmaz, talep orada kaybolur. İki kayıt yolu birden çalışıyor: kayıt
+sunucu günlüğüne de düşüyor. Sahte başarı dönmek bilinçli olarak
+reddedildi — depolanmayan bir şey için "aldım" demek, sonradan
+bulunamayan bir talepten daha kötü.
+
 **2026-11-21 — Ürün değişti: şirket doktoru söküldü.**
 Check-up / karne / tedavi modülleri kurgusu tamamen kaldırıldı. Yerine
 dijital pazarlama işini kurmak (6 başlıklı program) ve işletmek (4 ajan,

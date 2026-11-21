@@ -59,6 +59,9 @@ Bunlar yapılmadan faz 1 tamamlanmış sayılmaz:
   kadar `NEXT_PUBLIC_SUPABASE_URL` ve `SUPABASE_SERVICE_ROLE_KEY`
   **silinmeli**: eski (ölü) değerler dururken form 500 veriyor,
   silinince "talebin ulaştı" deyip kaydı sunucu günlüğüne yazıyor.
+  **21 Kasım 2026'da canlıda doğrulandı: değişkenler hâlâ duruyor ve
+  form gerçekten 500 veriyor.** Talep kaybolmuyor (günlüğe düşüyor +
+  ziyaretçi dolu WhatsApp mesajıyla yönleniyor) ama bu geçici çözüm.
 - **Eski Supabase anahtarlarını yenile.** 3 Eylül'de sohbete
   yapıştırılmıştı (publishable + secret + anon).
 - **`www` alt alan adını Vercel'e ekle.**
@@ -85,6 +88,25 @@ Sırayla, Meta'ya bağımlı olmayandan başlayarak:
 ---
 
 ## Tamamlananlar
+
+### 2026-11-21 — Yayın doğrulaması ve WhatsApp yedeğinin onarımı
+Yeni site canlıya çıktı ve uçtan uca denendi: `/`, `/kvkk`, `/gizlilik`,
+`/sitemap.xml`, `/robots.txt`, `/opengraph-image` 200; eski rotalar
+(`/check-up`, `/tedavi`, `/hesap`, `/admin`) 404; `/api/gorusme` GET'e
+405, eksik alana 400 veriyor.
+
+Canlı testte gerçek bir sorun çıktı: **form 500 veriyor** (Vercel'deki
+ölü Supabase değişkenleri) ve o hâlde gösterilen WhatsApp bağlantısı
+jenerik bir cümle taşıyordu — ziyaretçinin doldurduğu beş alan
+kayboluyordu. Artık hata kutusundaki bağlantı ad, telefon, e-posta,
+işletme, hangi kitleden olduğu ve notu mesaja hazır geçiriyor; altında
+"yeniden doldurman gerekmiyor" yazıyor. Sayfadaki sabit WhatsApp
+butonları boş mesajla açılmaya devam ediyor.
+
+Yerelde hata yolu birebir denendi (`.env.local` aynı ölü projeyi
+gösteriyor): bağlantı Türkçe karakterleriyle tam metni taşıyor, kayıt
+aynı anda sunucu günlüğüne de düşüyor. 375 px'te yatay taşma yok,
+konsolda beklenen 500 dışında hata yok.
 
 ### 2026-11-21 — Site baştan yazıldı
 Eski şirket doktoru sitesi tamamen söküldü; yerine ajanlar + modüller +
