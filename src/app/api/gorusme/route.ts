@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import surumBilgisi from "../../../../version.json";
 
 /**
  * Görüşme taleplerini `gorusme_talepleri` tablosuna yazar.
@@ -24,6 +25,15 @@ function referansKoduUret(): string {
 const kirp = (deger: unknown, uzunluk: number) =>
   String(deger ?? "").trim().slice(0, uzunluk);
 
+/**
+ * Her yanıta derlemenin sürüm numarası ekleniyor. Vercel'de ortam
+ * değişkeni değişikliği yalnızca YENİ dağıtımlara uygulandığı için,
+ * "değişkeni sildim ama form hâlâ hata veriyor" durumunda tek soru
+ * şu oluyor: yeni derleme indi mi, yoksa eskisi mi servis ediyor?
+ * Geçersiz bir istek (400) hiçbir şey yazmadan bu başlığı döndürür.
+ */
+const basliklar = { "x-ds-surum": String(surumBilgisi.version) };
+
 export async function POST(request: Request) {
   const veri = await request.json().catch(() => null);
 
@@ -33,7 +43,7 @@ export async function POST(request: Request) {
   if (!adSoyad || !telefon) {
     return NextResponse.json(
       { ok: false, error: "Ad Soyad ve telefon zorunludur." },
-      { status: 400 },
+      { status: 400, headers: basliklar },
     );
   }
 
@@ -61,7 +71,10 @@ export async function POST(request: Request) {
       "Supabase yapılandırılmamış — görüşme talebi yalnızca günlüğe yazıldı:",
       kayit,
     );
-    return NextResponse.json({ ok: true, referansKodu });
+    return NextResponse.json(
+      { ok: true, referansKodu },
+      { headers: basliklar },
+    );
   }
 
   const { error } = await supabase.from("gorusme_talepleri").insert(kayit);
@@ -76,9 +89,9 @@ export async function POST(request: Request) {
         error:
           "Talep kaydedilemedi. WhatsApp'tan yazarsan hemen dönüş yapabilirim.",
       },
-      { status: 500 },
+      { status: 500, headers: basliklar },
     );
   }
 
-  return NextResponse.json({ ok: true, referansKodu });
+  return NextResponse.json({ ok: true, referansKodu }, { headers: basliklar });
 }
